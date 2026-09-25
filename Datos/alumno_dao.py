@@ -1,2 +1,3 @@
 class Alumno_DAO():
-    pass
+    def __init__(self):
+        pass
