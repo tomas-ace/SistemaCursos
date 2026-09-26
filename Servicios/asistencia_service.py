@@ -1,3 +1,3 @@
 class Asistencia_Service():
-    def __init__(self,fecha,estado,id_inscripcion):
-        pass
+    def __init__(self,dao):
+        self._dao=dao
