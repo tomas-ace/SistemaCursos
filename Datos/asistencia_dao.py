@@ -7,4 +7,3 @@ class Asistencia_DAO():
         pass
     def datos_asistencia(self):
             pass
-    
