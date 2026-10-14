@@ -12,7 +12,6 @@ class Alumno_DAO():
             alumno.apellido,
             alumno.fechaNacimiento,
             alumno.dni,
-            alumno.nacionalidad,
             alumno.telefono,
             alumno.email
         ]
