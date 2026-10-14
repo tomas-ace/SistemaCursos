@@ -4,3 +4,12 @@ class Nota():
         self._fecha=fecha
         self._nota=nota
         self._id_inscripcion=id_inscripcion
+        
+    def get_id(self):
+        return self._id_nota
+    def get_fecha(self):
+            return self._fecha
+    def get_nota(self):
+            return self._nota
+    def get_id_inscripcion(self):
+            return self._id_inscripcion
