@@ -1,57 +1,51 @@
 CREATE TABLE Alumno (
-    Legajo INT AUTO_INCREMENT,
-    Nombre VARCHAR(50) NOT NULL,
-    Apellido VARCHAR(50) NOT NULL,
-    Fecha_Nac DATE,
-    DNI VARCHAR(15) UNIQUE,
-    Telefono VARCHAR(20),
-    Email VARCHAR(100),
-    PRIMARY KEY (Legajo)
+    Legajo INTEGER PRIMARY KEY AUTOINCREMENT,
+    Nombre TEXT NOT NULL,
+    Apellido TEXT NOT NULL,
+    Fecha_Nac TEXT,
+    DNI TEXT UNIQUE,
+    Telefono TEXT,
+    Email TEXT
 );
-
 
 CREATE TABLE Curso (
-    IdCurso INT AUTO_INCREMENT,
-    Descripcion VARCHAR(100) NOT NULL,
-    Duracion INT,
-    PRIMARY KEY (IdCurso)
+    IdCurso INTEGER PRIMARY KEY AUTOINCREMENT,
+    Descripcion TEXT NOT NULL,
+    Duracion INTEGER
 );
+
 CREATE TABLE Clase (
-    IdClase INT AUTO_INCREMENT,
-    Anio YEAR,
-    Horario TIME,
-    Estado VARCHAR(20),
-    IdCurso INT NOT NULL,
-    PRIMARY KEY (IdClase),
+    IdClase INTEGER PRIMARY KEY AUTOINCREMENT,
+    Anio INTEGER,      -- SQLite no tiene YEAR, usamos INTEGER
+    Horario TEXT,      -- SQLite no tiene TIME, usamos TEXT (HH:MM:SS)
+    Estado TEXT,
+    IdCurso INTEGER NOT NULL,
     FOREIGN KEY (IdCurso) REFERENCES Curso(IdCurso)
 );
 
 CREATE TABLE Inscripcion (
-    IdInscripcion INT AUTO_INCREMENT,
-    Fecha_Inscripcion DATE NOT NULL,
-    Estado VARCHAR(20),
-    Legajo INT NOT NULL,
-    IdClase INT NOT NULL,
-    PRIMARY KEY (IdInscripcion),
+    IdInscripcion INTEGER PRIMARY KEY AUTOINCREMENT,
+    Fecha_Inscripcion TEXT NOT NULL,
+    Estado TEXT,
+    Legajo INTEGER NOT NULL,
+    IdClase INTEGER NOT NULL,
     FOREIGN KEY (Legajo) REFERENCES Alumno(Legajo),
     FOREIGN KEY (IdClase) REFERENCES Clase(IdClase)
 );
 
 CREATE TABLE Asistencia (
-    Fecha DATE NOT NULL,
-    IdInscripcion INT NOT NULL,
-    Estado VARCHAR(20),
+    Fecha TEXT NOT NULL,
+    IdInscripcion INTEGER NOT NULL,
+    Estado TEXT,
     PRIMARY KEY (Fecha, IdInscripcion),
     FOREIGN KEY (IdInscripcion) REFERENCES Inscripcion(IdInscripcion)
 );
 
-
 CREATE TABLE Nota (
-    IdNota INT AUTO_INCREMENT,
-    Fecha DATE NOT NULL,
-    Nota DECIMAL(4,2) NOT NULL,
-    Descripcion VARCHAR(255),
-    IdInscripcion INT NOT NULL,
-    PRIMARY KEY (IdNota),
+    IdNota INTEGER PRIMARY KEY AUTOINCREMENT,
+    Fecha TEXT NOT NULL,
+    Nota REAL NOT NULL, -- SQLite usa REAL para números con decimales
+    Descripcion TEXT,
+    IdInscripcion INTEGER NOT NULL,
     FOREIGN KEY (IdInscripcion) REFERENCES Inscripcion(IdInscripcion)
 );

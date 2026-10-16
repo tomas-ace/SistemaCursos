@@ -30,6 +30,7 @@ class Alumno_DAO():
         pass
     def datos_alumno(self):
         pass
-    
+    def obtener_alumno(self):
+        pass
     
     
