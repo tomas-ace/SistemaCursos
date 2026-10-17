@@ -31,17 +31,17 @@ class Asistencia_DAO():
     def modificar_asistencia(self,asistencia_con_nuevos_datos):
         conexion = sqlite3.connect("Datos/cursos_db.db")
         cursor = conexion.cursor()
-        
         nuevosDatos = [
-            asistencia_con_nuevos_datos.get_id_inscripcion(),
-            asistencia_con_nuevos_datos.get_fecha(),
-            asistencia_con_nuevos_datos.get_estado()
-        ]
+            asistencia_con_nuevos_datos.get_estado(),
+            asistencia_con_nuevos_datos.get_id_inscripcion(),  
+            asistencia_con_nuevos_datos.get_fecha()]
         cursor.execute("""
             UPDATE Asistencia
-            SET Fecha = ?, IdInscripcion = ?, Estado = ?
-            WHERE IdInscripcion = ?
+            SET Estado = ?
+            WHERE IdInscripcion = ? and Fecha = ?
         """, nuevosDatos)
+        conexion.commit()
+        conexion.close()
     def obtener_asistencia_por_id(self,id):
         conexion = sqlite3.connect("Datos/cursos_db.db")
         cursor = conexion.cursor()

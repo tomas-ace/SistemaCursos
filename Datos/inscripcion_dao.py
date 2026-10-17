@@ -21,21 +21,21 @@ class Inscripcion_DAO():
         
         conexion.commit()
         conexion.close()
-    def modificar_inscripcion(self,nuevosDatos):
+    def modificar_inscripcion(self,inscripcion_con_nuevos_datos):
         conexion=sqlite3.connect("Datos/cursos_db.db")
         cursor = conexion.cursor()
         
         nuevosDatos=[
-            self._inscripcion.get_fecha(),
-            self._inscripcion.get_estado(),
-            self._inscripcion.get_legajo(),
-            self._inscripcion.get_id_clase(),
-            self._inscripcion.get_id()
+            inscripcion_con_nuevos_datos.get_fecha(),
+            inscripcion_con_nuevos_datos.get_estado(),
+            inscripcion_con_nuevos_datos.get_legajo(),
+            inscripcion_con_nuevos_datos.get_id_clase(),
+            inscripcion_con_nuevos_datos.get_id()
         ]
         cursor.execute("""
             UPDATE Inscripcion
             SET Fecha_Inscripcion = ?, Estado = ?, Legajo = ?, IdClase = ?
-            WHERE Id = ?
+            WHERE IdInscripcion = ?
         """,nuevosDatos)
         
         conexion.commit()

@@ -25,6 +25,9 @@ class Curso_DAO():
         cursor.execute("""
            SELECT * FROM Curso where descripcion=? 
         """,(nombre,))
+        curso = cursor.fetchone()
+        conexion.close()
+        return curso
     def modificar_curso(self,curso_con_nuevos_datos):
         conexion=sqlite3.connect("Datos/cursos_db.db")
         cursor = conexion.cursor()
@@ -38,8 +41,10 @@ class Curso_DAO():
         cursor.execute("""
             UPDATE Curso
             SET Descripcion = ?, Duracion = ?
-            WHERE id= ?
+            WHERE idCurso= ?
         """,nuevosDatos)
+        conexion.commit()    
+        conexion.close()
     def dar_de_baja_curso(self):
         pass
     def obtener_curso_por_id(self,id):

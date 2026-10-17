@@ -55,12 +55,12 @@ class Alumno_DAO():
         conexion.commit()
         conexion.close()
     
-    def obtener_alumno_por_id(self,id):
+    def obtener_alumno_por_legajo(self,legajo):
         conexion = sqlite3.connect("Datos/cursos_db.db")
         cursor = conexion.cursor()
         cursor.execute("""
-            SELECT * FROM Alumno WHERE Id = ?
-        """, (id,))
+            SELECT * FROM Alumno WHERE legajo = ?
+        """, (legajo,))
         alumno = cursor.fetchone()
         conexion.close()    
         return alumno

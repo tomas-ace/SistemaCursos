@@ -24,14 +24,27 @@ class Clase_DAO():
         conexion=sqlite3.connect("Datos/cursos_db.db")
         cursor = conexion.cursor()
         cursor.execute("""
-            SELECT * FROM Clase WHERE Id = ?
+            SELECT * FROM Clase WHERE IdClase = ?
         """,(id,))
         clase = cursor.fetchone()
         conexion.close()
         return clase
-    def modificar_clase(self,nuevosDatos):
-        pass
-    def dar_de_baja_clase(self):
-        pass
-    def datos_clase(self):
-        pass
+    def modificar_clase(self,asistencia_con_nuevos_datos):
+        conexion=sqlite3.connect("Datos/cursos_db.db")
+        cursor = conexion.cursor()
+        
+        nuevosDatos=[
+            asistencia_con_nuevos_datos.get_anio(),
+            asistencia_con_nuevos_datos.get_turno(),
+            asistencia_con_nuevos_datos.get_estado(),
+            asistencia_con_nuevos_datos.get_id_curso(),
+            asistencia_con_nuevos_datos.get_id()
+        ]
+        cursor.execute("""
+            UPDATE Clase
+            SET Anio = ?, Turno = ?, Estado = ?, IdCurso = ?
+            WHERE IdClase = ?
+        """,nuevosDatos)
+        conexion.commit()
+        conexion.close()
+    
