@@ -8,5 +8,5 @@ class Asistencia():
         return self._fecha
     def get_estado(self):
         return self._estado
-    def get_id(self):
+    def get_id_inscripcion(self):
         return self._id_inscripcion

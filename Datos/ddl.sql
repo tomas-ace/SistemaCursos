@@ -17,7 +17,7 @@ CREATE TABLE Curso (
 CREATE TABLE Clase (
     IdClase INTEGER PRIMARY KEY AUTOINCREMENT,
     Anio INTEGER,      -- SQLite no tiene YEAR, usamos INTEGER
-    Horario TEXT,      -- SQLite no tiene TIME, usamos TEXT (HH:MM:SS)
+    Turno TEXT,      -- SQLite no tiene TIME, usamos TEXT (HH:MM:SS)
     Estado TEXT,
     IdCurso INTEGER NOT NULL,
     FOREIGN KEY (IdCurso) REFERENCES Curso(IdCurso)
