@@ -25,11 +25,11 @@ class Nota_DAO():
         cursor = conexion.cursor()
         
         nuevosDatos=[
-            self._nota.get_id_inscripcion(),
             self._nota.get_fecha(),
             self._nota.get_estado(),
-            self._nota.get_id_clase(),
-            self._nota.get_nota()
+            self._nota.get_nota(),
+            self._nota.get_descripcion(),
+            self._nota.get_id()
         ]
         cursor.execute("""
             UPDATE Nota
