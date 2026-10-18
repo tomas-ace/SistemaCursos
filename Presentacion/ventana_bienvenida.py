@@ -1,5 +1,9 @@
 from tkinter import *
 from Servicios.alumno_service import *
+from Servicios.inscripcion_service import *
+from Servicios.curso_service import *
+from Servicios.clase_service import *
+
 #colores
 azul = "#2864e8"
 azul_oscuro = "#093068"
@@ -77,7 +81,12 @@ class Bienvenida():
         self._tarjetas.grid_rowconfigure(0, weight=1)
         self._tarjetas.grid_rowconfigure(1, weight=1)
         
-        self.crear_tarjeta(0, 0, "Estudiantes", "0")
-        self.crear_tarjeta(1, 0, "Cursos", "0")
-        self.crear_tarjeta(0, 1, "Inscripciones", "0")
-        self.crear_tarjeta(1, 1, "Calificaciones", "0")
+        service_alumno=Alumno_Service()
+        service_curso=Curso_Service()
+        service_clase=Clase_Service()
+        service_inscripcion=Inscripcion_Service()
+        
+        self.crear_tarjeta(0, 0, "Estudiantes", service_alumno.cantidad_de_alumnos())
+        self.crear_tarjeta(1, 0, "Cursos", service_curso.cantidad_de_cursos())
+        self.crear_tarjeta(0, 1, "Inscripciones Activas", service_inscripcion.cantidad_de_inscripciones_activas())
+        self.crear_tarjeta(1, 1, "Clases Activas", service_clase.cantidad_de_clases_activas())

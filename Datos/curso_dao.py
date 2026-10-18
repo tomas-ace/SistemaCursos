@@ -56,3 +56,13 @@ class Curso_DAO():
         curso = cursor.fetchone()
         conexion.close()
         return curso
+    def contar_cursos(self):
+        conexion=sqlite3.connect("Datos/cursos_db.db")
+        cursor = conexion.cursor()
+        cursor.execute("""
+           SELECT COUNT(*) FROM Curso
+        """)
+        curso = cursor.fetchone()
+        conexion.commit()
+        conexion.close()
+        return curso[0]

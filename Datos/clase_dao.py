@@ -45,6 +45,14 @@ class Clase_DAO():
             SET Anio = ?, Turno = ?, Estado = ?, IdCurso = ?
             WHERE IdClase = ?
         """,nuevosDatos)
+    def contar_clases_activas(self):
+        conexion=sqlite3.connect("Datos/cursos_db.db")
+        cursor = conexion.cursor()
+        cursor.execute("""
+            SELECT COUNT(*) FROM Clase WHERE Estado = "Activa"
+        """)
+        clases = cursor.fetchone()
         conexion.commit()
         conexion.close()
+        return clases[0]
     

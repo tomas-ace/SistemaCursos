@@ -64,3 +64,12 @@ class Alumno_DAO():
         alumno = cursor.fetchone()
         conexion.close()    
         return alumno
+    def contar_alumnos(self):
+        conexion = sqlite3.connect("Datos/cursos_db.db")
+        cursor = conexion.cursor()
+        cursor.execute("""
+            SELECT COUNT(*) FROM Alumno
+        """)
+        alumnos = cursor.fetchone()
+        conexion.close()
+        return alumnos[0]

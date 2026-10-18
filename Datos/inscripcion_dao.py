@@ -49,4 +49,14 @@ class Inscripcion_DAO():
         inscripcion = cursor.fetchone()
         conexion.close()
         return inscripcion
+    def contar_inscripciones_activas(self):
+        conexion=sqlite3.connect("Datos/cursos_db.db")
+        cursor = conexion.cursor()
+        cursor.execute("""
+            SELECT COUNT(*) FROM Inscripcion WHERE Estado = "En Curso"
+        """)
+        inscripciones = cursor.fetchone()
+        conexion.commit()
+        conexion.close()
+        return inscripciones[0]
     

@@ -18,13 +18,13 @@ from Datos.alumno_dao import Alumno_DAO
 # print(dao.obtener_alumno_por_dni(dni_a_probar))
 
 
-hola={
-    "hola":"mundo",
-    "adios":"amigos",
-    "saludos":"a todos"
-}
+# hola={
+#     "hola":"21313",
+#     "1321":"jjvkuvu",
+#     "-lnl":"1321"
+# }
 
-print(hola.items())
-for nombre, boton in hola.items():
-    print(nombre)
-    print(boton)
+# print(hola.items())
+# for nombre, boton in hola.items():
+#     print(nombre)
+#     print(boton)
