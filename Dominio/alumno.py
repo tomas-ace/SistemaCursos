@@ -12,8 +12,6 @@ class Alumno():
         return self._legajo
     def get_nombre(self):
         return self._nombre
-    def get_legajo(self):
-        return self._legajo
     def get_apellido(self):
         return self._apellido
     def get_fecha_nacimiento(self):

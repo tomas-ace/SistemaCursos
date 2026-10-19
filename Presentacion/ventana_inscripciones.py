@@ -9,76 +9,50 @@ texto = "#111827"
 borde = "#d1d5db"
 
 class Ventana_Inscripciones():
-    def __init__(self):
-        pass
-        
-    def mostrar(self,contenido):
-        """Dibuja la pantalla de inicio dentro del contenedor recibido."""
-
+    def __init__(self,contenido):
+            self._contenido = contenido
+            self._botones = Frame(contenido, bg=blanco)
+    def mostrar_opcion_elegida(self,opcion):
+        if opcion == "Registrar nuevo alumno":
+            print("registrar")
+        else:
+            print("consultar")
+    def crear_boton(self,nombre):
+            Button(
+                    self._botones,
+                    text=nombre,
+                    command=lambda: self.mostrar_opcion_elegida(nombre),
+                    font=("Arial", 20),
+                    bg=azul,
+                    fg=blanco,
+                    bd=0,
+                    padx=40,
+                    pady=15,
+                ).pack(pady=5)
+                
+    def mostrar(self):
+        print("hola")
         Label(
-            contenido,
-            text="¡estamos en inscripciones",
+            self._contenido,
+            text="Alumnos",
             font=("Arial", 16, "bold"),
             bg=blanco,
             fg=texto
         ).pack(anchor="w", pady=(8, 4))
 
         Label(
-            contenido,
-            text="Seleccioná una opción del menú para comenzar.",
+            self._contenido,
+            text="Seleccione la opcion que desee.",
             font=("Arial", 11),
             bg=blanco,
             fg=gris
         ).pack(anchor="w", pady=(0, 18))
 
-        Label(
-            contenido,
-            text="Resumen del sistema",
-            font=("Arial", 13, "bold"),
-            bg=blanco,
-            fg=texto
-        ).pack(anchor="w", pady=(0, 10))
-
-        tarjetas = Frame(contenido, bg=blanco)
-        tarjetas.pack(fill="both", expand=True)
-
-        def crear_tarjeta(columna, fila, nombre, numero):
-            tarjeta = Frame(
-                tarjetas,
-                bg=blanco,
-                highlightbackground=borde,
-                highlightthickness=1
-            )
-            tarjeta.grid(
-                row=fila,
-                column=columna,
-                sticky="nsew",
-                padx=5,
-                pady=5
-            )
-
-            Label(
-                tarjeta,
-                text=nombre,
-                font=("Arial", 11),
-                bg=blanco,
-                fg=texto
-            ).pack(anchor="w", padx=14, pady=(14, 5))
-
-            Label(
-                tarjeta,
-                text=numero,
-                font=("Arial", 21, "bold"),
-                bg=blanco,
-                fg=azul
-            ).pack(anchor="w", padx=14, pady=(0, 12))
-
-        tarjetas.grid_columnconfigure(0, weight=1)
-        tarjetas.grid_columnconfigure(1, weight=1)
-        tarjetas.grid_rowconfigure(0, weight=1)
-        tarjetas.grid_rowconfigure(1, weight=1)
-
-        crear_tarjeta(0, 0, "Estudiantes", "0")
-        crear_tarjeta(1, 0, "Cursos", "0")
-        crear_tarjeta(0, 1, "Inscripciones", "0")
-        crear_tarjeta(1, 1, "Calificaciones", "0")
+        
+        self._botones.pack(fill="both", expand=True)#coloca el contenedor y le dice que se ezpanda
+        opciones = [
+            "Registrar nuevo alumno",
+            "Consultar alumnos"
+        ]
+        for opcion in opciones:
+            self.crear_boton(opcion)

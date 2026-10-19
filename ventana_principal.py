@@ -4,8 +4,7 @@ from Presentacion.ventana_bienvenida import *
 from Presentacion.ventana_alumnos import *
 from Presentacion.ventana_cursos import *
 from Presentacion.ventana_inscripciones import *
-from Presentacion.ventana_informes import *
-from Presentacion.ventana_notas import *
+
 
 
 #colores
@@ -25,14 +24,6 @@ raiz.config(bg=blanco)
 #encabezado
 encabezado = Frame(raiz, bg=blanco)
 encabezado.pack(fill="x", padx=22, pady=(18, 8))
-
-Label(
-    encabezado,
-    text="Sistema de Gestión Educativa",
-    font=("Arial", 10),
-    bg=blanco,
-    fg=gris
-).pack(anchor="w")
 
 Label(
     encabezado,
@@ -62,20 +53,15 @@ def mostrar_seccion(seccion):
         bienvenida=Bienvenida(contenido)
         bienvenida.mostrar()
     elif seccion == "Alumnos":
-        alumnos=Ventana_Alumnos()
-        alumnos.mostrar(contenido)
+        alumnos=Ventana_Alumnos(contenido)
+        alumnos.mostrar()
     elif seccion == "Cursos":
-        cursos=Ventana_Cursos()
-        cursos.mostrar(contenido)
+        cursos=Ventana_Cursos(contenido)
+        cursos.mostrar()
     elif seccion == "Inscripciones":
-        inscripciones=Ventana_Inscripciones()
-        inscripciones.mostrar(contenido)
-    elif seccion == "Notas":
-        notas=Ventana_Notas()
-        notas.mostrar(contenido)
-    elif seccion == "Informes":
-        informes=Ventana_Informes()
-        informes.mostrar(contenido)
+        inscripciones=Ventana_Inscripciones(contenido)
+        inscripciones.mostrar()
+    
 
 
 def crear_boton(nombre):
@@ -96,9 +82,7 @@ opciones = [
     "Inicio",
     "Alumnos",
     "Cursos",
-    "Inscripciones",
-    "Notas",
-    "Informes"
+    "Inscripciones"
 ]
 
 for opcion in opciones:
