@@ -37,7 +37,7 @@ class Bienvenida():
                     font=("Arial", 11),
                     bg=blanco,
                     fg=texto
-                ).pack(anchor="w", padx=14, pady=(14, 5))
+                ).grid(padx=14, pady=(14, 5), column=0, row=0)
     
             Label(
                     tarjeta,
@@ -45,7 +45,7 @@ class Bienvenida():
                     font=("Arial", 21, "bold"),
                     bg=blanco,
                     fg=azul
-                ).pack(anchor="w", padx=14, pady=(0, 12))
+                ).grid(padx=14, pady=(0, 12), column=0, row=1)
                 
     def mostrar(self):
 

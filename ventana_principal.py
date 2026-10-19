@@ -23,7 +23,7 @@ raiz.config(bg=blanco)
 
 #encabezado
 encabezado = Frame(raiz, bg=blanco)
-encabezado.pack(fill="x", padx=22, pady=(18, 8))
+encabezado.grid(column=0, row=0, columnspan=2, padx=22, pady=(18, 8))
 
 Label(
     encabezado,
@@ -31,15 +31,15 @@ Label(
     font=("Arial", 18, "bold"),
     bg=blanco,
     fg=azul_oscuro
-).pack(anchor="w")
+).grid(column=0, row=0)
 
 #contenedor de botones
 menu = Frame(raiz, bg=blanco)
-menu.pack(fill="x", padx=22, pady=(0, 18))
+menu.grid(column=0, row=1, columnspan=2, padx=22, pady=(0, 18))
 
 #contenedor que contiene lo que va a mostrar cada ventana
 contenido = Frame(raiz, bg=blanco)
-contenido.pack(fill="both", expand=True, padx=28, pady=(0, 22))
+contenido.grid(column=0, row=2, columnspan=2, rowspan=2, padx=28, pady=(0, 22))
 
 
 def limpiar_contenido():
@@ -64,7 +64,7 @@ def mostrar_seccion(seccion):
     
 
 
-def crear_boton(nombre):
+def crear_boton(nombre,columna):
     Button(
         menu,
         text=nombre,
@@ -73,9 +73,9 @@ def crear_boton(nombre):
         bg=azul,
         fg=blanco,
         bd=0,
-        padx=20,
-        pady=10,
-    ).pack(side="left", padx=(0, 5))
+        padx=30,
+        pady=10
+    ).grid(row=0, column=columna, padx=10)
 
 
 opciones = [
@@ -84,9 +84,10 @@ opciones = [
     "Cursos",
     "Inscripciones"
 ]
-
+columna=0
 for opcion in opciones:
-    crear_boton(opcion)
+    crear_boton(opcion,columna)
+    columna+=1
 
 mostrar_seccion("Inicio")
 raiz.mainloop()

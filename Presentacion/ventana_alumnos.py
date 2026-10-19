@@ -25,28 +25,24 @@ class Ventana_Alumnos():
             font=("Arial", 20, "bold"),
             bg=blanco,
             fg=texto
-        ).pack(anchor="w", pady=(10, 25))
+        ).grid(pady=(10, 25), column=0, row=0)
 
+
+        #datoss
         Label(
             self._contenido,
             text="Nombre",
             font=("Arial", 12, "bold"),
             bg=blanco,
             fg=texto
-        ).pack(anchor="w")
+        ).grid(column=0, row=1)
 
         self._nombre = Entry(
             self._contenido,
             font=("Arial", 12),
             width=40
         )
-
-        self._nombre.pack(
-            anchor="w",
-            pady=(5, 15)
-        )
-
-        # APELLIDO
+        self._nombre.grid(pady=(5, 15), column=1, row=1)
 
         Label(
             self._contenido,
@@ -54,28 +50,21 @@ class Ventana_Alumnos():
             font=("Arial", 12, "bold"),
             bg=blanco,
             fg=texto
-        ).pack(anchor="w")
+        ).grid(column=0, row=2)
 
         self._apellido = Entry(
             self._contenido,
             font=("Arial", 12),
             width=40
         )
-
-        self._apellido.pack(
-            anchor="w",
-            pady=(5, 15)
-        )
-
-        # DNI
-
+        self._apellido.grid(pady=(5, 15), column=1, row=2)
         Label(
             self._contenido,
             text="DNI",
             font=("Arial", 12, "bold"),
             bg=blanco,
             fg=texto
-        ).pack(anchor="w")
+        ).grid(column=0, row=3)
 
         self._dni = Entry(
             self._contenido,
@@ -83,20 +72,14 @@ class Ventana_Alumnos():
             width=40
         )
 
-        self._dni.pack(
-            anchor="w",
-            pady=(5, 15)
-        )
-
-        # EMAIL
-
+        self._dni.grid(pady=(5, 15), column=1, row=3)
         Label(
             self._contenido,
             text="Email",
             font=("Arial", 12, "bold"),
             bg=blanco,
             fg=texto
-        ).pack(anchor="w")
+        ).grid(column=0, row=4)
 
         self._email = Entry(
             self._contenido,
@@ -104,34 +87,29 @@ class Ventana_Alumnos():
             width=40
         )
 
-        self._email.pack(
-            anchor="w",
-            pady=(5, 25)
-        )
+        self._email.grid(pady=(5, 25), column=1, row=4)
+            
         Label(
                     self._contenido,
                     text="Telefono",
                     font=("Arial", 12, "bold"),
                     bg=blanco,
                     fg=texto
-                ).pack(anchor="w")
+                ).grid(column=0, row=5)
         telefono = Entry(
                     self._contenido,
                     font=("Arial", 12),
                     width=40
                 )
         
-        telefono.pack(
-                    anchor="w",
-                    pady=(5, 25)
-                )
+        telefono.grid(pady=(5, 25), column=1, row=5)
         Label(
                     self._contenido,
                     text="Fecha de nacimiento",
                     font=("Arial", 12, "bold"),
                     bg=blanco,
                     fg=texto
-                ).pack(anchor="w")
+                ).grid(column=0, row=6)
         
         fecha_nacimiento = Entry(
                             self._contenido,
@@ -139,21 +117,12 @@ class Ventana_Alumnos():
                             width=40
                         )
                 
-        fecha_nacimiento.pack(
-                            anchor="w",
-                            pady=(5, 25)
-                        )
-        # BOTONES
-
-        FrameBotones = Frame(
-            self._contenido,
-            bg=blanco
-        )
-
-        FrameBotones.pack(anchor="w")
+        fecha_nacimiento.grid(pady=(5, 25), column=1, row=6)
+                    
+        #botones
 
         Button(
-            FrameBotones,
+            self._contenido,
             text="Registrar",
             font=("Arial", 12),
             bg=azul,
@@ -162,13 +131,11 @@ class Ventana_Alumnos():
             padx=30,
             pady=12,
             command=self.registrar
-        ).pack(
-            side="left",
-            padx=(0, 10)
-        )
+        ).grid(padx=(0, 10), column=0, row=7)
+           
 
         Button(
-            FrameBotones,
+            self._contenido,
             text="Cancelar",
             font=("Arial", 12),
             bg=gris,
@@ -177,9 +144,7 @@ class Ventana_Alumnos():
             padx=30,
             pady=12,
             command=self.cancelar
-        ).pack(
-            side="left"
-        )
+        ).grid(padx=(0, 10), column=1, row=7)
     def registrar(self):
         pass
     def cancelar(self):
@@ -189,7 +154,7 @@ class Ventana_Alumnos():
             self.ventana_registro_alumno()
         else:
             print("consultar")
-    def crear_boton(self,nombre):
+    def crear_boton(self,nombre,fila):
             Button(
                     self._botones,
                     text=nombre,
@@ -200,7 +165,7 @@ class Ventana_Alumnos():
                     bd=0,
                     padx=40,
                     pady=15,
-                ).pack(pady=5)
+                ).grid(pady=5,column=0,row=fila)
                 
     def mostrar(self):
         print("hola")
@@ -210,7 +175,7 @@ class Ventana_Alumnos():
             font=("Arial", 16, "bold"),
             bg=blanco,
             fg=texto
-        ).pack(anchor="w", pady=(8, 4))
+        ).grid(pady=(8, 4), column=0, row=0)
 
         Label(
             self._contenido,
@@ -218,16 +183,18 @@ class Ventana_Alumnos():
             font=("Arial", 11),
             bg=blanco,
             fg=gris
-        ).pack(anchor="w", pady=(0, 18))
+        ).grid(pady=(8, 4), column=0, row=1)
 
         
-        self._botones.pack(fill="both", expand=True)#coloca el contenedor y le dice que se ezpanda
+        self._botones.grid(column=1,row=2,columnspan=2)#coloca el contenedor y le dice que se ezpanda
         opciones = [
             "Registrar nuevo alumno",
             "Consultar alumnos"
         ]
+        fila=0
         for opcion in opciones:
-            self.crear_boton(opcion)
+            self.crear_boton(opcion,fila)
+            fila+=1
     
         
 
