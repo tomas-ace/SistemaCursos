@@ -3,6 +3,7 @@ from Servicios.alumno_service import *
 from Servicios.inscripcion_service import *
 from Servicios.curso_service import *
 from Servicios.clase_service import *
+from Dominio.alumno import *
 
 # Colores
 azul = "#2864e8"
@@ -17,10 +18,13 @@ class Ventana_Alumnos():
             self._contenido = contenido
             self._botones = Frame(contenido, bg=blanco)
     def ventana_registro_alumno(self):
-        for elemento in self._contenido.winfo_children():
-            elemento.destroy()
+        ventana = Toplevel(self._contenido)
+
+        ventana.title("Registrar alumno")
+        ventana.geometry("600x600")
+        ventana.configure(bg=blanco)
         Label(
-            self._contenido,
+            ventana,
             text="Registrar nuevo alumno",
             font=("Arial", 20, "bold"),
             bg=blanco,
@@ -30,22 +34,28 @@ class Ventana_Alumnos():
 
         #datoss
         Label(
-            self._contenido,
+            ventana,
             text="Nombre",
             font=("Arial", 12, "bold"),
             bg=blanco,
             fg=texto
         ).grid(column=0, row=1)
-
+        nombre = StringVar()
+        apellido = StringVar()
+        dni = IntVar()
+        email = StringVar()
+        telefono = IntVar()
+        fecha_nacimiento = StringVar()
         self._nombre = Entry(
-            self._contenido,
+            ventana,
             font=("Arial", 12),
-            width=40
+            width=40,
+            textvariable=nombre
         )
         self._nombre.grid(pady=(5, 15), column=1, row=1)
 
         Label(
-            self._contenido,
+            ventana,
             text="Apellido",
             font=("Arial", 12, "bold"),
             bg=blanco,
@@ -53,13 +63,14 @@ class Ventana_Alumnos():
         ).grid(column=0, row=2)
 
         self._apellido = Entry(
-            self._contenido,
+            ventana,
             font=("Arial", 12),
-            width=40
+            width=40,
+            textvariable=apellido
         )
         self._apellido.grid(pady=(5, 15), column=1, row=2)
         Label(
-            self._contenido,
+            ventana,
             text="DNI",
             font=("Arial", 12, "bold"),
             bg=blanco,
@@ -67,14 +78,15 @@ class Ventana_Alumnos():
         ).grid(column=0, row=3)
 
         self._dni = Entry(
-            self._contenido,
+            ventana,
             font=("Arial", 12),
-            width=40
+            width=40,
+            textvariable=dni
         )
 
         self._dni.grid(pady=(5, 15), column=1, row=3)
         Label(
-            self._contenido,
+            ventana,
             text="Email",
             font=("Arial", 12, "bold"),
             bg=blanco,
@@ -82,47 +94,50 @@ class Ventana_Alumnos():
         ).grid(column=0, row=4)
 
         self._email = Entry(
-            self._contenido,
+            ventana,
             font=("Arial", 12),
-            width=40
+            width=40,
+            textvariable=email
         )
 
         self._email.grid(pady=(5, 25), column=1, row=4)
             
         Label(
-                    self._contenido,
+                    ventana,
                     text="Telefono",
                     font=("Arial", 12, "bold"),
                     bg=blanco,
                     fg=texto
                 ).grid(column=0, row=5)
-        telefono = Entry(
-                    self._contenido,
+        self._telefono = Entry(
+                    ventana,
                     font=("Arial", 12),
-                    width=40
+                    width=40,
+                    textvariable=telefono
                 )
         
-        telefono.grid(pady=(5, 25), column=1, row=5)
+        self._telefono.grid(pady=(5, 25), column=1, row=5)
         Label(
-                    self._contenido,
+                    ventana,
                     text="Fecha de nacimiento",
                     font=("Arial", 12, "bold"),
                     bg=blanco,
                     fg=texto
                 ).grid(column=0, row=6)
         
-        fecha_nacimiento = Entry(
-                            self._contenido,
+        self._fecha_nacimiento = Entry(
+                            ventana,
                             font=("Arial", 12),
-                            width=40
+                            width=40,
+                            textvariable=fecha_nacimiento
                         )
                 
-        fecha_nacimiento.grid(pady=(5, 25), column=1, row=6)
+        self._fecha_nacimiento.grid(pady=(5, 25), column=1, row=6)
                     
         #botones
 
         Button(
-            self._contenido,
+            ventana,
             text="Registrar",
             font=("Arial", 12),
             bg=azul,
@@ -130,12 +145,12 @@ class Ventana_Alumnos():
             bd=0,
             padx=30,
             pady=12,
-            command=self.registrar
+            command=lambda: self.registrar(nombre.get(),apellido.get(),dni.get(),email.get(),telefono.get(),fecha_nacimiento.get())
         ).grid(padx=(0, 10), column=0, row=7)
            
 
         Button(
-            self._contenido,
+            ventana,
             text="Cancelar",
             font=("Arial", 12),
             bg=gris,
@@ -145,8 +160,13 @@ class Ventana_Alumnos():
             pady=12,
             command=self.cancelar
         ).grid(padx=(0, 10), column=1, row=7)
-    def registrar(self):
-        pass
+    def registrar(self,nombre,apelleido,dni,email,telefono,fecha_nacimiento):
+        print(nombre)
+        print(apelleido)
+        print(dni)
+        print(email)
+        print(telefono) 
+        print(fecha_nacimiento)
     def cancelar(self):
         pass
     def mostrar_opcion_elegida(self,opcion):
@@ -186,7 +206,7 @@ class Ventana_Alumnos():
         ).grid(pady=(8, 4), column=0, row=1)
 
         
-        self._botones.grid(column=1,row=2,columnspan=2)#coloca el contenedor y le dice que se ezpanda
+        self._botones.grid(column=0,row=2,columnspan=1)#coloca el contenedor y le dice que se ezpanda
         opciones = [
             "Registrar nuevo alumno",
             "Consultar alumnos"

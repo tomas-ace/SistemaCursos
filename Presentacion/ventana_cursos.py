@@ -21,7 +21,7 @@ class Ventana_Cursos():
                 clase_ventana.mostrar()
             else:
                 print("consultar")
-        def crear_boton(self,nombre):
+        def crear_boton(self,nombre,fila):
                 Button(
                         self._botones,
                         text=nombre,
@@ -32,7 +32,7 @@ class Ventana_Cursos():
                         bd=0,
                         padx=40,
                         pady=15,
-                    ).pack(pady=5)
+                    ).grid(column=2, row=fila, padx=10, pady=10)
                     
         def mostrar(self):
             print("hola")
@@ -42,7 +42,7 @@ class Ventana_Cursos():
                 font=("Arial", 16, "bold"),
                 bg=blanco,
                 fg=texto
-            ).pack(anchor="w", pady=(8, 4))
+            ).grid(column=0, row=0, padx=20, pady=10)
     
             Label(
                 self._contenido,
@@ -50,14 +50,16 @@ class Ventana_Cursos():
                 font=("Arial", 11),
                 bg=blanco,
                 fg=gris
-            ).pack(anchor="w", pady=(0, 18))
+            ).grid(column=0, row=1, padx=20, pady=10)
     
             
-            self._botones.pack(fill="both", expand=True)#coloca el contenedor y le dice que se ezpanda
+            self._botones.grid(column=0, row=2, padx=20, pady=10)
             opciones = [
                 "Registrar nuevo curso",
                 "Consultar cursos",
                 "Clases" 
             ]
+            fila = 0
             for opcion in opciones:
-                self.crear_boton(opcion)
+                self.crear_boton(opcion,fila)
+                fila += 1

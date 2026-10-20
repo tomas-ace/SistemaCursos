@@ -55,7 +55,7 @@ class Bienvenida():
             font=("Arial", 16, "bold"),
             bg=blanco,
             fg=texto
-        ).pack(anchor="w", pady=(8, 4))
+        ).grid(column=0,row=0, pady=(8, 4))
 
         Label(
             self._contenido,
@@ -63,7 +63,7 @@ class Bienvenida():
             font=("Arial", 11),
             bg=blanco,
             fg=gris
-        ).pack(anchor="w", pady=(0, 18))
+        ).grid(column=0,row=1, pady=(0, 18))
 
         Label(
             self._contenido,
@@ -71,10 +71,10 @@ class Bienvenida():
             font=("Arial", 13, "bold"),
             bg=blanco,
             fg=texto
-        ).pack(anchor="w", pady=(0, 10))
+        ).grid(column=0,row=2,pady=(0, 10))
 
         
-        self._tarjetas.pack(fill="both", expand=True)#coloca el contenedor y le dice que se ezpanda
+        self._tarjetas.grid(column=0,row=3,columnspan=3)#coloca el contenedor y le dice que se ezpanda
 
         self._tarjetas.grid_columnconfigure(0, weight=1) #weight le dice que ocupe lo restante a la columna o a la filla
         self._tarjetas.grid_columnconfigure(1, weight=1)
