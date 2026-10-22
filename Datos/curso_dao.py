@@ -1,15 +1,15 @@
 import sqlite3
 
 class Curso_DAO():
-    def __init__(self,curso):
-        self._curso=curso
-    def registrar_curso(self):
+    def __init__(self):
+        pass
+    def registrar_curso(self,curso):
         conexion=sqlite3.connect("Datos/cursos_db.db")
         cursor = conexion.cursor()
         
         datos=[
-            self._curso.get_descripcion(),
-            self._duracion.get_duracion()
+            curso.get_descripcion(),
+            curso.get_duracion()
         ]
         cursor.execute("""
             INSERT INTO Curso

@@ -1,19 +1,19 @@
 import sqlite3
 
 class Alumno_DAO():
-    def __init__(self,alumno):
-        self._alumno=alumno
-    def registrar_alumno(self):
+    def __init__(self):
+        pass
+    def registrar_alumno(self,alumno):
         conexion = sqlite3.connect("Datos/cursos_db.db")
         cursor = conexion.cursor()
 
         datos = [
-            self._alumno.get_nombre(),
-            self._alumno.get_apellido(),
-            self._alumno.get_fecha_nacimiento(),
-            self._alumno.get_dni(),
-            self._alumno.get_telefono(),
-            self._alumno.get_mail()
+            alumno.get_nombre(),
+            alumno.get_apellido(),
+            alumno.get_fecha_nacimiento(),
+            alumno.get_dni(),
+            alumno.get_telefono(),
+            alumno.get_mail()
         ]
 
         cursor.execute("""
@@ -73,3 +73,14 @@ class Alumno_DAO():
         alumnos = cursor.fetchone()
         conexion.close()
         return alumnos[0]
+    
+    def listar_alumnos(self):
+        conexion = sqlite3.connect("Datos/cursos_db.db")
+        cursor = conexion.cursor()
+        cursor.execute("""
+            SELECT nombre, apellido, dni, telefono, email, fecha_nacimiento
+            FROM Alumno
+        """)
+        alumnos = cursor.fetchall()
+        conexion.close()
+        return alumnos

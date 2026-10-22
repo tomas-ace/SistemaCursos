@@ -182,7 +182,7 @@ class Ventana_Alumnos():
             bd=0,
             padx=30,
             pady=12,
-            command=lambda: self.registrar(nombre.get(),apellido.get(),dni.get(),email.get(),telefono.get(),f"{dia.get()}-{mes.get()}-{anio.get()}")
+            command=lambda: self.registrar(nombre.get(),apellido.get(),dni.get(),email.get(),telefono.get(),f"{anio.get()}-{mes.get()}-{dia.get()}")
         ).grid(padx=(0, 10), column=0, row=9)
            
 
@@ -198,27 +198,20 @@ class Ventana_Alumnos():
             command=self.cancelar
         ).grid(padx=(0, 10), column=1, row=9)
 
-        Label(
-                ventana,
-                text="pruebala",
-                font=("Arial", 12, "bold"),
-                bg=blanco,
-                fg=texto
-            ).grid(column=1, row=10)
     def registrar(self,nombre,apelleido,dni,email,telefono,fecha_nacimiento):
-        print(nombre)
-        print(apelleido)
-        print(dni)
-        print(email)
-        print(telefono) 
-        print(fecha_nacimiento)
+        nuevo_alumno=Alumno(None,nombre,apelleido,fecha_nacimiento,dni,telefono,email)
+        servicio_alumno=Alumno_Service()
+        servicio_alumno.nuevo_alumno(nuevo_alumno)
+       
     def cancelar(self):
         pass
     def mostrar_opcion_elegida(self,opcion):
         if opcion == "Registrar nuevo alumno":
             self.ventana_registro_alumno()
         else:
-            print("consultar")
+            self.lista_de_alumnos()
+    def lista_de_alumnos(self):
+        pass
     def crear_boton(self,nombre,fila):
             Button(
                     self._botones,

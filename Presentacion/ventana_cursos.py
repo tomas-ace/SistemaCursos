@@ -1,5 +1,7 @@
 from tkinter import *
 from Presentacion.ventana_clases import *
+from Servicios.curso_service import *
+from Dominio.curso import *
 # Colores
 azul = "#2864e8"
 azul_oscuro = "#093068"
@@ -14,13 +16,96 @@ class Ventana_Cursos():
                     self._botones = Frame(contenido, bg=blanco)
         def mostrar_opcion_elegida(self,opcion):
             if opcion == "Registrar nuevo curso":
-                print("registrar")
+                self.ventana_registro_curso()
             elif opcion == "Clases":
                 print("clases")
                 clase_ventana=Ventana_Clases(self._contenido)
                 clase_ventana.mostrar()
             else:
                 print("consultar")
+        def ventana_registro_curso(self):
+                ventana = Toplevel(self._contenido)
+        
+                ventana.title("Registrar curso")
+                ventana.geometry("600x600")
+                ventana.configure(bg=blanco)
+                Label(
+                    ventana,
+                    text="Registrar nuevo curso",
+                    font=("Arial", 20, "bold"),
+                    bg=blanco,
+                    fg=texto
+                ).grid(pady=(10, 25), column=0, row=0)
+        
+        
+                #datoss
+                
+                descripcion = StringVar()
+                duracion = IntVar()
+                
+                
+                Label(
+                        ventana,
+                        text="Nombre",
+                        font=("Arial", 12, "bold"),
+                        bg=blanco,
+                        fg=texto
+                    ).grid(column=0, row=1)
+                self._descripcion = Entry(
+                    ventana,
+                    font=("Arial", 12),
+                    textvariable=descripcion
+                )
+                self._descripcion.grid(pady=(5, 15), column=1, row=1,columnspan=2)
+        
+                Label(
+                    ventana,
+                    text="Duración (Clases)",
+                    font=("Arial", 12, "bold"),
+                    bg=blanco,
+                    fg=texto
+                ).grid(column=0, row=2)
+        
+                self._duracion = Entry(
+                    ventana,
+                    font=("Arial", 12),
+                    textvariable=duracion
+                )
+                self._duracion.grid(pady=(5, 15), column=1, row=2,columnspan=2)
+                            
+                #botones
+        
+                Button(
+                    ventana,
+                    text="Registrar",
+                    font=("Arial", 12),
+                    bg=azul,
+                    fg=blanco,
+                    bd=0,
+                    padx=30,
+                    pady=12,
+                    command=lambda: self.registrar(descripcion.get(), duracion.get())
+                ).grid(padx=(0, 10), column=0, row=9)
+                   
+        
+                Button(
+                    ventana,
+                    text="Cancelar",
+                    font=("Arial", 12),
+                    bg=gris,
+                    fg=blanco,
+                    bd=0,
+                    padx=30,
+                    pady=12,
+                    command=self.cancelar
+                ).grid(padx=(0, 10), column=1, row=9)
+        
+        def registrar(self,descripcion,duracion):
+                nuevo_curso=Curso(None,descripcion,duracion)
+                servicio_curso=Curso_Service()
+                servicio_curso.nuevo_curso(nuevo_curso)
+        def cancelar(self):
+            pass
         def crear_boton(self,nombre,fila):
                 Button(
                         self._botones,
