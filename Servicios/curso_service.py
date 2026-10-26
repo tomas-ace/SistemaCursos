@@ -7,4 +7,6 @@ class Curso_Service():
         self._dao.registrar_curso(curso)
     def cantidad_de_cursos(self):
         return self._dao.contar_cursos()
+    def listar_cursos(self):
+        return self._dao.listar_cursos()
     

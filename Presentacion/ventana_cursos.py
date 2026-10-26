@@ -1,4 +1,5 @@
 from tkinter import *
+from Presentacion.treeview import treeview
 from Presentacion.ventana_clases import *
 from Servicios.curso_service import *
 from Dominio.curso import *
@@ -22,7 +23,7 @@ class Ventana_Cursos():
                 clase_ventana=Ventana_Clases(self._contenido)
                 clase_ventana.mostrar()
             else:
-                print("consultar")
+                self.lista_de_cursos()
         def ventana_registro_curso(self):
                 ventana = Toplevel(self._contenido)
         
@@ -148,3 +149,24 @@ class Ventana_Cursos():
             for opcion in opciones:
                 self.crear_boton(opcion,fila)
                 fila += 1
+
+        def lista_de_cursos(self):
+                ventana_lista = Toplevel(self._contenido)
+                ventana_lista.title("Lista de cursos")
+                ventana_lista.geometry("600x600")
+                ventana_lista.configure(bg=blanco)
+                Label(
+                    ventana_lista,
+                    text="Lista de cursos",
+                    font=("Arial", 20, "bold"),
+                    bg=blanco,
+                    fg=texto
+                ).grid(pady=(10, 25), column=0, row=0)
+                columnas = ["IDCurso", "Descripcion", "Duracion"]
+                datos_cursos = Curso_Service().listar_cursos()
+                tree=treeview(ventana_lista, columnas, datos_cursos)
+                a=input("pausa para que me deje seleccionar")
+                seleccion = tree.selection()#agarra el identificadopr
+                item_id = seleccion[0]  #lo guarda en una variable
+                datos_fila = tree.item(item_id)['values'] #extrae los valores de la fila
+            

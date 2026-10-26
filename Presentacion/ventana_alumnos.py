@@ -4,6 +4,7 @@ from Servicios.inscripcion_service import *
 from Servicios.curso_service import *
 from Servicios.clase_service import *
 from Dominio.alumno import *
+from Presentacion.treeview import treeview
 
 # Colores
 azul = "#2864e8"
@@ -211,7 +212,25 @@ class Ventana_Alumnos():
         else:
             self.lista_de_alumnos()
     def lista_de_alumnos(self):
-        pass
+        ventana_lista = Toplevel(self._contenido)
+        ventana_lista.title("Lista de alumnos")
+        ventana_lista.geometry("600x600")
+        ventana_lista.configure(bg=blanco)
+        Label(
+            ventana_lista,
+            text="Lista de alumnos",
+            font=("Arial", 20, "bold"),
+            bg=blanco,
+            fg=texto
+        ).grid(pady=(10, 25), column=0, row=0)
+        columnas = ["ID", "Nombre", "Apellido", "DNI", "Telefono", "Email", "Fecha de nacimiento"]
+        datos_alumnos = Alumno_Service().listar_alumnos()
+        tree=treeview(ventana_lista, columnas, datos_alumnos)
+        a=input("pausa para que me deje seleccionar")
+        seleccion = tree.selection()#agarra el identificadopr
+        item_id = seleccion[0]  #lo guarda en una variable
+        datos_fila = tree.item(item_id)['values'] #extrae los valores de la fila
+        
     def crear_boton(self,nombre,fila):
             Button(
                     self._botones,

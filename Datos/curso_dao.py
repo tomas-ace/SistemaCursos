@@ -66,3 +66,14 @@ class Curso_DAO():
         conexion.commit()
         conexion.close()
         return curso[0]
+    def listar_cursos(self):
+        conexion=sqlite3.connect("Datos/cursos_db.db")
+        cursor = conexion.cursor()
+        cursor.execute("""
+            SELECT idCurso, Descripcion, Duracion
+            FROM Curso
+        """)
+        cursos = cursor.fetchall()
+        conexion.commit()
+        conexion.close()
+        return cursos
