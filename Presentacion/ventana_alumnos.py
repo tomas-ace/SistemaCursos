@@ -258,8 +258,7 @@ class Ventana_Alumnos():
             command=lambda: self.preparar_modificacion(tree,ventana_lista)
         ).pack(side="left", padx=10)
         
-    def preparar_modificacion(self,tree,ventana):
-        ventana.destroy()  
+    def preparar_modificacion(self,tree,ventana): 
         seleccion = tree.selection()
         if not seleccion:
             print("Por favor, seleccione un alumno de la tabla.")
@@ -267,6 +266,7 @@ class Ventana_Alumnos():
 
         item_id = seleccion[0]
         datos_alumno = tree.item(item_id)['values']
+        ventana.destroy() 
         self.ventana_modificar_alumno(datos_alumno)
         
     def ventana_modificar_alumno(self,datos_alumno):

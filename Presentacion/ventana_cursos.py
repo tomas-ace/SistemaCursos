@@ -30,7 +30,6 @@ class Ventana_Cursos():
                 else:
                     ventana_none.destroy()
                 ventana = Toplevel(self._contenido)
-                ventana = Toplevel(self._contenido)
         
                 ventana.title("Registrar curso")
                 ventana.geometry("600x600")
@@ -90,7 +89,7 @@ class Ventana_Cursos():
                     bd=0,
                     padx=30,
                     pady=12,
-                    command=lambda: self.registrar(descripcion.get(), duracion.get())
+                    command=lambda: self.registrar(descripcion.get(), duracion.get(), ventana)
                 ).grid(padx=(0, 10), column=0, row=9)
                    
         
@@ -103,13 +102,14 @@ class Ventana_Cursos():
                     bd=0,
                     padx=30,
                     pady=12,
-                    command=self.cancelar
+                    command=lambda: self.cancelar(ventana)
                 ).grid(padx=(0, 10), column=1, row=9)
         
-        def registrar(self,descripcion,duracion):
+        def registrar(self,descripcion,duracion,ventana):
                 nuevo_curso=Curso(None,descripcion,duracion)
                 servicio_curso=Curso_Service()
                 servicio_curso.nuevo_curso(nuevo_curso)
+                ventana.destroy()
         def cancelar(self,ventana):
             ventana.destroy()
         def crear_boton(self,nombre,fila):
@@ -197,13 +197,14 @@ class Ventana_Cursos():
                     command=lambda: self.preparar_modificacion(tree,ventana_lista)
                 ).pack(side="left", padx=10)
         def preparar_modificacion(self,tree,ventana):
-                ventana.destroy()  
+                
                 seleccion = tree.selection()
                 if not seleccion:
                     return
         
                 item_id = seleccion[0]
                 datos_curso = tree.item(item_id)['values']
+                ventana.destroy()  
                 self.ventana_modificar_curso(datos_curso)
                 
         def ventana_modificar_curso(self,datos_curso):
