@@ -56,3 +56,15 @@ class Clase_DAO():
         conexion.close()
         return clases[0]
     
+    def listar_clases(self):
+        conexion=sqlite3.connect("Datos/cursos_db.db")
+        cursor = conexion.cursor()
+        cursor.execute("""
+            SELECT c.IdClase,c.Anio,c.Turno,c.Estado, Cu.Descripcion
+            FROM Clase c
+            JOIN Curso cu ON c.IdCurso = cu.IdCurso
+        """)
+        clases = cursor.fetchall()
+        conexion.commit()
+        conexion.close()
+        return clases
