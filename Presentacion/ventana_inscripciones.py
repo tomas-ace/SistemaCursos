@@ -1,5 +1,7 @@
 from tkinter import *
-
+from Presentacion.treeview import *
+from Dominio.inscripcion import *
+from Servicios.inscripcion_service import *
 # Colores
 azul = "#2864e8"
 azul_oscuro = "#093068"
@@ -9,50 +11,98 @@ texto = "#111827"
 borde = "#d1d5db"
 
 class Ventana_Inscripciones():
-    def __init__(self,contenido):
-            self._contenido = contenido
-            self._botones = Frame(contenido, bg=blanco)
-    def mostrar_opcion_elegida(self,opcion):
-        if opcion == "Registrar nuevo alumno":
-            print("registrar")
-        else:
-            print("consultar")
-    def crear_boton(self,nombre):
+        def __init__(self,contenido):
+                    self._contenido = contenido
+                    self._botones = Frame(contenido, bg=blanco)
+        def mostrar_opcion_elegida(self,opcion):
+            if opcion == "Inscribir alumno":
+                print("registrar")
+            else:
+                self.lista_inscripciones()
+        def crear_boton(self,nombre,fila):
+                Button(
+                        self._botones,
+                        text=nombre,
+                        command=lambda: self.mostrar_opcion_elegida(nombre),
+                        font=("Arial", 20),
+                        bg=azul,
+                        fg=blanco,
+                        bd=0,
+                        padx=40,
+                        pady=15,
+                    ).grid(column=2, row=fila, padx=10, pady=10)
+                    
+                    
+        def lista_inscripciones(self):
+            ventana_lista = Toplevel(self._contenido)
+            ventana_lista.title("Lista de inscripciones")
+            ventana_lista.geometry("600x600")
+            ventana_lista.configure(bg=blanco)
+            Label(
+                ventana_lista,
+                text="Lista de inscripciones",
+                font=("Arial", 20, "bold"),
+                bg=blanco,
+                fg=texto
+            ).grid(pady=(10, 25), column=0, row=0)
+            columnas = ["IdInscripcion", "Fecha", "Estado", "Nombre", "Apellido", "Curso", "Anio", "Turno"]
+            datos_inscripcion = Inscripcion_Service().listar_inscripciones()
+            tree=treeview(ventana_lista, columnas, datos_inscripcion)
+            frame_acciones = Frame(ventana_lista, bg=blanco)
+            frame_acciones.grid(column=0, row=2, padx=20, pady=10)
+    
             Button(
-                    self._botones,
-                    text=nombre,
-                    command=lambda: self.mostrar_opcion_elegida(nombre),
-                    font=("Arial", 20),
-                    bg=azul,
-                    fg=blanco,
-                    bd=0,
-                    padx=40,
-                    pady=15,
-                ).pack(pady=5)
-                
-    def mostrar(self):
-        print("hola")
-        Label(
-            self._contenido,
-            text="Alumnos",
-            font=("Arial", 16, "bold"),
-            bg=blanco,
-            fg=texto
-        ).pack(anchor="w", pady=(8, 4))
-
-        Label(
-            self._contenido,
-            text="Seleccione la opcion que desee.",
-            font=("Arial", 11),
-            bg=blanco,
-            fg=gris
-        ).pack(anchor="w", pady=(0, 18))
-
-        
-        self._botones.pack(fill="both", expand=True)#coloca el contenedor y le dice que se ezpanda
-        opciones = [
-            "Registrar nuevo alumno",
-            "Consultar alumnos"
-        ]
-        for opcion in opciones:
-            self.crear_boton(opcion)
+                frame_acciones,
+                text="Agregar Nuevo",
+                font=("Arial", 11, "bold"),
+                bg=azul,
+                fg=blanco,
+                bd=0,
+                padx=20,
+                pady=10,
+                command=lambda: self.ventana_registro_clase(ventana_lista)
+            ).pack(side="left", padx=10)
+    
+            Button(
+                frame_acciones,
+                text="Modificar Seleccionado",
+                font=("Arial", 11, "bold"),
+                bg=gris,
+                fg=blanco,
+                bd=0,
+                padx=20,
+                pady=10,
+                command=lambda: self.preparar_modificacion(tree,ventana_lista)
+            ).pack(side="left", padx=10)
+        def preparar_modificacion(self,tree,ventana_lista):
+            pass
+        def ventana_registro_clase(self,ventana_none):
+            pass         
+        def mostrar(self):
+            print("hola")
+            Label(
+                self._contenido,
+                text="Clases",
+                font=("Arial", 16, "bold"),
+                bg=blanco,
+                fg=texto
+            ).grid(column=0, row=0, padx=20, pady=10)
+    
+            Label(
+                self._contenido,
+                text="Seleccione la opcion que desee.",
+                font=("Arial", 11),
+                bg=blanco,
+                fg=gris
+            ).grid(column=0, row=1, padx=20, pady=10)
+    
+            
+            self._botones.grid(column=0, row=2, padx=20, pady=10)#coloca el contenedor y le dice que se ezpanda
+            opciones = [
+                "Inscribir alumno",
+                "Consultar inscripciones"
+            ]
+            fila = 0
+            for opcion in opciones:
+                    self.crear_boton(opcion,fila)
+                    fila += 1

@@ -5,3 +5,6 @@ class Inscripcion_Service():
         
     def cantidad_de_inscripciones_activas(self):
         return self._dao.contar_inscripciones_activas() 
+    
+    def listar_inscripciones(self):
+        return self._dao.listar_inscripciones()
