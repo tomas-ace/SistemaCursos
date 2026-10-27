@@ -11,3 +11,6 @@ class Alumno_Service():
 
     def listar_alumnos(self):
         return self._dao.listar_alumnos()
+    
+    def modificar_alumno(self,alumno):
+        self._dao.modificar_alumno(alumno)

@@ -9,4 +9,5 @@ class Curso_Service():
         return self._dao.contar_cursos()
     def listar_cursos(self):
         return self._dao.listar_cursos()
-    
+    def modificar_curso(self,curso):
+        self._dao.modificar_curso(curso)

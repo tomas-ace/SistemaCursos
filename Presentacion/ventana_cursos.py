@@ -17,14 +17,19 @@ class Ventana_Cursos():
                     self._botones = Frame(contenido, bg=blanco)
         def mostrar_opcion_elegida(self,opcion):
             if opcion == "Registrar nuevo curso":
-                self.ventana_registro_curso()
+                self.ventana_registro_curso(None)
             elif opcion == "Clases":
                 print("clases")
                 clase_ventana=Ventana_Clases(self._contenido)
                 clase_ventana.mostrar()
             else:
                 self.lista_de_cursos()
-        def ventana_registro_curso(self):
+        def ventana_registro_curso(self,ventana_none):
+                if ventana_none == None:
+                    pass
+                else:
+                    ventana_none.destroy()
+                ventana = Toplevel(self._contenido)
                 ventana = Toplevel(self._contenido)
         
                 ventana.title("Registrar curso")
@@ -105,8 +110,8 @@ class Ventana_Cursos():
                 nuevo_curso=Curso(None,descripcion,duracion)
                 servicio_curso=Curso_Service()
                 servicio_curso.nuevo_curso(nuevo_curso)
-        def cancelar(self):
-            pass
+        def cancelar(self,ventana):
+            ventana.destroy()
         def crear_boton(self,nombre,fila):
                 Button(
                         self._botones,
@@ -165,8 +170,98 @@ class Ventana_Cursos():
                 columnas = ["IDCurso", "Descripcion", "Duracion"]
                 datos_cursos = Curso_Service().listar_cursos()
                 tree=treeview(ventana_lista, columnas, datos_cursos)
-                a=input("pausa para que me deje seleccionar")
-                seleccion = tree.selection()#agarra el identificadopr
-                item_id = seleccion[0]  #lo guarda en una variable
-                datos_fila = tree.item(item_id)['values'] #extrae los valores de la fila
-            
+                frame_acciones = Frame(ventana_lista, bg=blanco)
+                frame_acciones.grid(column=0, row=2, padx=20, pady=10)
+        
+                Button(
+                    frame_acciones,
+                    text="Agregar Nuevo",
+                    font=("Arial", 11, "bold"),
+                    bg=azul,
+                    fg=blanco,
+                    bd=0,
+                    padx=20,
+                    pady=10,
+                    command=lambda: self.ventana_registro_curso(ventana_lista)
+                ).pack(side="left", padx=10)
+        
+                Button(
+                    frame_acciones,
+                    text="Modificar Seleccionado",
+                    font=("Arial", 11, "bold"),
+                    bg=gris,
+                    fg=blanco,
+                    bd=0,
+                    padx=20,
+                    pady=10,
+                    command=lambda: self.preparar_modificacion(tree,ventana_lista)
+                ).pack(side="left", padx=10)
+        def preparar_modificacion(self,tree,ventana):
+                ventana.destroy()  
+                seleccion = tree.selection()
+                if not seleccion:
+                    return
+        
+                item_id = seleccion[0]
+                datos_curso = tree.item(item_id)['values']
+                self.ventana_modificar_curso(datos_curso)
+                
+        def ventana_modificar_curso(self,datos_curso):
+                ventana = Toplevel(self._contenido)
+                ventana.title("Modificar curso")
+                ventana.geometry("600x600")
+                ventana.configure(bg=blanco)
+        
+                Label(
+                    ventana,
+                    text="Modificar curso",
+                    font=("Arial", 20, "bold"),
+                    bg=blanco,
+                    fg=texto
+                ).grid(pady=(10, 25), column=0, row=0)
+        
+                #cargo las variabkes con los datos
+                id_curso = datos_curso[0]
+                descripcion = StringVar(value=datos_curso[1])
+                duracion = IntVar(value=datos_curso[2])
+                
+        
+                #campos 
+                Label(ventana, text="Descripcion", font=("Arial", 12, "bold"), bg=blanco, fg=texto).grid(column=0, row=1)
+                Entry(ventana, font=("Arial", 12), textvariable=descripcion).grid(pady=(5, 15), column=1, row=1, columnspan=2)
+        
+                Label(ventana, text="Duracion (Clases)", font=("Arial", 12, "bold"), bg=blanco, fg=texto).grid(column=0, row=2)
+                Entry(ventana, font=("Arial", 12), textvariable=duracion).grid(pady=(5, 15), column=1, row=2, columnspan=2)
+        
+        
+        
+                # Botón para guardar cambios
+                Button(
+                    ventana,
+                    text="Guardar Cambios",
+                    font=("Arial", 12),
+                    bg=azul,
+                    fg=blanco,
+                    bd=0,
+                    padx=20,
+                    pady=12,
+                    command=lambda: self.guardar_modificacion(id_curso, descripcion.get(), duracion.get(),ventana)
+                ).grid(padx=(0, 10), column=0, row=9)
+        
+                Button(
+                    ventana,
+                    text="Cancelar",
+                    font=("Arial", 12),
+                    bg=gris,
+                    fg=blanco,
+                    bd=0,
+                    padx=20,
+                    pady=12,
+                    command=ventana.destroy
+                ).grid(padx=(0, 10), column=1, row=9)
+        def guardar_modificacion(self, id_curso, descripcion, duracion, ventana):
+                curso_actualizado = Curso(id_curso, descripcion, duracion)
+                servicio_curso = Curso_Service()
+                servicio_curso.modificar_curso(curso_actualizado)
+                print(f"Curso {id_curso} modificado con éxito")
+                ventana.destroy()
