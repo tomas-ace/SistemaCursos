@@ -258,6 +258,33 @@ class Ventana_Alumnos():
             command=lambda: self.preparar_modificacion(tree,ventana_lista)
         ).pack(side="left", padx=10)
         
+        Button(
+                    frame_acciones,
+                    text="Ver Detalle",
+                    font=("Arial", 11, "bold"),
+                    bg=gris,
+                    fg=blanco,
+                    bd=0,
+                    padx=20,
+                    pady=10,
+                    command=lambda: self.detalle_alumno(tree,ventana_lista)
+                ).pack(side="left", padx=10)
+        
+    def detalle_alumno(self,tree,ventana):
+        if not seleccion:
+            print("Por favor, seleccione un alumno de la tabla.")
+            return
+        ventana.destroy() 
+        ventana_detalle = Toplevel(self._contenido)
+        ventana_detalle.title("Detalle del alumno")
+        ventana_detalle.geometry("600x600")
+        ventana_detalle.configure(bg=blanco)
+        seleccion = tree.selection()
+    
+
+        item_id = seleccion[0]
+        datos_alumno = tree.item(item_id)['values']
+        
     def preparar_modificacion(self,tree,ventana): 
         seleccion = tree.selection()
         if not seleccion:
@@ -265,7 +292,9 @@ class Ventana_Alumnos():
             return
 
         item_id = seleccion[0]
+        print("item_id:", item_id)
         datos_alumno = tree.item(item_id)['values']
+        print("datos_alumno:", datos_alumno[0])
         ventana.destroy() 
         self.ventana_modificar_alumno(datos_alumno)
         
