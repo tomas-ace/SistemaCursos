@@ -14,3 +14,6 @@ class Alumno_Service():
     
     def modificar_alumno(self,alumno):
         self._dao.modificar_alumno(alumno)
+
+    def cursos_por_alumno(self, alumno_id):
+        return self._dao.obtener_cursos_por_alumno(alumno_id)

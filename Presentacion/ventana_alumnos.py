@@ -271,19 +271,142 @@ class Ventana_Alumnos():
                 ).pack(side="left", padx=10)
         
     def detalle_alumno(self,tree,ventana):
+        seleccion = tree.selection()
         if not seleccion:
             print("Por favor, seleccione un alumno de la tabla.")
             return
-        ventana.destroy() 
+         
+        item_id = seleccion[0]
+        datos_alumno = tree.item(item_id)['values']
+        ventana.destroy()
         ventana_detalle = Toplevel(self._contenido)
         ventana_detalle.title("Detalle del alumno")
         ventana_detalle.geometry("600x600")
         ventana_detalle.configure(bg=blanco)
-        seleccion = tree.selection()
-    
 
-        item_id = seleccion[0]
-        datos_alumno = tree.item(item_id)['values']
+
+        Label(
+            ventana_detalle,
+            text="Detalle del alumno",
+            font=("Arial", 20, "bold"),
+            bg=blanco,
+            fg=texto
+        ).pack(pady=(20, 20))
+
+       
+        frame_datos = Frame(ventana_detalle, bg=blanco)
+        frame_datos.pack(pady=10)
+        titulos_columnas = ["ID:", "Nombre:", "Apellido:", "DNI:", "Teléfono:", "Email:", "Fecha de nacimiento:"]
+        for i in range(len(titulos_columnas)):
+            if i==0:
+                continue
+
+            titulo = titulos_columnas[i]
+            
+            
+            Label(
+                frame_datos,
+                text=titulo,
+                font=("Arial", 12, "bold"),
+                bg=blanco,
+                fg=texto,
+                anchor="e",
+                width=18
+            ).grid(row=i, column=0, pady=8, padx=10, sticky="e")
+
+           
+            Label(
+                frame_datos,
+                text=str(datos_alumno[i]),
+                font=("Arial", 12),
+                bg=blanco,
+                fg=gris,
+                anchor="w"
+            ).grid(row=i, column=1, pady=8, padx=10, sticky="w")
+
+        frame_datos_cursada = Frame(ventana_detalle, bg=blanco)
+        frame_datos_cursada.pack(pady=40)
+
+        Button(
+            frame_datos_cursada,
+            text="Cursos",
+            font=("Arial", 11, "bold"),
+            bg=azul,
+            fg=blanco,
+            bd=0,
+            padx=20,
+            pady=10,
+            command=lambda: self.cursos_alumno(datos_alumno[0])
+        ).grid(column=0,row=0, padx=10)
+
+        Button(
+            frame_datos_cursada,
+            text="Notas",
+            font=("Arial", 11, "bold"),
+            bg=azul,
+            fg=blanco,
+            bd=0,
+            padx=20,
+            pady=10,
+            command=lambda: print("Comando 2")
+        ).grid(column=1,row=0, padx=10)
+
+        Button(
+            frame_datos_cursada,
+            text="Inasistencias",
+            font=("Arial", 11, "bold"),
+            bg=azul,
+            fg=blanco,
+            bd=0,
+            padx=20,
+            pady=10,
+            command=lambda: print("Comando 3")
+        ).grid(column=2,row=0, padx=10)
+    def cursos_alumno(self, alumno_id):
+        cursos=Alumno_Service().cursos_por_alumno(alumno_id)
+        ventana_cursos = Toplevel(self._contenido)
+        ventana_cursos.title("Cursos del alumno")
+        ventana_cursos.geometry("900x400")
+        ventana_cursos.configure(bg=blanco)
+
+        Label(
+            ventana_cursos,
+            text="Historial de Cursos",
+            font=("Arial", 18, "bold"),
+            bg=blanco,
+            fg=texto
+        ).grid(pady=(15, 10),column=0, row=0)
+
+        # 3. Verificamos si el alumno tiene cursos
+        if not cursos:
+            Label(
+                ventana_cursos,
+                text="Este alumno no está inscripto en ningún curso actualmente.",
+                font=("Arial", 12),
+                bg=blanco,
+                fg=gris
+            ).grid(pady=30, column=0, row=1)
+            return # Cortamos la función acá para que no intente dibujar una tabla vacía
+
+        # 4. Si tiene cursos, definimos las columnas (tienen que coincidir con tu SELECT)
+        # Tu SELECT era: c.Descripcion, c.Duracion, cl.Turno, cl.Anio, i.Fecha_Inscripcion, i.Estado
+        columnas = ["Descripción", "Duración", "Turno", "Año", "Fecha de Inscripción", "Estado"]
+
+        # 5. Dibujamos la tabla usando tu función reutilizable
+        tabla_cursos = treeview(ventana_cursos, columnas, cursos)
+        
+        # Botón para cerrar esta ventana
+        Button(
+            ventana_cursos,
+            text="Cerrar",
+            font=("Arial", 11, "bold"),
+            bg=gris,
+            fg=blanco,
+            bd=0,
+            padx=20,
+            pady=10,
+            command=ventana_cursos.destroy
+        ).grid(pady=15, column=0, row=2)
         
     def preparar_modificacion(self,tree,ventana): 
         seleccion = tree.selection()

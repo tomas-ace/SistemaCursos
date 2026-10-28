@@ -84,3 +84,19 @@ class Alumno_DAO():
         alumnos = cursor.fetchall()
         conexion.close()
         return alumnos
+
+    def obtener_cursos_por_alumno(self, alumno_id):
+        conexion = sqlite3.connect("Datos/cursos_db.db")
+        cursor = conexion.cursor()
+        cursor.execute("""
+            SELECT c.Descripcion,c.Duracion ,cl.Turno,cl.Anio, i.Fecha_Inscripcion, i.Estado
+            FROM Curso c
+            JOIN Clase cl ON cl.IdCurso = c.IdCurso
+            JOIN Inscripcion i ON i.IdClase = cl.IdClase
+            WHERE i.Legajo = ?
+        """, (alumno_id,))
+        cursos = cursor.fetchall()
+        conexion.close()
+        return cursos
+
+print(Alumno_DAO().obtener_cursos_por_alumno(2))
