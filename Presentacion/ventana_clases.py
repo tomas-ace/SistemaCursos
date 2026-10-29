@@ -34,47 +34,52 @@ class Ventana_Clases():
                     ).grid(column=2, row=fila, padx=10, pady=10)
                     
                     
-        def lista_de_clases(self):
-            ventana_lista = Toplevel(self._contenido)
-            ventana_lista.title("Lista de clases")
-            ventana_lista.geometry("600x600")
-            ventana_lista.configure(bg=blanco)
-            Label(
-                ventana_lista,
-                text="Lista de clases",
-                font=("Arial", 20, "bold"),
-                bg=blanco,
-                fg=texto
-            ).grid(pady=(10, 25), column=0, row=0)
+        def lista_de_clases(self, contenedor=None):
+            if contenedor is None:
+                ventana_lista = Toplevel(self._contenido)
+                ventana_lista.title("Lista de clases")
+                ventana_lista.geometry("600x600")
+                ventana_lista.configure(bg=blanco)
+                Label(
+                    ventana_lista,
+                    text="Lista de clases",
+                    font=("Arial", 20, "bold"),
+                    bg=blanco,
+                    fg=texto
+                ).grid(pady=(10, 25), column=0, row=0)
+            else:
+                ventana_lista = contenedor
             columnas = ["IDClase", "Anio", "Turno", "Estado", "Curso"]
             datos_clases = Clase_Service().listar_clases()
             tree=treeview(ventana_lista, columnas, datos_clases)
             frame_acciones = Frame(ventana_lista, bg=blanco)
             frame_acciones.grid(column=0, row=2, padx=20, pady=10)
-    
-            Button(
-                frame_acciones,
-                text="Agregar Nuevo",
-                font=("Arial", 11, "bold"),
-                bg=azul,
-                fg=blanco,
-                bd=0,
-                padx=20,
-                pady=10,
-                command=lambda: self.ventana_registro_clase(ventana_lista)
-            ).pack(side="left", padx=10)
-    
-            Button(
-                frame_acciones,
-                text="Modificar Estado",
-                font=("Arial", 11, "bold"),
-                bg=gris,
-                fg=blanco,
-                bd=0,
-                padx=20,
-                pady=10,
-                command=lambda: self.preparar_modificacion(tree,ventana_lista)
-            ).pack(side="left", padx=10)
+
+            if contenedor is None:
+                Button(
+                    frame_acciones,
+                    text="Agregar Nuevo",
+                    font=("Arial", 11, "bold"),
+                    bg=azul,
+                    fg=blanco,
+                    bd=0,
+                    padx=20,
+                    pady=10,
+                    command=lambda: self.ventana_registro_clase(ventana_lista)
+                ).pack(side="left", padx=10)
+        
+                Button(
+                    frame_acciones,
+                    text="Modificar Estado",
+                    font=("Arial", 11, "bold"),
+                    bg=gris,
+                    fg=blanco,
+                    bd=0,
+                    padx=20,
+                    pady=10,
+                    command=lambda: self.preparar_modificacion(tree,ventana_lista)
+                ).pack(side="left", padx=10)
+            return tree
         def preparar_modificacion(self,tree,ventana_lista):
             seleccion = tree.selection()
             if not seleccion:
@@ -86,7 +91,6 @@ class Ventana_Clases():
             self.ventana_modificar_clase(datos_clase)
                     
         def ventana_modificar_clase(self,datos_clase):
-                
                 ventana = Toplevel(self._contenido)
                 ventana.title("Modificar Estado")
                 ventana.geometry("600x600")

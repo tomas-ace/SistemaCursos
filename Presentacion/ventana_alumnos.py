@@ -216,59 +216,66 @@ class Ventana_Alumnos():
             self.ventana_registro_alumno(None)
         else:
             self.lista_de_alumnos()
-    def lista_de_alumnos(self):
-        ventana_lista = Toplevel(self._contenido)
-        ventana_lista.title("Lista de alumnos")
-        ventana_lista.geometry("1500x600")
-        ventana_lista.configure(bg=blanco)
-        Label(
-            ventana_lista,
-            text="Lista de alumnos",
-            font=("Arial", 20, "bold"),
-            bg=blanco,
-            fg=texto
-        ).grid(pady=(10, 25), column=0, row=0)
+    def lista_de_alumnos(self,contenedor=None):
+        if contenedor == None:
+            ventana_lista = Toplevel(self._contenido)
+            ventana_lista.title("Lista de alumnos")
+            ventana_lista.geometry("1500x600")
+            ventana_lista.configure(bg=blanco)
+            Label(
+                ventana_lista,
+                text="Lista de alumnos",
+                font=("Arial", 20, "bold"),
+                bg=blanco,
+                fg=texto
+            ).grid(pady=(10, 25), column=0, row=0)
+        else:
+            ventana_lista = contenedor
+        
         columnas = ["ID", "Nombre", "Apellido", "DNI", "Telefono", "Email", "Fecha de nacimiento"]
         datos_alumnos = Alumno_Service().listar_alumnos()
         tree=treeview(ventana_lista, columnas, datos_alumnos)
         frame_acciones = Frame(ventana_lista, bg=blanco)
         frame_acciones.grid(column=0, row=2, padx=20, pady=10)
 
-        Button(
-            frame_acciones,
-            text="Agregar Nuevo",
-            font=("Arial", 11, "bold"),
-            bg=azul,
-            fg=blanco,
-            bd=0,
-            padx=20,
-            pady=10,
-            command=lambda: self.ventana_registro_alumno(ventana_lista)
-        ).pack(side="left", padx=10)
-
-        Button(
-            frame_acciones,
-            text="Modificar Seleccionado",
-            font=("Arial", 11, "bold"),
-            bg=gris,
-            fg=blanco,
-            bd=0,
-            padx=20,
-            pady=10,
-            command=lambda: self.preparar_modificacion(tree,ventana_lista)
-        ).pack(side="left", padx=10)
+        if contenedor == None:
+            Button(
+                        frame_acciones,
+                        text="Agregar Nuevo",
+                        font=("Arial", 11, "bold"),
+                        bg=azul,
+                        fg=blanco,
+                        bd=0,
+                        padx=20,
+                        pady=10,
+                        command=lambda: self.ventana_registro_alumno(ventana_lista)
+                    ).pack(side="left", padx=10)
+            
+            Button(
+                frame_acciones,
+                text="Modificar Seleccionado",
+                font=("Arial", 11, "bold"),
+                bg=gris,
+                fg=blanco,
+                bd=0,
+                padx=20,
+                pady=10,
+                command=lambda: self.preparar_modificacion(tree,ventana_lista)
+            ).pack(side="left", padx=10)
+            
+            Button(
+                        frame_acciones,
+                        text="Ver Detalle",
+                        font=("Arial", 11, "bold"),
+                        bg=gris,
+                        fg=blanco,
+                        bd=0,
+                        padx=20,
+                        pady=10,
+                        command=lambda: self.detalle_alumno(tree,ventana_lista)
+                    ).pack(side="left", padx=10)
+        return tree
         
-        Button(
-                    frame_acciones,
-                    text="Ver Detalle",
-                    font=("Arial", 11, "bold"),
-                    bg=gris,
-                    fg=blanco,
-                    bd=0,
-                    padx=20,
-                    pady=10,
-                    command=lambda: self.detalle_alumno(tree,ventana_lista)
-                ).pack(side="left", padx=10)
         
     def detalle_alumno(self,tree,ventana):
         seleccion = tree.selection()

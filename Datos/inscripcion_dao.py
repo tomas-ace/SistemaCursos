@@ -1,17 +1,17 @@
 import sqlite3
 
 class Inscripcion_DAO():
-    def __init__(self,inscripcion):
-        self._inscripcion=inscripcion
-    def registrar_inscripcion(self):
+    def __init__(self):
+        pass
+    def registrar_inscripcion(self, inscripcion):
         conexion=sqlite3.connect("Datos/cursos_db.db")
         cursor = conexion.cursor()
         
         datos=[
-            self._inscripcion.get_fecha(),
-            self._inscripcion.get_estado(),
-            self._inscripcion.get_legajo(),
-            self._inscripcion.get_id_clase()
+            inscripcion.get_fecha(),
+            inscripcion.get_estado(),
+            inscripcion.get_legajo(),
+            inscripcion.get_id_clase()
         ]
         cursor.execute("""
             INSERT INTO Inscripcion
@@ -21,25 +21,24 @@ class Inscripcion_DAO():
         
         conexion.commit()
         conexion.close()
-    def modificar_inscripcion(self,inscripcion_con_nuevos_datos):
-        conexion=sqlite3.connect("Datos/cursos_db.db")
-        cursor = conexion.cursor()
-        
-        nuevosDatos=[
-            inscripcion_con_nuevos_datos.get_fecha(),
-            inscripcion_con_nuevos_datos.get_estado(),
-            inscripcion_con_nuevos_datos.get_legajo(),
-            inscripcion_con_nuevos_datos.get_id_clase(),
-            inscripcion_con_nuevos_datos.get_id()
-        ]
-        cursor.execute("""
-            UPDATE Inscripcion
-            SET Fecha_Inscripcion = ?, Estado = ?, Legajo = ?, IdClase = ?
-            WHERE IdInscripcion = ?
-        """,nuevosDatos)
-        
-        conexion.commit()
-        conexion.close()
+    
+    def modificar_estado(self,id_inscripcion, nuevo_estado):
+            conexion=sqlite3.connect("Datos/cursos_db.db")
+            cursor = conexion.cursor()
+            
+            nuevosDatos=[
+                nuevo_estado,
+                id_inscripcion
+                
+            ]
+            cursor.execute("""
+                UPDATE Inscripcion
+                SET Estado = ?
+                WHERE IdInscripcion = ?
+            """,nuevosDatos)
+            
+            conexion.commit()
+            conexion.close()
     def obtener_inscripcion_por_id(self,id):
         conexion=sqlite3.connect("Datos/cursos_db.db")
         cursor = conexion.cursor()
