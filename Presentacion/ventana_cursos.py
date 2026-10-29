@@ -1,6 +1,6 @@
 from tkinter import *
 from Presentacion.treeview import treeview
-from Presentacion.ventana_clases import *
+
 from Servicios.curso_service import *
 from Dominio.curso import *
 # Colores
@@ -16,6 +16,7 @@ class Ventana_Cursos():
                     self._contenido = contenido
                     self._botones = Frame(contenido, bg=blanco)
         def mostrar_opcion_elegida(self,opcion):
+            from Presentacion.ventana_clases import Ventana_Clases
             if opcion == "Registrar nuevo curso":
                 self.ventana_registro_curso(None)
             elif opcion == "Clases":
@@ -157,47 +158,53 @@ class Ventana_Cursos():
                 self.crear_boton(opcion,fila)
                 fila += 1
 
-        def lista_de_cursos(self):
-                ventana_lista = Toplevel(self._contenido)
-                ventana_lista.title("Lista de cursos")
-                ventana_lista.geometry("600x600")
-                ventana_lista.configure(bg=blanco)
-                Label(
-                    ventana_lista,
-                    text="Lista de cursos",
-                    font=("Arial", 20, "bold"),
-                    bg=blanco,
-                    fg=texto
-                ).grid(pady=(10, 25), column=0, row=0)
+        def lista_de_cursos(self,contenedor=None):
+                if contenedor == None:
+                    ventana_lista = Toplevel(self._contenido)
+                    ventana_lista.title("Lista de cursos")
+                    ventana_lista.geometry("600x600")
+                    ventana_lista.configure(bg=blanco)
+                    Label(
+                        ventana_lista,
+                        text="Lista de cursos",
+                        font=("Arial", 20, "bold"),
+                        bg=blanco,
+                        fg=texto
+                    ).grid(pady=(10, 25), column=0, row=0)
+                else:
+                    ventana_lista = contenedor
                 columnas = ["IDCurso", "Descripcion", "Duracion"]
                 datos_cursos = Curso_Service().listar_cursos()
                 tree=treeview(ventana_lista, columnas, datos_cursos)
                 frame_acciones = Frame(ventana_lista, bg=blanco)
                 frame_acciones.grid(column=0, row=2, padx=20, pady=10)
-        
-                Button(
-                    frame_acciones,
-                    text="Agregar Nuevo",
-                    font=("Arial", 11, "bold"),
-                    bg=azul,
-                    fg=blanco,
-                    bd=0,
-                    padx=20,
-                    pady=10,
-                    command=lambda: self.ventana_registro_curso(ventana_lista)
-                ).pack(side="left", padx=10)
-        
-                Button(
-                    frame_acciones,
-                    text="Modificar Seleccionado",
-                    font=("Arial", 11, "bold"),
-                    bg=gris,
-                    fg=blanco,
-                    bd=0,
-                    padx=20,
-                    pady=10,
-                    command=lambda: self.preparar_modificacion(tree,ventana_lista)
-                ).pack(side="left", padx=10)
+
+                if contenedor == None:
+                    Button(
+                            frame_acciones,
+                            text="Agregar Nuevo",
+                            font=("Arial", 11, "bold"),
+                            bg=azul,
+                            fg=blanco,
+                            bd=0,
+                            padx=20,
+                            pady=10,
+                            command=lambda: self.ventana_registro_curso(ventana_lista)
+                        ).pack(side="left", padx=10)
+                
+                    Button(
+                            frame_acciones,
+                            text="Modificar Seleccionado",
+                            font=("Arial", 11, "bold"),
+                            bg=gris,
+                            fg=blanco,
+                            bd=0,
+                            padx=20,
+                            pady=10,
+                            command=lambda: self.preparar_modificacion(tree,ventana_lista)
+                        ).pack(side="left", padx=10)
+                
+                return tree
         def preparar_modificacion(self,tree,ventana):
                 seleccion = tree.selection()
                 if not seleccion:

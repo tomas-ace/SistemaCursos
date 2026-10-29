@@ -1,7 +1,11 @@
 from Datos.clase_dao import Clase_DAO
 class Clase_Service():
     def __init__(self):
-        self._dao=Clase_DAO()
+        self._dao=Clase_DAO()   
+    
+    def nueva_clase(self, clase):
+        
+        self._dao.registrar_clase(clase)
         
     def listar_clases(self):
         return self._dao.listar_clases()
