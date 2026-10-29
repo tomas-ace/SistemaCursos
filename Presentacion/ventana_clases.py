@@ -79,7 +79,110 @@ class Ventana_Clases():
                     pady=10,
                     command=lambda: self.preparar_modificacion(tree,ventana_lista)
                 ).pack(side="left", padx=10)
+                
+                Button(
+                    frame_acciones,
+                    text="Ver Detalle",
+                    font=("Arial", 11, "bold"),
+                    bg=gris,
+                    fg=blanco,
+                    bd=0,
+                    padx=20,
+                    pady=10,
+                    command=lambda: self.detalle_clase(tree,ventana_lista)
+                ).pack(side="left", padx=10)
             return tree
+        
+        def detalle_clase(self,tree,ventana):
+                seleccion = tree.selection()
+                if not seleccion:
+                    print("Por favor, seleccione una clase de la tabla.")
+                    return
+                 
+                item_id = seleccion[0]
+                datos_clase = tree.item(item_id)['values']
+                ventana.destroy()
+                ventana_detalle = Toplevel(self._contenido)
+                ventana_detalle.title("Detalle de la clase")
+                ventana_detalle.geometry("600x600")
+                ventana_detalle.configure(bg=blanco)
+        
+        
+                Label(
+                    ventana_detalle,
+                    text="Detalle de la clase",
+                    font=("Arial", 20, "bold"),
+                    bg=blanco,
+                    fg=texto
+                ).pack(pady=(20, 20))
+        
+               
+                frame_datos = Frame(ventana_detalle, bg=blanco)
+                frame_datos.pack(pady=10)
+                titulos_columnas = ["ID:", "Año:", "Turno:", "Estado:", "Curso"]
+                for i in range(len(titulos_columnas)):
+                    if i==0:
+                        continue
+                    titulo = titulos_columnas[i]
+                    Label(
+                        frame_datos,
+                        text=titulo,
+                        font=("Arial", 12, "bold"),
+                        bg=blanco,
+                        fg=texto,
+                        anchor="e",
+                        width=18
+                    ).grid(row=i, column=0, pady=8, padx=10, sticky="e")
+        
+                   
+                    Label(
+                        frame_datos,
+                        text=str(datos_clase[i]),
+                        font=("Arial", 12),
+                        bg=blanco,
+                        fg=gris,
+                        anchor="w"
+                    ).grid(row=i, column=1, pady=8, padx=10, sticky="w")
+        
+                frame_datos_cursada = Frame(ventana_detalle, bg=blanco)
+                frame_datos_cursada.pack(pady=40)
+        
+                Button(
+                    frame_datos_cursada,
+                    text="Presencias",
+                    font=("Arial", 11, "bold"),
+                    bg=azul,
+                    fg=blanco,
+                    bd=0,
+                    padx=20,
+                    pady=10,
+                    command=lambda: print("Presentes")
+                ).grid(column=0,row=0, padx=10)
+        
+                Button(
+                    frame_datos_cursada,
+                    text="Notas",
+                    font=("Arial", 11, "bold"),
+                    bg=azul,
+                    fg=blanco,
+                    bd=0,
+                    padx=20,
+                    pady=10,
+                    command=lambda: print("Notas")
+                ).grid(column=1,row=0, padx=10)
+        
+                Button(
+                    frame_datos_cursada,
+                    text="Tomar Lista",
+                    font=("Arial", 11, "bold"),
+                    bg=azul,
+                    fg=blanco,
+                    bd=0,
+                    padx=20,
+                    pady=10,
+                    command=lambda: print("Tomar lista")
+                ).grid(column=2,row=0, padx=10)
+                
         def preparar_modificacion(self,tree,ventana_lista):
             seleccion = tree.selection()
             if not seleccion:
