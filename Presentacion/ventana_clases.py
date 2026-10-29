@@ -65,7 +65,7 @@ class Ventana_Clases():
     
             Button(
                 frame_acciones,
-                text="Modificar Seleccionado",
+                text="Modificar Estado",
                 font=("Arial", 11, "bold"),
                 bg=gris,
                 fg=blanco,
@@ -75,9 +75,67 @@ class Ventana_Clases():
                 command=lambda: self.preparar_modificacion(tree,ventana_lista)
             ).pack(side="left", padx=10)
         def preparar_modificacion(self,tree,ventana_lista):
-            pass
-        def ventana_registro_clase(self,ventana_none):
-            pass         
+            seleccion = tree.selection()
+            if not seleccion:
+                return
+    
+            item_id = seleccion[0]
+            datos_clase = tree.item(item_id)['values']
+            ventana_lista.destroy()  
+            self.ventana_modificar_clase(datos_clase)
+                    
+        def ventana_modificar_clase(self,datos_clase):
+                ventana = Toplevel(self._contenido)
+                ventana.title("Modificar Estado")
+                ventana.geometry("600x600")
+                ventana.configure(bg=blanco)
+                id_clase = datos_clase[0]
+                print(datos_clase)
+                estado_actual = datos_clase[3]
+                Label(
+                    ventana,
+                    text="Modificar Estado",
+                    font=("Arial", 20, "bold"),
+                    bg=blanco,
+                    fg=texto
+                ).grid(pady=(10, 25), column=0, row=0)
+        
+        
+                #campos 
+                Label(ventana, text="Estado", font=("Arial", 12, "bold"), bg=blanco, fg=texto).grid(column=0, row=1)
+               
+                estado=StringVar(value=estado_actual)
+                estado.set(estado_actual)
+                Radiobutton(ventana, text="Activo", variable=estado, value="Activa", font=("Arial", 12), bg=blanco, fg=texto).grid(column=0, row=2)
+                Radiobutton(ventana, text="Inactivo", variable=estado, value="Inactiva", font=("Arial", 12), bg=blanco, fg=texto).grid(column=0, row=3)
+                
+                Button(
+                    ventana,
+                    text="Guardar Cambios",
+                    font=("Arial", 12),
+                    bg=azul,
+                    fg=blanco,
+                    bd=0,
+                    padx=20,
+                    pady=12,
+                    command=lambda: self.guardar_modificacion(id_clase,estado.get(),ventana)
+                ).grid(padx=(0, 10), column=0, row=9)
+        
+                Button(
+                    ventana,
+                    text="Cancelar",
+                    font=("Arial", 12),
+                    bg=gris,
+                    fg=blanco,
+                    bd=0,
+                    padx=20,
+                    pady=12,
+                    command=ventana.destroy
+                ).grid(padx=(0, 10), column=1, row=9)
+        def guardar_modificacion(self, id_clase, estado, ventana):
+                servicio_clase = Clase_Service()
+                servicio_clase.modificar_estado_de_clase(id_clase, estado)
+                ventana.destroy()         
         def mostrar(self):
             print("hola")
             Label(

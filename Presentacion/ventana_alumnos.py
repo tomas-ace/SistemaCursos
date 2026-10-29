@@ -348,7 +348,7 @@ class Ventana_Alumnos():
             bd=0,
             padx=20,
             pady=10,
-            command=lambda: print("Comando 2")
+            command=lambda: self.notas_alumno(datos_alumno[0])
         ).grid(column=1,row=0, padx=10)
 
         Button(
@@ -360,7 +360,7 @@ class Ventana_Alumnos():
             bd=0,
             padx=20,
             pady=10,
-            command=lambda: print("Comando 3")
+            command=lambda: self.inasistencias_alumno(datos_alumno[0])
         ).grid(column=2,row=0, padx=10)
     def cursos_alumno(self, alumno_id):
         cursos=Alumno_Service().cursos_por_alumno(alumno_id)
@@ -377,7 +377,7 @@ class Ventana_Alumnos():
             fg=texto
         ).grid(pady=(15, 10),column=0, row=0)
 
-        # 3. Verificamos si el alumno tiene cursos
+    
         if not cursos:
             Label(
                 ventana_cursos,
@@ -386,16 +386,13 @@ class Ventana_Alumnos():
                 bg=blanco,
                 fg=gris
             ).grid(pady=30, column=0, row=1)
-            return # Cortamos la función acá para que no intente dibujar una tabla vacía
+            return 
 
-        # 4. Si tiene cursos, definimos las columnas (tienen que coincidir con tu SELECT)
-        # Tu SELECT era: c.Descripcion, c.Duracion, cl.Turno, cl.Anio, i.Fecha_Inscripcion, i.Estado
         columnas = ["Descripción", "Duración", "Turno", "Año", "Fecha de Inscripción", "Estado"]
 
-        # 5. Dibujamos la tabla usando tu función reutilizable
         tabla_cursos = treeview(ventana_cursos, columnas, cursos)
         
-        # Botón para cerrar esta ventana
+        
         Button(
             ventana_cursos,
             text="Cerrar",
@@ -407,7 +404,91 @@ class Ventana_Alumnos():
             pady=10,
             command=ventana_cursos.destroy
         ).grid(pady=15, column=0, row=2)
+    def notas_alumno(self, alumno_id):
+        notas=Alumno_Service().notas_por_alumno(alumno_id)
+        ventana_notas = Toplevel(self._contenido)
+        ventana_notas.title("Notas del alumno")
+        ventana_notas.geometry("900x400")
+        ventana_notas.configure(bg=blanco)
+
+        Label(
+            ventana_notas,
+            text="Historial de Notas",
+            font=("Arial", 18, "bold"),
+            bg=blanco,
+            fg=texto
+        ).grid(pady=(15, 10),column=0, row=0)
+
+    
+        if not notas:
+            Label(
+                ventana_notas,
+                text="Este alumno no tiene notas registradas.",
+                font=("Arial", 12),
+                bg=blanco,
+                fg=gris
+            ).grid(pady=30, column=0, row=1)
+            return 
+
+        columnas = ["Fecha", "Descripcion", "Curso", "Año", "Nota"]
+
+        tabla_notas = treeview(ventana_notas, columnas, notas)
         
+        
+        Button(
+            ventana_notas,
+            text="Cerrar",
+            font=("Arial", 11, "bold"),
+            bg=gris,
+            fg=blanco,
+            bd=0,
+            padx=20,
+            pady=10,
+            command=ventana_notas.destroy
+        ).grid(pady=15, column=0, row=2)     
+    
+    def inasistencias_alumno(self, alumno_id):
+        inasistencias=Alumno_Service().inasistencias_por_alumno(alumno_id)
+        ventana_inasistencias = Toplevel(self._contenido)
+        ventana_inasistencias.title("Inasistencias del alumno")
+        ventana_inasistencias.geometry("900x400")
+        ventana_inasistencias.configure(bg=blanco)
+
+        Label(
+            ventana_inasistencias,
+            text="Historial de Inasistencias",
+            font=("Arial", 18, "bold"),
+            bg=blanco,
+            fg=texto
+        ).grid(pady=(15, 10),column=0, row=0)
+
+    
+        if not inasistencias:
+            Label(
+                ventana_inasistencias,
+                text="Este alumno no tiene inasistencias registradas.",
+                font=("Arial", 12),
+                bg=blanco,
+                fg=gris
+            ).grid(pady=30, column=0, row=1)
+            return 
+
+        columnas = ["Curso", "Año", "Fecha"]
+
+        tabla_inasistencias = treeview(ventana_inasistencias, columnas, inasistencias)
+        
+        
+        Button(
+            ventana_inasistencias,
+            text="Cerrar",
+            font=("Arial", 11, "bold"),
+            bg=gris,
+            fg=blanco,
+            bd=0,
+            padx=20,
+            pady=10,
+            command=ventana_inasistencias.destroy
+        ).grid(pady=15, column=0, row=2)
     def preparar_modificacion(self,tree,ventana): 
         seleccion = tree.selection()
         if not seleccion:

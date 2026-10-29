@@ -1,7 +1,7 @@
 import sqlite3
 class Clase_DAO():
-    def __init__(self,clase):
-        self._clase=clase
+    def __init__(self):
+        pass
     def registrar_clase(self):
         conexion=sqlite3.connect("Datos/cursos_db.db")
         cursor = conexion.cursor()
@@ -29,22 +29,23 @@ class Clase_DAO():
         clase = cursor.fetchone()
         conexion.close()
         return clase
-    def modificar_clase(self,asistencia_con_nuevos_datos):
+    def modificar_estado(self,id_clase, nuevo_estado):
         conexion=sqlite3.connect("Datos/cursos_db.db")
         cursor = conexion.cursor()
         
         nuevosDatos=[
-            asistencia_con_nuevos_datos.get_anio(),
-            asistencia_con_nuevos_datos.get_turno(),
-            asistencia_con_nuevos_datos.get_estado(),
-            asistencia_con_nuevos_datos.get_id_curso(),
-            asistencia_con_nuevos_datos.get_id()
+            nuevo_estado,
+            id_clase
+            
         ]
         cursor.execute("""
             UPDATE Clase
-            SET Anio = ?, Turno = ?, Estado = ?, IdCurso = ?
+            SET Estado = ?
             WHERE IdClase = ?
         """,nuevosDatos)
+        
+        conexion.commit()
+        conexion.close()
     def contar_clases_activas(self):
         conexion=sqlite3.connect("Datos/cursos_db.db")
         cursor = conexion.cursor()

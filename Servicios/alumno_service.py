@@ -17,3 +17,7 @@ class Alumno_Service():
 
     def cursos_por_alumno(self, alumno_id):
         return self._dao.obtener_cursos_por_alumno(alumno_id)
+    def notas_por_alumno(self, alumno_id):
+        return self._dao.obtener_notas_por_alumno(alumno_id)
+    def inasistencias_por_alumno(self, alumno_id):
+        return self._dao.obtener_inasistencias_por_alumno(alumno_id)

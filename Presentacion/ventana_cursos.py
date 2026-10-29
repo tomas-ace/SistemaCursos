@@ -199,7 +199,6 @@ class Ventana_Cursos():
                     command=lambda: self.preparar_modificacion(tree,ventana_lista)
                 ).pack(side="left", padx=10)
         def preparar_modificacion(self,tree,ventana):
-                
                 seleccion = tree.selection()
                 if not seleccion:
                     return
