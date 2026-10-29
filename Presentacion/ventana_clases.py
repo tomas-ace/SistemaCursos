@@ -4,6 +4,9 @@ from Dominio.clase import *
 from Servicios.clase_service import *
 from Dominio.asistencia import *
 from Servicios.asistencia_service import *
+from Dominio.nota import *
+from Servicios.notas_service import *
+
 # Colores
 azul = "#2864e8"
 azul_oscuro = "#093068"
@@ -183,6 +186,87 @@ class Ventana_Clases():
                     pady=10,
                     command=lambda: self.ventana_tomar_lista(datos_clase[0])
                 ).grid(column=2,row=0, padx=10)
+                
+                        
+                Button(
+                    frame_datos_cursada,
+                    text="Agregar Notas",
+                    font=("Arial", 11, "bold"),
+                    bg=azul,
+                    fg=blanco,
+                    bd=0,
+                    padx=20,
+                    pady=10,
+                    command=lambda: self.ventana_agregar_notas(datos_clase[0])
+                ).grid(column=3,row=0, padx=10)
+                
+        def ventana_agregar_notas(self, id_clase):
+                    servicio_classe=Clase_Service()
+                    alumnos=servicio_classe.lista_de_alumnos_por_clase(id_clase)
+                    ventana = Toplevel(self._contenido)
+                    ventana.title("Agregar Notas")
+                    ventana.geometry("700x600")
+                    ventana.configure(bg=blanco)
+        
+                    frame_fecha = Frame(ventana, bg=blanco)
+                    frame_fecha.pack(pady=20)
+                    
+                    Label(frame_fecha, text="Día:", bg=blanco).grid(row=0, column=0)
+                    entry_dia = Entry(frame_fecha, width=5)
+                    entry_dia.grid(row=0, column=1, padx=10)
+        
+                    Label(frame_fecha, text="Mes:", bg=blanco).grid(row=0, column=2)
+                    entry_mes = Entry(frame_fecha, width=10)
+                    entry_mes.grid(row=0, column=3, padx=10)
+                    
+                    Label(frame_fecha, text="Año:", bg=blanco).grid(row=0, column=4)
+                    entry_anio = Entry(frame_fecha, width=8)
+                    entry_anio.grid(row=0, column=5, padx=10)
+                    
+                    Label(frame_fecha, text="Descripcion:", bg=blanco).grid(row=1, column=0)
+                    entry_descripcion = Entry(frame_fecha, width=12)
+                    entry_descripcion.grid(row=1, column=1, padx=10, columnspan=4)
+        
+                    lista_notas = [] 
+        
+                    frame_alumnos = Frame(ventana, bg=blanco)
+                    frame_alumnos.pack(pady=10)
+        
+                    fila = 0
+                    for alumno in alumnos:
+                        nombre = f"{alumno[1]} {alumno[2]}"
+                        id_inscripcion=alumno[3]
+                        nota = IntVar(value=1) 
+                        
+                        lista_notas.append([id_inscripcion, nota])
+
+                        Label(
+                            frame_alumnos, text=nombre, bg=blanco, relief="solid", bd=1, width=25, anchor="w", padx=10, pady=5
+                        ).grid(row=fila, column=0, pady=5, padx=20)
+        
+                        Entry(frame_alumnos, textvariable=nota, bg=blanco).grid(row=fila, column=1)
+                        
+                        fila += 1 
+        
+                    Button(
+                        ventana, text="Guardar Nota", bg=azul, fg=blanco, font=("Arial", 12, "bold"),
+                        command=lambda: self.guardar_notas(entry_descripcion.get(),entry_dia.get(), entry_mes.get(), entry_anio.get(), ventana,lista_notas)
+                    ).pack(pady=20)
+        
+        
+        def guardar_notas(self,descripcion, dia, mes, anio, ventana,lista):
+                    fecha_completa = f"{anio}-{mes}-{dia}"
+                    for alumno in lista:
+                        print(alumno)
+                        id_inscripcion=alumno[0]
+                        nota = alumno[1].get() 
+                        nota_detalle=Nota(None,fecha_completa,nota,descripcion,id_inscripcion)
+                        nota_detalle_service= Nota_Service()
+                        nota_detalle_service.registrar_nota(nota_detalle)
+        
+                        
+                    ventana.destroy()
+                
         def ventana_tomar_lista(self, id_clase):
             servicio_classe=Clase_Service()
             alumnos=servicio_classe.lista_de_alumnos_por_clase(id_clase)

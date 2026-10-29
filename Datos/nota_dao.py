@@ -1,16 +1,16 @@
 import sqlite3
 class Nota_DAO():
-    def __init__(self,nota):
-        self._nota=nota
-    def registrar_nota(self):
+    def __init__(self):
+        pass
+    def registrar_nota(self,nota):
         conexion=sqlite3.connect("Datos/cursos_db.db")
         cursor = conexion.cursor()
         
         datos=[
-            self._nota.get_fecha(),
-            self._nota.get_estado(),
-            self._nota.get_nota(),
-            self._nota.get_id_inscripcion()
+            nota.get_fecha(),
+            nota.get_nota(),
+            nota.get_descripcion(),
+            nota.get_id_inscripcion()
         ]
         cursor.execute("""
             INSERT INTO Nota
