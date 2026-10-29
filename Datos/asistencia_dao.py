@@ -1,15 +1,15 @@
 import sqlite3
 class Asistencia_DAO():
-    def __init__(self,asistencia):
-        self._asistencia=asistencia
-    def registrar_asistencia(self):
+    def __init__(self):
+        pass
+    def registrar_asistencia(self,asistencia):
         conexion = sqlite3.connect("Datos/cursos_db.db")
         cursor = conexion.cursor()
         
         datos = [
-            self._asistencia.get_id_inscripcion(),
-            self._asistencia.get_fecha(),
-            self._asistencia.get_estado()
+            asistencia.get_fecha(),
+            asistencia.get_id_inscripcion(),
+            asistencia.get_estado()
         ]
         cursor.execute("""
             INSERT INTO Asistencia

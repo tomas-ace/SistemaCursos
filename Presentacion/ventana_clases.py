@@ -2,7 +2,8 @@ from tkinter import *
 from Presentacion.treeview import *
 from Dominio.clase import *
 from Servicios.clase_service import *
-
+from Dominio.asistencia import *
+from Servicios.asistencia_service import *
 # Colores
 azul = "#2864e8"
 azul_oscuro = "#093068"
@@ -180,8 +181,71 @@ class Ventana_Clases():
                     bd=0,
                     padx=20,
                     pady=10,
-                    command=lambda: print("Tomar lista")
+                    command=lambda: self.ventana_tomar_lista(datos_clase[0])
                 ).grid(column=2,row=0, padx=10)
+        def ventana_tomar_lista(self, id_clase):
+            servicio_classe=Clase_Service()
+            alumnos=servicio_classe.lista_de_alumnos_por_clase(id_clase)
+            ventana = Toplevel(self._contenido)
+            ventana.title("Tomar Lista")
+            ventana.geometry("700x600")
+            ventana.configure(bg=blanco)
+
+            frame_fecha = Frame(ventana, bg=blanco)
+            frame_fecha.pack(pady=20)
+            
+            Label(frame_fecha, text="Día:", bg=blanco).grid(row=0, column=0)
+            entry_dia = Entry(frame_fecha, width=5)
+            entry_dia.grid(row=0, column=1, padx=10)
+
+            Label(frame_fecha, text="Mes:", bg=blanco).grid(row=0, column=2)
+            entry_mes = Entry(frame_fecha, width=10)
+            entry_mes.grid(row=0, column=3, padx=10)
+            
+            Label(frame_fecha, text="Año:", bg=blanco).grid(row=0, column=4)
+            entry_anio = Entry(frame_fecha, width=8)
+            entry_anio.grid(row=0, column=5, padx=10)
+
+            lista_asistencia = [] 
+
+            frame_alumnos = Frame(ventana, bg=blanco)
+            frame_alumnos.pack(pady=10)
+
+            fila = 0
+            for alumno in alumnos:
+                nombre = f"{alumno[1]} {alumno[2]}"
+                id_inscripcion=alumno[3]
+                presencia = StringVar(value="Ausente") 
+                
+                lista_asistencia.append([id_inscripcion, presencia])
+
+                Label(
+                    frame_alumnos, text=nombre, bg=blanco, relief="solid", bd=1, width=25, anchor="w", padx=10, pady=5
+                ).grid(row=fila, column=0, pady=5, padx=20)
+
+                Radiobutton(frame_alumnos, text="Presente", variable=presencia, value="Presente", bg=blanco).grid(row=fila, column=1)
+                Radiobutton(frame_alumnos, text="Ausente", variable=presencia, value="Ausente", bg=blanco).grid(row=fila, column=2)
+                
+                fila += 1 
+
+            Button(
+                ventana, text="Guardar Asistencia", bg=azul, fg=blanco, font=("Arial", 12, "bold"),
+                command=lambda: self.guardar_asistencia(entry_dia.get(), entry_mes.get(), entry_anio.get(), ventana,lista_asistencia)
+            ).pack(pady=20)
+
+
+        def guardar_asistencia(self, dia, mes, anio, ventana,lista):
+            fecha_completa = f"{anio}-{mes}-{dia}"
+            for alumno in lista:
+                print(alumno)
+                id_inscripcion=alumno[0]
+                estado = alumno[1].get() 
+                asistencia=Asistencia(fecha_completa,estado,id_inscripcion)
+                asistencia_service= Asistencia_Service()
+                asistencia_service.registrar_asistencia(asistencia)
+
+                
+            ventana.destroy()
                 
         def preparar_modificacion(self,tree,ventana_lista):
             seleccion = tree.selection()

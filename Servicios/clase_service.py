@@ -15,4 +15,7 @@ class Clase_Service():
     
     def modificar_estado_de_clase(self, id_clase, nuevo_estado):
         self._dao.modificar_estado(id_clase, nuevo_estado)
+        
+    def lista_de_alumnos_por_clase(self,clase):
+        return self._dao.lista_de_alumnos_en_clase(clase)
     

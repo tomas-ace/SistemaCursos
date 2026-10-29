@@ -69,3 +69,18 @@ class Clase_DAO():
         conexion.commit()
         conexion.close()
         return clases
+    
+    def lista_de_alumnos_en_clase(self,clase):
+        conexion=sqlite3.connect("Datos/cursos_db.db")
+        cursor = conexion.cursor()
+        cursor.execute("""
+            SELECT a.Legajo, a.Nombre, a.Apellido, i.IdInscripcion
+            FROM Alumno a
+                JOIN Inscripcion i ON a.Legajo = i.Legajo
+                JOIN Clase c ON i.IdClase = c.IdClase 
+                WHERE c.IdClase = ?;
+                """,(clase,))
+        alumnos=cursor.fetchall()
+        conexion.commit()
+        conexion.close()
+        return alumnos
