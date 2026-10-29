@@ -205,7 +205,7 @@ class Ventana_Clases():
             ventana_asistencias.title(f"Asistencias - Clase {id_clase}")
             ventana_asistencias.geometry("600x400")
             
-            # Asegúrate de tener los colores definidos (blanco, texto, etc.) o usa strings como "white"
+            
             ventana_asistencias.configure(bg="white") 
             
             Label(
@@ -215,25 +215,19 @@ class Ventana_Clases():
                 bg="white"
             ).pack(pady=15)
             
-            # 2. Obtener datos del servicio
-            # Asumimos que Asistencia_Service tiene un método 'obtener_asistencias_por_clase'
             servicio_asistencia = Asistencia_Service()
             
-            # El DAO debería devolver una lista de tuplas/listas con los datos requeridos.
-            # Ejemplo de lo que debería devolver la BD: [('Juan Perez', '2024-10-25', 'Presente'), ...]
+            
             datos_asistencias = servicio_asistencia.asistencia_por_alumno(id_clase) 
             
-            # 3. Preparar encabezados
+           
             encabezados = ["Alumno", "Fecha", "Estado"]
             
-            # 4. Contenedor para el treeview
+          
             frame_tabla = Frame(ventana_asistencias)
             frame_tabla.pack(fill="both", expand=True, padx=20, pady=10)
             
-            # 5. Llamar a tu componente treeview
-            # Asumiendo que treeview es una función global que importaste o un método de la clase
-            # Ejemplo si es una función externa importada:
-            # from Presentacion.treeview import treeview
+           
             treeview(frame_tabla, encabezados, datos_asistencias)
         def lista_notas(self,id_clase):
             ventana_notas = Toplevel(self._contenido)
@@ -247,23 +241,20 @@ class Ventana_Clases():
                 font=("Arial", 16, "bold"), 
                 bg="white"
             ).pack(pady=15)
-            
-            # 2. Obtener datos del servicio
-            # Asumimos que Notas_Service tiene un método 'obtener_notas_por_clase'
+        
             servicio_notas = Nota_Service()
             
-            # El DAO debería devolver una lista de tuplas/listas.
-            # Ejemplo: [('Juan Perez', 'Primer Parcial', 8.5, '2024-10-20'), ...]
+
             datos_notas = servicio_notas.notas_por_alumno(id_clase)
             
-            # 3. Preparar encabezados
+    
             encabezados = ["Alumno", "Descripción", "Nota", "Fecha"]
             
-            # 4. Contenedor para el treeview
+           
             frame_tabla = Frame(ventana_notas)
             frame_tabla.pack(fill="both", expand=True, padx=20, pady=10)
             
-            # 5. Llamar a tu componente treeview
+     
             treeview(frame_tabla, encabezados, datos_notas)
                 
         def ventana_agregar_notas(self, id_clase):
