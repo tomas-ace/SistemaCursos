@@ -1,5 +1,5 @@
 from tkinter import *
-from Presentacion.treeview import *
+from Presentacion.elementos import *
 from Dominio.clase import *
 from Servicios.clase_service import *
 from Dominio.asistencia import *
@@ -24,18 +24,7 @@ class Ventana_Clases():
                 self.ventana_registro_clase(None)
             else:
                 self.lista_de_clases()
-        def crear_boton(self,nombre,fila):
-                Button(
-                        self._botones,
-                        text=nombre,
-                        command=lambda: self.mostrar_opcion_elegida(nombre),
-                        font=("Arial", 20),
-                        bg=azul,
-                        fg=blanco,
-                        bd=0,
-                        padx=40,
-                        pady=15,
-                    ).grid(column=2, row=fila, padx=10, pady=10)
+       
                     
                     
         def lista_de_clases(self, contenedor=None):
@@ -479,7 +468,7 @@ class Ventana_Clases():
             ]
             fila = 0
             for opcion in opciones:
-                    self.crear_boton(opcion,fila)
+                    crear_boton(opcion,fila,self._botones,lambda: self.mostrar_opcion_elegida(opcion))
                     fila += 1
 
         def ventana_registro_clase(self,ventana_none):

@@ -1,6 +1,12 @@
 from tkinter import *
 from tkinter import ttk
 
+azul = "#2864e8"
+azul_oscuro = "#093068"
+blanco = "#ffffff"
+gris = "#6b7280"
+texto = "#111827"
+
 def treeview(contenedor, encabezados,datos):
     frame=Frame(contenedor)
     frame.grid(column=0,row=0)
@@ -18,3 +24,16 @@ def treeview(contenedor, encabezados,datos):
     barra_scroll.pack(side="right", fill="y")
     return tree
 
+def crear_boton(nombre,fila,contenedor,comando):
+    Button(
+        contenedor,
+        text=nombre,
+        command=comando,
+        font=("Arial", 10),
+        bg=azul,
+        fg=blanco,
+        bd=0,
+        padx=30,
+        pady=10
+    ).grid(row=fila, column=0, padx=10, pady=10)
+    

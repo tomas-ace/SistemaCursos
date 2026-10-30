@@ -4,7 +4,7 @@ from Servicios.inscripcion_service import *
 from Servicios.curso_service import *
 from Servicios.clase_service import *
 from Dominio.alumno import *
-from Presentacion.treeview import treeview
+from Presentacion.elementos import *
 
 # Colores
 azul = "#2864e8"
@@ -580,18 +580,7 @@ class Ventana_Alumnos():
         servicio_alumno.modificar_alumno(alumno_actualizado)
         print(f"Alumno {id_alumno} modificado con éxito")
         ventana.destroy()
-    def crear_boton(self,nombre,fila):
-            Button(
-                    self._botones,
-                    text=nombre,
-                    command=lambda: self.mostrar_opcion_elegida(nombre),
-                    font=("Arial", 20),
-                    bg=azul,
-                    fg=blanco,
-                    bd=0,
-                    padx=40,
-                    pady=15,
-                ).grid(pady=5,column=0,row=fila)
+    
                 
     def mostrar(self):
         print("hola")
@@ -619,7 +608,7 @@ class Ventana_Alumnos():
         ]
         fila=0
         for opcion in opciones:
-            self.crear_boton(opcion,fila)
+            crear_boton(opcion,fila,self._botones,lambda: self.mostrar_opcion_elegida(opcion))
             fila+=1
     
         

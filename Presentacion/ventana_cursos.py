@@ -1,6 +1,5 @@
 from tkinter import *
-from Presentacion.treeview import treeview
-
+from Presentacion.elementos import *
 from Servicios.curso_service import *
 from Dominio.curso import *
 # Colores
@@ -115,18 +114,7 @@ class Ventana_Cursos():
                 ventana.destroy()
         def cancelar(self,ventana):
             ventana.destroy()
-        def crear_boton(self,nombre,fila):
-                Button(
-                        self._botones,
-                        text=nombre,
-                        command=lambda: self.mostrar_opcion_elegida(nombre),
-                        font=("Arial", 20),
-                        bg=azul,
-                        fg=blanco,
-                        bd=0,
-                        padx=40,
-                        pady=15,
-                    ).grid(column=2, row=fila, padx=10, pady=10)
+        
                     
         def mostrar(self):
             print("hola")
@@ -155,7 +143,7 @@ class Ventana_Cursos():
             ]
             fila = 0
             for opcion in opciones:
-                self.crear_boton(opcion,fila)
+                crear_boton(opcion,fila,self._botones,lambda: self.mostrar_opcion_elegida(opcion))
                 fila += 1
 
         def lista_de_cursos(self,contenedor=None):
