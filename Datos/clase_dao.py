@@ -20,15 +20,7 @@ class Clase_DAO():
         
         conexion.commit()
         conexion.close()
-    def obtener_clase_por_id(self,id):
-        conexion=sqlite3.connect("Datos/cursos_db.db")
-        cursor = conexion.cursor()
-        cursor.execute("""
-            SELECT * FROM Clase WHERE IdClase = ?
-        """,(id,))
-        clase = cursor.fetchone()
-        conexion.close()
-        return clase
+    
     def modificar_estado(self,id_clase, nuevo_estado):
         conexion=sqlite3.connect("Datos/cursos_db.db")
         cursor = conexion.cursor()

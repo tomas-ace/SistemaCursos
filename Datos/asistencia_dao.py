@@ -19,15 +19,6 @@ class Asistencia_DAO():
         
         conexion.commit()
         conexion.close()
-    def obtener_asistencia_por_fecha_y_alumno(self,fecha,alumno):
-        conexion = sqlite3.connect("Datos/cursos_db.db")
-        cursor = conexion.cursor()
-        cursor.execute("""
-            SELECT * FROM Asistencia WHERE Fecha = ? AND IdInscripcion = ?
-        """, (fecha,alumno))
-        asistencia = cursor.fetchone()
-        conexion.close()
-        return asistencia 
     def modificar_asistencia(self,asistencia_con_nuevos_datos):
         conexion = sqlite3.connect("Datos/cursos_db.db")
         cursor = conexion.cursor()
@@ -42,15 +33,7 @@ class Asistencia_DAO():
         """, nuevosDatos)
         conexion.commit()
         conexion.close()
-    def obtener_asistencia_por_id(self,id):
-        conexion = sqlite3.connect("Datos/cursos_db.db")
-        cursor = conexion.cursor()
-        cursor.execute("""
-            SELECT * FROM Asistencia WHERE Id = ?
-        """, (id,))
-        asistencia = cursor.fetchone()
-        conexion.close()
-        return asistencia
+    
     
     def obtener_asistencias_por_clase(self, id_clase):
             conexion = sqlite3.connect("Datos/cursos_db.db")

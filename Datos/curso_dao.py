@@ -19,15 +19,7 @@ class Curso_DAO():
         
         conexion.commit()
         conexion.close()
-    def obtener_curso_por_nombre(self,nombre):
-        conexion=sqlite3.connect("Datos/cursos_db.db")
-        cursor = conexion.cursor()
-        cursor.execute("""
-           SELECT * FROM Curso where descripcion=? 
-        """,(nombre,))
-        curso = cursor.fetchone()
-        conexion.close()
-        return curso
+    
     def modificar_curso(self,curso_con_nuevos_datos):
         conexion=sqlite3.connect("Datos/cursos_db.db")
         cursor = conexion.cursor()
@@ -45,17 +37,8 @@ class Curso_DAO():
         """,nuevosDatos)
         conexion.commit()    
         conexion.close()
-    def dar_de_baja_curso(self):
-        pass
-    def obtener_curso_por_id(self,id):
-        conexion=sqlite3.connect("Datos/cursos_db.db")
-        cursor = conexion.cursor()
-        cursor.execute("""
-           SELECT * FROM Curso where id=? 
-        """,(id,))
-        curso = cursor.fetchone()
-        conexion.close()
-        return curso
+        
+    
     def contar_cursos(self):
         conexion=sqlite3.connect("Datos/cursos_db.db")
         cursor = conexion.cursor()
