@@ -5,5 +5,5 @@ class Nota_Service():
     def registrar_nota(self,nota):
         self._dao.registrar_nota(nota)
         
-    def notas_por_alumno(self,id_inscripcion):
-        self._dao.obtener_notas_por_inscripcion(id_inscripcion)
+    def notas_por_alumno(self,id_clase):
+        return self._dao.obtener_notas_por_clase(id_clase)

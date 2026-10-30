@@ -62,7 +62,7 @@ class Ventana_Inscripciones():
                 bd=0,
                 padx=20,
                 pady=10,
-                command=lambda: self.ventana_registro_clase(ventana_lista)
+                command=lambda: self.ventana_registro_inscripcion(ventana_lista)
             ).pack(side="left", padx=10)
     
             Button(

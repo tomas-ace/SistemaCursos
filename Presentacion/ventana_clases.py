@@ -218,10 +218,10 @@ class Ventana_Clases():
             servicio_asistencia = Asistencia_Service()
             
             
-            datos_asistencias = servicio_asistencia.asistencia_por_alumno(id_clase) 
+            datos_asistencias = servicio_asistencia.asistencia_por_clase(id_clase) 
             
            
-            encabezados = ["Alumno", "Fecha", "Estado"]
+            encabezados = ["Nombre","Apellido", "Fecha", "Estado"]
             
           
             frame_tabla = Frame(ventana_asistencias)
@@ -246,9 +246,11 @@ class Ventana_Clases():
             
 
             datos_notas = servicio_notas.notas_por_alumno(id_clase)
-            
+            print("antes del error")
+            print (datos_notas)
+            print(id_clase)
     
-            encabezados = ["Alumno", "Descripción", "Nota", "Fecha"]
+            encabezados = ["Nombre","Apellido","Descripción", "Nota", "Fecha"]
             
            
             frame_tabla = Frame(ventana_notas)

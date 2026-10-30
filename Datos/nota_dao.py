@@ -39,14 +39,16 @@ class Nota_DAO():
         
         conexion.commit()
         conexion.close()
-    def obtener_notas_por_inscripcion(self, id_inscripcion):
+    def obtener_notas_por_clase(self, id_clase):
         conexion = sqlite3.connect("Datos/cursos_db.db")
         cursor = conexion.cursor()
         cursor.execute("""
-                SELECT Fecha, Nota, Descripcion 
-                FROM Nota 
-                WHERE IdInscripcion = ?"
-            """, (id_inscripcion,))
+                SELECT a.Nombre,a.Apellido, n.Descripcion, n.Nota ,n.Fecha
+                FROM Nota n
+                join Inscripcion i on n.IdInscripcion=i.IdInscripcion
+                join Alumno a on a.Legajo=I.legajo
+                where i.IdClase = ?
+            """, (id_clase,))
         datos = cursor.fetchall()
         conexion.close()
         return datos
