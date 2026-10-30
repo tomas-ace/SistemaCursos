@@ -226,7 +226,7 @@ class Ventana_Cursos():
         
         
         
-                # Botón para guardar cambios
+                
                 Button(
                     ventana,
                     text="Guardar Cambios",

@@ -251,9 +251,9 @@ class Ventana_Inscripciones():
                 return
 
             clase_item_id = clase_seleccion[0]
-            datos_curso = clase.item(clase_item_id)['values']
-            id_curso = datos_curso[0]
-            print(id_curso)
+            datos_clase = clase.item(clase_item_id)['values']
+            id_clase = datos_clase[0]
+            print(id_clase)
             
             alumno_seleccion = alumno.selection()
             if not alumno_seleccion:
@@ -264,7 +264,7 @@ class Ventana_Inscripciones():
             id_alumno = datos_alumno[0]
             print(id_alumno)
 
-            nueva_inscripcion=Inscripcion(None, fecha, "En Curso", id_alumno, id_curso)
+            nueva_inscripcion=Inscripcion(None, fecha, "En Curso", id_alumno, id_clase)
             servicio_inscripcion=Inscripcion_Service()
             servicio_inscripcion.nueva_inscripcion(nueva_inscripcion)
             ventana.destroy()         
