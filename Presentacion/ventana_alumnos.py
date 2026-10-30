@@ -211,11 +211,14 @@ class Ventana_Alumnos():
        
     def cancelar(self,ventana):
         ventana.destroy()
+    
     def mostrar_opcion_elegida(self,opcion):
+        print (opcion)
         if opcion == "Registrar nuevo alumno":
             self.ventana_registro_alumno(None)
         else:
             self.lista_de_alumnos()
+            
     def lista_de_alumnos(self,contenedor=None):
         if contenedor == None:
             ventana_lista = Toplevel(self._contenido)
@@ -601,15 +604,16 @@ class Ventana_Alumnos():
         ).grid(pady=(8, 4), column=0, row=1)
 
         
-        self._botones.grid(column=0,row=2,columnspan=1)#coloca el contenedor y le dice que se ezpanda
+        self._botones.grid(column=0,row=2,columnspan=1)
         opciones = [
             "Registrar nuevo alumno",
             "Consultar alumnos"
         ]
         fila=0
         for opcion in opciones:
-            crear_boton(opcion,fila,self._botones,lambda: self.mostrar_opcion_elegida(opcion))
-            fila+=1
+            print (opcion)
+            crear_boton(opcion,fila,self._botones,lambda opcion_actual=opcion: self.mostrar_opcion_elegida(opcion_actual)) #lambda para que no se me ejecuten las funciones 
+            fila+=1 #opcion_actual congela la variable y la guarda, si no, se ejecuta siempre la ultima opcion
     
         
 

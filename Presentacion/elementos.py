@@ -32,7 +32,6 @@ def crear_boton(nombre,fila,contenedor,comando):
         font=("Arial", 10),
         bg=azul,
         fg=blanco,
-        bd=0,
         padx=30,
         pady=10
     ).grid(row=fila, column=0, padx=10, pady=10)

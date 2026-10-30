@@ -468,7 +468,7 @@ class Ventana_Clases():
             ]
             fila = 0
             for opcion in opciones:
-                    crear_boton(opcion,fila,self._botones,lambda: self.mostrar_opcion_elegida(opcion))
+                    crear_boton(opcion,fila,self._botones,lambda opcion_actual=opcion: self.mostrar_opcion_elegida(opcion_actual))
                     fila += 1
 
         def ventana_registro_clase(self,ventana_none):

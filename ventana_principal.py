@@ -11,14 +11,14 @@ from Presentacion.ventana_inscripciones import *
 azul = "#2864e8"
 azul_oscuro = "#093068"
 blanco = "#ffffff"
-gris = "#6b7280"
-texto = "#111827"
+
+
 
 #ventana
 raiz = Tk()
 raiz.title("Sistema de Gestión Educativa")
-raiz.geometry("900x520")
-raiz.minsize(760, 460)
+raiz.geometry("600x520")
+raiz.maxsize(600, 520)
 raiz.config(bg=blanco)
 
 #encabezado
@@ -43,7 +43,7 @@ contenido.grid(column=0, row=2, columnspan=2, rowspan=2, padx=28, pady=(0, 22))
 
 
 def limpiar_contenido():
-    for elemento in contenido.winfo_children():
+    for elemento in contenido.winfo_children(): #winfochildren pone a todos los elementos hijos en una lista
         elemento.destroy()
 
 
@@ -72,18 +72,12 @@ def crear_boton(nombre,columna):
         font=("Arial", 10),
         bg=azul,
         fg=blanco,
-        bd=0,
         padx=30,
         pady=10
     ).grid(row=0, column=columna, padx=10)
 
 
-opciones = [
-    "Inicio",
-    "Alumnos",
-    "Cursos",
-    "Inscripciones"
-]
+opciones = ["Inicio","Alumnos","Cursos","Inscripciones"]
 columna=0
 for opcion in opciones:
     crear_boton(opcion,columna)

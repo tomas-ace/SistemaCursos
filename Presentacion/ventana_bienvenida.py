@@ -6,10 +6,8 @@ from Servicios.clase_service import *
 
 #colores
 azul = "#2864e8"
-azul_oscuro = "#093068"
 blanco = "#ffffff"
 gris = "#6b7280"
-texto = "#111827"
 borde = "#d1d5db"
 
 class Bienvenida():
@@ -20,13 +18,13 @@ class Bienvenida():
             tarjeta = Frame(
                     self._tarjetas,
                     bg=blanco,
-                    highlightbackground=borde,
-                    highlightthickness=1
+                    highlightbackground=borde, #color borde de la tarjeta
+                    highlightthickness=2 #grosor borde de tarjetas
                 )
             tarjeta.grid(
                     row=fila,
                     column=columna,
-                    sticky="nsew",
+                    sticky="nsew", #se expande en todas las direcciones
                     padx=5,
                     pady=5
                 )
@@ -35,8 +33,7 @@ class Bienvenida():
                     tarjeta,
                     text=nombre,
                     font=("Arial", 11),
-                    bg=blanco,
-                    fg=texto
+                    bg=blanco
                 ).grid(padx=14, pady=(14, 5), column=0, row=0)
     
             Label(
@@ -53,8 +50,7 @@ class Bienvenida():
             self._contenido,
             text="¡Bienvenido al sistema!",
             font=("Arial", 16, "bold"),
-            bg=blanco,
-            fg=texto
+            bg=blanco
         ).grid(column=0,row=0, pady=(8, 4))
 
         Label(
@@ -63,23 +59,19 @@ class Bienvenida():
             font=("Arial", 11),
             bg=blanco,
             fg=gris
-        ).grid(column=0,row=1, pady=(0, 18))
+        ).grid(column=0,row=1, pady=(0, 18)) #(arriba,abajo)
 
         Label(
             self._contenido,
             text="Resumen del sistema",
             font=("Arial", 13, "bold"),
-            bg=blanco,
-            fg=texto
+            bg=blanco
         ).grid(column=0,row=2,pady=(0, 10))
 
         
-        self._tarjetas.grid(column=0,row=3,columnspan=3)#coloca el contenedor y le dice que se ezpanda
+        self._tarjetas.grid(column=0,row=3,columnspan=3)#coloca el contenedor y le dice cuantas columnas se expande
 
-        self._tarjetas.grid_columnconfigure(0, weight=1) #weight le dice que ocupe lo restante a la columna o a la filla
-        self._tarjetas.grid_columnconfigure(1, weight=1)
-        self._tarjetas.grid_rowconfigure(0, weight=1)
-        self._tarjetas.grid_rowconfigure(1, weight=1)
+        
         
         service_alumno=Alumno_Service()
         service_curso=Curso_Service()
