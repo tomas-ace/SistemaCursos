@@ -2,13 +2,7 @@ from tkinter import *
 from Presentacion.elementos import *
 from Servicios.curso_service import *
 from Dominio.curso import *
-# Colores
-azul = "#2864e8"
-azul_oscuro = "#093068"
-blanco = "#ffffff"
-gris = "#6b7280"
-texto = "#111827"
-borde = "#d1d5db"
+
 
 class Ventana_Cursos():
         def __init__(self,contenido):
@@ -150,7 +144,7 @@ class Ventana_Cursos():
                 if contenedor == None:
                     ventana_lista = Toplevel(self._contenido)
                     ventana_lista.title("Lista de cursos")
-                    ventana_lista.geometry("600x600")
+                    ventana_lista.geometry("1200x600")
                     ventana_lista.configure(bg=blanco)
                     Label(
                         ventana_lista,

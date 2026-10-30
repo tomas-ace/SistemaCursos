@@ -4,13 +4,7 @@ from Dominio.inscripcion import *
 from Servicios.inscripcion_service import *
 from Presentacion.ventana_clases import *
 from Presentacion.ventana_alumnos import *
-# Colores
-azul = "#2864e8"
-azul_oscuro = "#093068"
-blanco = "#ffffff"
-gris = "#6b7280"
-texto = "#111827"
-borde = "#d1d5db"
+
 
 class Ventana_Inscripciones():
         def __init__(self,contenido):
@@ -27,7 +21,7 @@ class Ventana_Inscripciones():
         def lista_inscripciones(self):
             ventana_lista = Toplevel(self._contenido)
             ventana_lista.title("Lista de inscripciones")
-            ventana_lista.geometry("600x600")
+            ventana_lista.geometry("1200x600")
             ventana_lista.configure(bg=blanco)
             Label(
                 ventana_lista,
@@ -278,7 +272,7 @@ class Ventana_Inscripciones():
             print("hola")
             Label(
                 self._contenido,
-                text="Clases",
+                text="Inscripcion",
                 font=("Arial", 16, "bold"),
                 bg=blanco,
                 fg=texto

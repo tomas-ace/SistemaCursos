@@ -1,18 +1,11 @@
 from tkinter import *
-
+from Presentacion.elementos import *
 from Presentacion.ventana_bienvenida import *
 from Presentacion.ventana_alumnos import *
 from Presentacion.ventana_cursos import *
 from Presentacion.ventana_inscripciones import *
 
-
-
 #colores
-azul = "#2864e8"
-azul_oscuro = "#093068"
-blanco = "#ffffff"
-
-
 
 #ventana
 raiz = Tk()

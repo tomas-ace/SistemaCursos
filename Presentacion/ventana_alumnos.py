@@ -6,13 +6,7 @@ from Servicios.clase_service import *
 from Dominio.alumno import *
 from Presentacion.elementos import *
 
-# Colores
-azul = "#2864e8"
-azul_oscuro = "#093068"
-blanco = "#ffffff"
-gris = "#6b7280"
-texto = "#111827"
-borde = "#d1d5db"
+
 
 class Ventana_Alumnos():
     def __init__(self,contenido):
@@ -32,8 +26,8 @@ class Ventana_Alumnos():
             ventana,
             text="Registrar nuevo alumno",
             font=("Arial", 20, "bold"),
-            bg=blanco,
-            fg=texto
+            bg=blanco
+            
         ).grid(pady=(10, 25), column=0, row=0)
 
 
@@ -42,8 +36,8 @@ class Ventana_Alumnos():
             ventana,
             text="Nombre",
             font=("Arial", 12, "bold"),
-            bg=blanco,
-            fg=texto
+            bg=blanco
+            
         ).grid(column=0, row=1)
         nombre = StringVar()
         apellido = StringVar()
@@ -53,127 +47,127 @@ class Ventana_Alumnos():
         dia= StringVar()
         mes= StringVar()
         anio= StringVar()
-        self._nombre = Entry(
+        entry_nombre = Entry(
             ventana,
             font=("Arial", 12),
             textvariable=nombre
         )
-        self._nombre.grid(pady=(5, 15), column=1, row=1,columnspan=2)
+        entry_nombre.grid(pady=(5, 15), column=1, row=1,columnspan=2)
 
         Label(
             ventana,
             text="Apellido",
             font=("Arial", 12, "bold"),
-            bg=blanco,
-            fg=texto
+            bg=blanco
+            
         ).grid(column=0, row=2)
 
-        self._apellido = Entry(
+        entry_apellido = Entry(
             ventana,
             font=("Arial", 12),
             textvariable=apellido
         )
-        self._apellido.grid(pady=(5, 15), column=1, row=2,columnspan=2)
+        entry_apellido.grid(pady=(5, 15), column=1, row=2,columnspan=2)
         Label(
             ventana,
             text="DNI",
             font=("Arial", 12, "bold"),
-            bg=blanco,
-            fg=texto
+            bg=blanco
+            
         ).grid(column=0, row=3)
 
-        self._dni = Entry(
+        entry_dni = Entry(
             ventana,
             font=("Arial", 12),
             textvariable=dni
         )
 
-        self._dni.grid(pady=(5, 15), column=1, row=3,columnspan=2)
+        entry_dni.grid(pady=(5, 15), column=1, row=3,columnspan=2)
         Label(
             ventana,
             text="Email",
             font=("Arial", 12, "bold"),
-            bg=blanco,
-            fg=texto
+            bg=blanco
+            
         ).grid(column=0, row=4)
 
-        self._email = Entry(
+        entry_email = Entry(
             ventana,
             font=("Arial", 12),
             textvariable=email
         )
 
-        self._email.grid(pady=(5, 25), column=1, row=4,columnspan=2)
+        entry_email.grid(pady=(5, 25), column=1, row=4,columnspan=2)
             
         Label(
                     ventana,
                     text="Telefono",
                     font=("Arial", 12, "bold"),
-                    bg=blanco,
-                    fg=texto
+                    bg=blanco
+                    
                 ).grid(column=0, row=5)
-        self._telefono = Entry(
+        entry_telefono = Entry(
                     ventana,
                     font=("Arial", 12),
                     textvariable=telefono
                 )
         
-        self._telefono.grid(pady=(5, 25), column=1, row=5,columnspan=2)
+        entry_telefono.grid(pady=(5, 25), column=1, row=5,columnspan=2)
         Label(
                     ventana,
                     text="Fecha de nacimiento",
                     font=("Arial", 12, "bold"),
-                    bg=blanco,
-                    fg=texto
+                    bg=blanco
+                    
                 ).grid(column=0, row=6)
         Label(
                     ventana,
                     text="Dia",
                     font=("Arial", 12, "bold"),
-                    bg=blanco,
-                    fg=texto
+                    bg=blanco
+                    
                 ).grid(column=1, row=6)
-        self._dia = Entry(
+        entry_dia = Entry(
                             ventana,
                             font=("Arial", 12),
                             width=7,
                             textvariable=dia
                         )
                 
-        self._dia.grid(pady=(5, 25), column=2, row=6)
+        entry_dia.grid(pady=(5, 25), column=2, row=6)
 
         Label(
                             ventana,
                             text="Mes",
                             font=("Arial", 12, "bold"),
-                            bg=blanco,
-                            fg=texto
+                            bg=blanco
+                            
                         ).grid(column=1, row=7)
 
-        self._mes = Entry(
+        entry_mes = Entry(
                                     ventana,
                                     font=("Arial", 12),
                                     textvariable=mes,
                                     width=7
                                 )
                         
-        self._mes.grid(pady=(5, 25), column=2, row=7)
+        entry_mes.grid(pady=(5, 25), column=2, row=7)
 
         Label(
                             ventana,
                             text="Año",
                             font=("Arial", 12, "bold"),
-                            bg=blanco,
-                            fg=texto
+                            bg=blanco
+                            
                         ).grid(column=1, row=8)
-        self._anio = Entry(
+        entry_anio = Entry(
                                     ventana,
                                     font=("Arial", 12),
                                     textvariable=anio,
                                     width=7
                                 )
                         
-        self._anio.grid(pady=(5, 25), column=2, row=8)
+        entry_anio.grid(pady=(5, 25), column=2, row=8)
         #sfecha=f"{dia.get()}-{mes.get()}-{anio.get()}"
                     
         #botones
@@ -229,8 +223,8 @@ class Ventana_Alumnos():
                 ventana_lista,
                 text="Lista de alumnos",
                 font=("Arial", 20, "bold"),
-                bg=blanco,
-                fg=texto
+                bg=blanco
+                
             ).grid(pady=(10, 25), column=0, row=0)
         else:
             ventana_lista = contenedor
@@ -248,7 +242,6 @@ class Ventana_Alumnos():
                         font=("Arial", 11, "bold"),
                         bg=azul,
                         fg=blanco,
-                        bd=0,
                         padx=20,
                         pady=10,
                         command=lambda: self.ventana_registro_alumno(ventana_lista)
@@ -299,8 +292,8 @@ class Ventana_Alumnos():
             ventana_detalle,
             text="Detalle del alumno",
             font=("Arial", 20, "bold"),
-            bg=blanco,
-            fg=texto
+            bg=blanco
+            
         ).pack(pady=(20, 20))
 
        
@@ -319,10 +312,8 @@ class Ventana_Alumnos():
                 text=titulo,
                 font=("Arial", 12, "bold"),
                 bg=blanco,
-                fg=texto,
-                anchor="e",
                 width=18
-            ).grid(row=i, column=0, pady=8, padx=10, sticky="e")
+            ).grid(row=i, column=0, pady=8, padx=10)
 
            
             Label(
@@ -330,9 +321,8 @@ class Ventana_Alumnos():
                 text=str(datos_alumno[i]),
                 font=("Arial", 12),
                 bg=blanco,
-                fg=gris,
-                anchor="w"
-            ).grid(row=i, column=1, pady=8, padx=10, sticky="w")
+                fg=gris
+            ).grid(row=i, column=1, pady=8, padx=10)
 
         frame_datos_cursada = Frame(ventana_detalle, bg=blanco)
         frame_datos_cursada.pack(pady=40)
@@ -343,7 +333,6 @@ class Ventana_Alumnos():
             font=("Arial", 11, "bold"),
             bg=azul,
             fg=blanco,
-            bd=0,
             padx=20,
             pady=10,
             command=lambda: self.cursos_alumno(datos_alumno[0])
@@ -355,7 +344,6 @@ class Ventana_Alumnos():
             font=("Arial", 11, "bold"),
             bg=azul,
             fg=blanco,
-            bd=0,
             padx=20,
             pady=10,
             command=lambda: self.notas_alumno(datos_alumno[0])
@@ -367,7 +355,6 @@ class Ventana_Alumnos():
             font=("Arial", 11, "bold"),
             bg=azul,
             fg=blanco,
-            bd=0,
             padx=20,
             pady=10,
             command=lambda: self.inasistencias_alumno(datos_alumno[0])
@@ -376,15 +363,15 @@ class Ventana_Alumnos():
         cursos=Alumno_Service().cursos_por_alumno(alumno_id)
         ventana_cursos = Toplevel(self._contenido)
         ventana_cursos.title("Cursos del alumno")
-        ventana_cursos.geometry("900x400")
+        ventana_cursos.geometry("1200x400")
         ventana_cursos.configure(bg=blanco)
 
         Label(
             ventana_cursos,
             text="Historial de Cursos",
             font=("Arial", 18, "bold"),
-            bg=blanco,
-            fg=texto
+            bg=blanco
+            
         ).grid(pady=(15, 10),column=0, row=0)
 
     
@@ -418,15 +405,15 @@ class Ventana_Alumnos():
         notas=Alumno_Service().notas_por_alumno(alumno_id)
         ventana_notas = Toplevel(self._contenido)
         ventana_notas.title("Notas del alumno")
-        ventana_notas.geometry("900x400")
+        ventana_notas.geometry("1200x400")
         ventana_notas.configure(bg=blanco)
 
         Label(
             ventana_notas,
             text="Historial de Notas",
             font=("Arial", 18, "bold"),
-            bg=blanco,
-            fg=texto
+            bg=blanco
+            
         ).grid(pady=(15, 10),column=0, row=0)
 
     
@@ -468,8 +455,8 @@ class Ventana_Alumnos():
             ventana_inasistencias,
             text="Historial de Inasistencias",
             font=("Arial", 18, "bold"),
-            bg=blanco,
-            fg=texto
+            bg=blanco
+            
         ).grid(pady=(15, 10),column=0, row=0)
 
     
@@ -494,7 +481,6 @@ class Ventana_Alumnos():
             font=("Arial", 11, "bold"),
             bg=gris,
             fg=blanco,
-            bd=0,
             padx=20,
             pady=10,
             command=ventana_inasistencias.destroy
@@ -502,12 +488,12 @@ class Ventana_Alumnos():
     def preparar_modificacion(self,tree,ventana): 
         seleccion = tree.selection()
         if not seleccion:
-            print("Por favor, seleccione un alumno de la tabla.")
+            print("seleccione un alumno de la tabla.")
             return
 
-        item_id = seleccion[0]
+        item_id = seleccion[0]#guarda el id interno del treeviewe que le asigna tkinter
         print("item_id:", item_id)
-        datos_alumno = tree.item(item_id)['values']
+        datos_alumno = tree.item(item_id)['values']#guarda los valores de la fila en una lista
         print("datos_alumno:", datos_alumno[0])
         ventana.destroy() 
         self.ventana_modificar_alumno(datos_alumno)
@@ -522,12 +508,12 @@ class Ventana_Alumnos():
             ventana,
             text="Modificar alumno",
             font=("Arial", 20, "bold"),
-            bg=blanco,
-            fg=texto
+            bg=blanco
+            
         ).grid(pady=(10, 25), column=0, row=0)
 
         #cargo las variabkes con los datos
-        id_alumno = datos_alumno[0]
+        id_alumno = datos_alumno[0] #sin el intvar porque no lo modifico
         nombre = StringVar(value=datos_alumno[1])
         apellido = StringVar(value=datos_alumno[2])
         dni = IntVar(value=datos_alumno[3])
@@ -536,23 +522,21 @@ class Ventana_Alumnos():
         nacimiento = datos_alumno[6]
 
         #campos 
-        Label(ventana, text="Nombre", font=("Arial", 12, "bold"), bg=blanco, fg=texto).grid(column=0, row=1)
+        Label(ventana, text="Nombre", font=("Arial", 12, "bold"), bg=blanco).grid(column=0, row=1)
         Entry(ventana, font=("Arial", 12), textvariable=nombre).grid(pady=(5, 15), column=1, row=1, columnspan=2)
 
-        Label(ventana, text="Apellido", font=("Arial", 12, "bold"), bg=blanco, fg=texto).grid(column=0, row=2)
+        Label(ventana, text="Apellido", font=("Arial", 12, "bold"), bg=blanco).grid(column=0, row=2)
         Entry(ventana, font=("Arial", 12), textvariable=apellido).grid(pady=(5, 15), column=1, row=2, columnspan=2)
 
-        Label(ventana, text="DNI", font=("Arial", 12, "bold"), bg=blanco, fg=texto).grid(column=0, row=3)
+        Label(ventana, text="DNI", font=("Arial", 12, "bold"), bg=blanco).grid(column=0, row=3)
         Entry(ventana, font=("Arial", 12), textvariable=dni).grid(pady=(5, 15), column=1, row=3, columnspan=2)
 
-        Label(ventana, text="Email", font=("Arial", 12, "bold"), bg=blanco, fg=texto).grid(column=0, row=4)
+        Label(ventana, text="Email", font=("Arial", 12, "bold"), bg=blanco).grid(column=0, row=4)
         Entry(ventana, font=("Arial", 12), textvariable=email).grid(pady=(5, 25), column=1, row=4, columnspan=2)
 
-        Label(ventana, text="Telefono", font=("Arial", 12, "bold"), bg=blanco, fg=texto).grid(column=0, row=5)
+        Label(ventana, text="Telefono", font=("Arial", 12, "bold"), bg=blanco).grid(column=0, row=5)
         Entry(ventana, font=("Arial", 12), textvariable=telefono).grid(pady=(5, 25), column=1, row=5, columnspan=2)
 
-
-        # Botón para guardar cambios
         Button(
             ventana,
             text="Guardar Cambios",
@@ -581,7 +565,6 @@ class Ventana_Alumnos():
         alumno_actualizado = Alumno(id_alumno, nombre, apellido, fecha_nacimiento, dni, telefono, email)
         servicio_alumno = Alumno_Service()
         servicio_alumno.modificar_alumno(alumno_actualizado)
-        print(f"Alumno {id_alumno} modificado con éxito")
         ventana.destroy()
     
                 
@@ -591,8 +574,7 @@ class Ventana_Alumnos():
             self._contenido,
             text="Alumnos",
             font=("Arial", 16, "bold"),
-            bg=blanco,
-            fg=texto
+            bg=blanco
         ).grid(pady=(8, 4), column=0, row=0)
 
         Label(

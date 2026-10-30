@@ -3,12 +3,7 @@ from Servicios.alumno_service import *
 from Servicios.inscripcion_service import *
 from Servicios.curso_service import *
 from Servicios.clase_service import *
-
-#colores
-azul = "#2864e8"
-blanco = "#ffffff"
-gris = "#6b7280"
-borde = "#d1d5db"
+from Presentacion.elementos import *
 
 class Bienvenida():
     def __init__(self,contenido):

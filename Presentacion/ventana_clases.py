@@ -7,13 +7,7 @@ from Servicios.asistencia_service import *
 from Dominio.nota import *
 from Servicios.notas_service import *
 
-# Colores
-azul = "#2864e8"
-azul_oscuro = "#093068"
-blanco = "#ffffff"
-gris = "#6b7280"
-texto = "#111827"
-borde = "#d1d5db"
+
 
 class Ventana_Clases():
         def __init__(self,contenido):
@@ -31,7 +25,7 @@ class Ventana_Clases():
             if contenedor is None:
                 ventana_lista = Toplevel(self._contenido)
                 ventana_lista.title("Lista de clases")
-                ventana_lista.geometry("600x600")
+                ventana_lista.geometry("1200x600")
                 ventana_lista.configure(bg=blanco)
                 Label(
                     ventana_lista,
@@ -123,9 +117,8 @@ class Ventana_Clases():
                         font=("Arial", 12, "bold"),
                         bg=blanco,
                         fg=texto,
-                        anchor="e",
                         width=18
-                    ).grid(row=i, column=0, pady=8, padx=10, sticky="e")
+                    ).grid(row=i, column=0, pady=8, padx=10)
         
                    
                     Label(
@@ -134,8 +127,7 @@ class Ventana_Clases():
                         font=("Arial", 12),
                         bg=blanco,
                         fg=gris,
-                        anchor="w"
-                    ).grid(row=i, column=1, pady=8, padx=10, sticky="w")
+                    ).grid(row=i, column=1, pady=8, padx=10)
         
                 frame_datos_cursada = Frame(ventana_detalle, bg=blanco)
                 frame_datos_cursada.pack(pady=40)
@@ -192,7 +184,7 @@ class Ventana_Clases():
         def lista_presencias(self,id_clase):
             ventana_asistencias = Toplevel(self._contenido)
             ventana_asistencias.title(f"Asistencias - Clase {id_clase}")
-            ventana_asistencias.geometry("600x400")
+            ventana_asistencias.geometry("1200x400")
             
             
             ventana_asistencias.configure(bg="white") 
@@ -221,7 +213,7 @@ class Ventana_Clases():
         def lista_notas(self,id_clase):
             ventana_notas = Toplevel(self._contenido)
             ventana_notas.title(f"Notas - Clase {id_clase}")
-            ventana_notas.geometry("600x400")
+            ventana_notas.geometry("1000x400")
             ventana_notas.configure(bg="white")
             
             Label(
@@ -289,10 +281,10 @@ class Ventana_Clases():
                         lista_notas.append([id_inscripcion, nota])
 
                         Label(
-                            frame_alumnos, text=nombre, bg=blanco, relief="solid", bd=1, width=25, anchor="w", padx=10, pady=5
+                            frame_alumnos, text=nombre,bd=1, width=25,padx=10, pady=5
                         ).grid(row=fila, column=0, pady=5, padx=20)
         
-                        Entry(frame_alumnos, textvariable=nota, bg=blanco).grid(row=fila, column=1)
+                        Entry(frame_alumnos, textvariable=nota).grid(row=fila, column=1)
                         
                         fila += 1 
         
@@ -352,7 +344,7 @@ class Ventana_Clases():
                 lista_asistencia.append([id_inscripcion, presencia])
 
                 Label(
-                    frame_alumnos, text=nombre, bg=blanco, relief="solid", bd=1, width=25, anchor="w", padx=10, pady=5
+                    frame_alumnos, text=nombre, bg=blanco, bd=1, width=25, anchor="w", padx=10, pady=5
                 ).grid(row=fila, column=0, pady=5, padx=20)
 
                 Radiobutton(frame_alumnos, text="Presente", variable=presencia, value="Presente", bg=blanco).grid(row=fila, column=1)
@@ -554,9 +546,10 @@ class Ventana_Clases():
                 bd=0,
                 padx=30,
                 pady=12,
-                command=lambda: self.cancelar(ventana)
+                command=lambda: ventana.destroy()
             ).grid(padx=(0, 10), column=1, row=11)
             
+
         def registrar(self, anio, turno, tree, ventana):
             seleccion = tree.selection()
             if not seleccion:
