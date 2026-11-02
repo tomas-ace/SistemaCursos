@@ -119,6 +119,14 @@ class Alumno_DAO():
                 conexion.close()
                 return inasistencias
 
-                
+    def existe_dni(self, dni):
+        conexion = sqlite3.connect("Datos/cursos_db.db")
+        cursor = conexion.cursor()
+        
+        cursor.execute("SELECT Legajo FROM Alumno WHERE Dni = ?", (dni,))
+        resultado = cursor.fetchone()
+        conexion.close()
+        
+        return resultado != None
 
 print(Alumno_DAO().obtener_cursos_por_alumno(2)) 

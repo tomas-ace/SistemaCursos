@@ -5,7 +5,7 @@ from Servicios.curso_service import *
 from Servicios.clase_service import *
 from Dominio.alumno import *
 from Presentacion.elementos import *
-
+from tkinter import messagebox
 
 
 class Ventana_Alumnos():
@@ -200,8 +200,11 @@ class Ventana_Alumnos():
     def registrar(self,nombre,apelleido,dni,email,telefono,fecha_nacimiento,ventana):
         nuevo_alumno=Alumno(None,nombre,apelleido,fecha_nacimiento,dni,telefono,email)
         servicio_alumno=Alumno_Service()
-        servicio_alumno.nuevo_alumno(nuevo_alumno)
-        ventana.destroy()
+        if not servicio_alumno.nuevo_alumno(nuevo_alumno):
+            messagebox.showerror("Error", "El DNI ingresado ya existe en el sistema. Por favor, ingrese un DNI válido.", parent=ventana)
+        else:
+            messagebox.showinfo("Éxito", "Alumno registrado correctamente.", parent=ventana)
+            ventana.destroy()
        
     def cancelar(self,ventana):
         ventana.destroy()

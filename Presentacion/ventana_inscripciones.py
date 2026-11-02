@@ -135,7 +135,9 @@ class Ventana_Inscripciones():
             ventana = Toplevel(self._contenido)
     
             ventana.title("Registrar nueva inscripcion")
-            ventana.geometry("600x600")
+            width = ventana.winfo_screenwidth()
+            height =ventana.winfo_screenheight()
+            ventana.geometry(f'{width}x{height}+0+0')
             ventana.configure(bg=blanco)
             Label(
                 ventana,

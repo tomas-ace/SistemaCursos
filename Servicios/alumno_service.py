@@ -4,7 +4,11 @@ class Alumno_Service():
         self._dao=Alumno_DAO()
         
     def nuevo_alumno(self,alumno):
-        self._dao.registrar_alumno(alumno)
+        if self._dao.existe_dni(alumno.get_dni()):
+            return False
+        else:
+            self._dao.registrar_alumno(alumno)
+            return True
     
     def cantidad_de_alumnos(self):
         return self._dao.contar_alumnos()
