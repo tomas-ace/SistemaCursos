@@ -10,3 +10,6 @@ class Curso():
         return self._descripcion
     def get_duracion(self):
         return self._duracion
+    
+    def set_duracion(self,duracion):
+        self._duracion=duracion

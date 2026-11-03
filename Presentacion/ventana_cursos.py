@@ -2,6 +2,7 @@ from tkinter import *
 from Presentacion.elementos import *
 from Servicios.curso_service import *
 from Dominio.curso import *
+from tkinter import messagebox
 
 
 class Ventana_Cursos():
@@ -42,7 +43,7 @@ class Ventana_Cursos():
                 #datoss
                 
                 descripcion = StringVar()
-                duracion = IntVar()
+                duracion = StringVar()
                 
                 
                 Label(
@@ -104,8 +105,13 @@ class Ventana_Cursos():
         def registrar(self,descripcion,duracion,ventana):
                 nuevo_curso=Curso(None,descripcion,duracion)
                 servicio_curso=Curso_Service()
-                servicio_curso.nuevo_curso(nuevo_curso)
-                ventana.destroy()
+                resultado=servicio_curso.nuevo_curso(nuevo_curso)
+                if resultado==True:
+                    messagebox.showinfo("Exito", "Curso registrado correctamente.", parent=ventana)
+                    ventana.destroy()
+                else:
+                    messagebox.showerror("Error", resultado, parent=ventana)
+                    
         def cancelar(self,ventana):
             ventana.destroy()
         

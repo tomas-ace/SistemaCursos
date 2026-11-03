@@ -202,7 +202,7 @@ class Ventana_Alumnos():
         servicio_alumno=Alumno_Service()
         resultado = servicio_alumno.nuevo_alumno(nuevo_alumno)
         if resultado==True:
-            messagebox.showinfo("Éxito", "Alumno registrado correctamente.", parent=ventana)
+            messagebox.showinfo("Exito", "Alumno registrado correctamente.", parent=ventana)
             ventana.destroy()
         else:
             messagebox.showerror("Error", resultado, parent=ventana)

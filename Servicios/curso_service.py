@@ -4,7 +4,19 @@ class Curso_Service():
         self._dao=Curso_DAO()
     
     def nuevo_curso(self,curso):
-        self._dao.registrar_curso(curso)
+        if curso.get_duracion().isdigit():
+            duracion_entero = int(curso.get_duracion())
+            curso.set_duracion(duracion_entero)
+        else:
+            return "La duración del curso debe ser un número entero válido."
+        
+        if curso.get_descripcion()=="" or curso.get_duracion()=="":
+            return "No se pueden dejar campos vacíos."
+        elif curso.get_duracion() <= 0:
+            return "La duración del curso debe ser un número positivo."
+        else:
+            self._dao.registrar_curso(curso)
+            return True
     def cantidad_de_cursos(self):
         return self._dao.contar_cursos()
     def listar_cursos(self):
