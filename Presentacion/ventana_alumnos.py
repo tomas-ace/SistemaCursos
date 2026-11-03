@@ -41,9 +41,9 @@ class Ventana_Alumnos():
         ).grid(column=0, row=1)
         nombre = StringVar()
         apellido = StringVar()
-        dni = IntVar()
+        dni = StringVar()
         email = StringVar()
-        telefono = IntVar()
+        telefono = StringVar()
         dia= StringVar()
         mes= StringVar()
         anio= StringVar()
@@ -200,11 +200,14 @@ class Ventana_Alumnos():
     def registrar(self,nombre,apelleido,dni,email,telefono,fecha_nacimiento,ventana):
         nuevo_alumno=Alumno(None,nombre,apelleido,fecha_nacimiento,dni,telefono,email)
         servicio_alumno=Alumno_Service()
-        if not servicio_alumno.nuevo_alumno(nuevo_alumno):
-            messagebox.showerror("Error", "El DNI ingresado ya existe en el sistema. Por favor, ingrese un DNI válido.", parent=ventana)
-        else:
+        resultado = servicio_alumno.nuevo_alumno(nuevo_alumno)
+        if resultado==True:
             messagebox.showinfo("Éxito", "Alumno registrado correctamente.", parent=ventana)
             ventana.destroy()
+        else:
+            messagebox.showerror("Error", resultado, parent=ventana)
+        
+            
        
     def cancelar(self,ventana):
         ventana.destroy()

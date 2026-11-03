@@ -36,7 +36,7 @@ contenido.grid(column=0, row=2, columnspan=2, rowspan=2, padx=28, pady=(0, 22))
 
 
 def limpiar_contenido():
-    for elemento in contenido.winfo_children(): #winfochildren pone a todos los elementos hijos en una lista
+    for elemento in contenido.winfo_children(): #winfochildren pone a todos los elementos en una lista
         elemento.destroy()
 
 

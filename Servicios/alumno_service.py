@@ -4,8 +4,21 @@ class Alumno_Service():
         self._dao=Alumno_DAO()
         
     def nuevo_alumno(self,alumno):
-        if self._dao.existe_dni(alumno.get_dni()):
-            return False
+        print("DNI del alumno:", alumno.get_dni())  
+        if alumno.get_dni() == "":
+            return "DNI ya existe en el sistema."
+        elif self._dao.existe_dni(alumno.get_dni()):
+            return "El campo DNI no puede estar vacío."
+        elif not alumno.get_dni().isdigit() or (len(alumno.get_dni()) != 8 and len(alumno.get_dni()) != 7):
+            return "El campo DNI debe contener solo números y tener 7 u 8 dígitos."
+        elif alumno.get_nombre() == "":
+            return "El campo Nombre no puede estar vacío."
+        elif alumno.get_apellido() == "":
+            return "El campo Apellido no puede estar vacío."
+        elif alumno.get_fecha_nacimiento() == "":
+            return "El campo Fecha de Nacimiento no puede estar vacío."
+        elif not alumno.get_telefono().isdigit() or not (7 <= len(alumno.get_telefono()) <= 15):
+            return "El campo Teléfono debe contener solo números y tener entre 7 y 15 dígitos."
         else:
             self._dao.registrar_alumno(alumno)
             return True
