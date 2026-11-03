@@ -128,5 +128,13 @@ class Alumno_DAO():
         conexion.close()
         
         return resultado != None
-
+    def existe_dni_en_otro_alumno(self, dni, legajo):
+        conexion = sqlite3.connect("Datos/cursos_db.db")
+        cursor = conexion.cursor()
+        
+        cursor.execute("SELECT Legajo FROM Alumno WHERE Dni = ? AND Legajo != ?", (dni, legajo))
+        resultado = cursor.fetchone()
+        conexion.close()
+        
+        return resultado != None
 print(Alumno_DAO().obtener_cursos_por_alumno(2)) 

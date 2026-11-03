@@ -522,8 +522,8 @@ class Ventana_Alumnos():
         id_alumno = datos_alumno[0] #sin el intvar porque no lo modifico
         nombre = StringVar(value=datos_alumno[1])
         apellido = StringVar(value=datos_alumno[2])
-        dni = IntVar(value=datos_alumno[3])
-        telefono = IntVar(value=datos_alumno[4])
+        dni = StringVar(value=datos_alumno[3])
+        telefono = StringVar(value=datos_alumno[4])
         email = StringVar(value=datos_alumno[5])
         nacimiento = datos_alumno[6]
 
@@ -570,8 +570,12 @@ class Ventana_Alumnos():
     def guardar_modificacion(self, id_alumno, nombre, apellido, dni, email, telefono, fecha_nacimiento, ventana):
         alumno_actualizado = Alumno(id_alumno, nombre, apellido, fecha_nacimiento, dni, telefono, email)
         servicio_alumno = Alumno_Service()
-        servicio_alumno.modificar_alumno(alumno_actualizado)
-        ventana.destroy()
+        resultado=servicio_alumno.modificar_alumno(alumno_actualizado)
+        if resultado==True:
+            messagebox.showinfo("Éxito", "Alumno modificado correctamente.", parent=ventana)
+            ventana.destroy()
+        else:
+            messagebox.showerror("Error", resultado, parent=ventana)
     
                 
     def mostrar(self):
