@@ -3,8 +3,7 @@ from Presentacion.elementos import *
 from Dominio.inscripcion import *
 from Servicios.inscripcion_service import *
 from Presentacion.ventana_clases import *
-from Presentacion.ventana_alumnos import *
-
+from Servicios.alumno_service import *
 
 class Ventana_Inscripciones():
         def __init__(self,contenido):
@@ -135,9 +134,7 @@ class Ventana_Inscripciones():
             ventana = Toplevel(self._contenido)
     
             ventana.title("Registrar nueva inscripcion")
-            width = ventana.winfo_screenwidth()
-            height =ventana.winfo_screenheight()
-            ventana.geometry(f'{width}x{height}+0+0')
+            ventana.geometry("600x600")
             ventana.configure(bg=blanco)
             Label(
                 ventana,
@@ -148,105 +145,71 @@ class Ventana_Inscripciones():
             ).grid(pady=(10, 25), column=0, row=0)
 
             #datoss
-            dia = IntVar()
-            mes = IntVar()
-            anio = IntVar()
-            
-            Label(
-                    ventana,
-                    text="Fecha de Inscripcion",
-                    font=("Arial", 12, "bold"),
-                    bg=blanco,
-                    fg=texto
-                ).grid(column=0, row=1)
-            Label(
-                    ventana,
-                    text="Dia",
-                    font=("Arial", 12, "bold"),
-                    bg=blanco,
-                    fg=texto
-                ).grid(column=1, row=1)
-            self._dia = Entry(
-                    ventana,
-                    font=("Arial", 12),
-                    width=7,
-                    textvariable=dia
-                )
-                    
-            self._dia.grid(pady=(5, 25), column=2, row=1)
-    
-            Label(
-                    ventana,
-                    text="Mes",
-                    font=("Arial", 12, "bold"),
-                    bg=blanco,
-                    fg=texto
-                ).grid(column=1, row=2)
-    
-            self._mes = Entry(
-                    ventana,
-                    font=("Arial", 12),
-                    textvariable=mes,
-                    width=7
-                )
-                            
-            self._mes.grid(pady=(5, 25), column=2, row=2)
-    
-            Label(
-                    ventana,
-                    text="Año",
-                    font=("Arial", 12, "bold"),
-                    bg=blanco,
-                    fg=texto
-                ).grid(column=1, row=3)
-            self._anio = Entry(
-                    ventana,
-                    font=("Arial", 12),
-                    textvariable=anio,
-                    width=7
-                    )
-                            
-            self._anio.grid(pady=(5, 25), column=2, row=3)
-    
 
-            frame_lista_clases = Frame(ventana, bg=blanco)
-            frame_lista_clases.grid(column=0, row=5, padx=20, pady=10,rowspan=4,columnspan=4)
-            lista_de_clases=Ventana_Clases(frame_lista_clases)
-            tree_clases=lista_de_clases.lista_de_clases(frame_lista_clases)
-            
-            frame_lista_alumnos = Frame(ventana, bg=blanco)
-            frame_lista_alumnos.grid(column=0, row=10, padx=20, pady=10,rowspan=4,columnspan=4)
-            lista_de_alumnos=Ventana_Alumnos(frame_lista_alumnos)
-            tree_alumnos=lista_de_alumnos.lista_de_alumnos(frame_lista_alumnos)
-            
-                        
-            #botones
+            frame_contenido=Frame(ventana, bg=blanco)
+            frame_contenido.grid(column=0, row=1, padx=20, pady=10,rowspan=4,columnspan=4)
+
+            alumno=self.seleccion_alumno(frame_contenido)
+
+            curso=self.seleccion_curso(frame_contenido)
+        
+    #botones
     
-            Button(
-                ventana,
-                text="Registrar",
-                font=("Arial", 12),
-                bg=azul,
-                fg=blanco,
-                bd=0,
-                padx=30,
-                pady=12,
-                command=lambda: self.registrar(f"{anio.get()}-{mes.get()}-{dia.get()}", tree_clases, tree_alumnos, ventana)
-            ).grid(padx=(0, 10), column=0, row=16)
+            # Button(
+            #     ventana,
+            #     text="Registrar",
+            #     font=("Arial", 12),
+            #     bg=azul,
+            #     fg=blanco,
+            #     bd=0,
+            #     padx=30,
+            #     pady=12,
+            #     command=lambda: self.registrar(f"{anio.get()}-{mes.get()}-{dia.get()}", tree_clases, tree_alumnos, ventana)
+            # ).grid(padx=(0, 10), column=0, row=16)
                 
     
+            # Button(
+            #     ventana,
+            #     text="Cancelar",
+            #     font=("Arial", 12),
+            #     bg=gris,
+            #     fg=blanco,
+            #     bd=0,
+            #     padx=30,
+            #     pady=12,
+            #     command=lambda: self.cancelar(ventana)
+            # ).grid(padx=(0, 10), column=1, row=16)
+        def seleccion_alumno(self,contenedor):
+            service_alumnos=Alumno_Service()
+            lista_de_alumnos=service_alumnos.lista_por_nombre_apellido()
+            encabezados_alumnos = ["Nombre", "Apellido"]
+            tree_alumnos=treeview(contenedor, encabezados_alumnos, lista_de_alumnos)
             Button(
-                ventana,
-                text="Cancelar",
-                font=("Arial", 12),
-                bg=gris,
-                fg=blanco,
-                bd=0,
-                padx=30,
-                pady=12,
-                command=lambda: self.cancelar(ventana)
-            ).grid(padx=(0, 10), column=1, row=16)
-                    
+                    contenedor,
+                    text="Seleccionar Alumno",
+                    font=("Arial", 12),
+                    bg=azul,
+                    fg=blanco,
+                    bd=0,
+                    padx=30,
+                    pady=12,
+                    command=lambda: self.alumno_seleccionado(tree_alumnos)
+                ).grid(padx=(0, 10), column=0, row=16)
+            return self.alumno_seleccionado(tree_alumnos)
+
+        def alumno_seleccionado(self,tree_alumnos):
+            seleccion = tree_alumnos.selection()
+            if not seleccion:
+                return
+
+            item_id = seleccion[0]
+            datos_alumno = tree_alumnos.item(item_id)['values']
+            return datos_alumno
+        def seleccion_curso(self,contenedor):
+            service_cursos=Clase_Service()
+            lista_de_cursos=service_cursos.lista_por_nombre_apellido()
+            encabezados_cursos = ["Descripcion", "Turno"]
+            tree_cursos=treeview(contenedor, encabezados_cursos, lista_de_cursos)
         def registrar(self, fecha, clase, alumno, ventana):
             clase_seleccion = clase.selection()
             if not clase_seleccion:

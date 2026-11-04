@@ -70,7 +70,7 @@ def crear_boton(nombre,columna):
     ).grid(row=0, column=columna, padx=10)
 
 
-opciones = ["Inicio","Alumnos","Cursos","Inscripciones"]
+opciones = ["Inicio","Alumnos","Cursos"]
 columna=0
 for opcion in opciones:
     crear_boton(opcion,columna)

@@ -52,3 +52,6 @@ class Alumno_Service():
         return self._dao.obtener_notas_por_alumno(alumno_id)
     def inasistencias_por_alumno(self, alumno_id):
         return self._dao.obtener_inasistencias_por_alumno(alumno_id)
+
+    def lista_por_nombre_apellido(self):
+        return self._dao.listar_nombre_y_apellido()

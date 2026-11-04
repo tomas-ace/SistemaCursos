@@ -18,4 +18,7 @@ class Clase_Service():
         
     def lista_de_alumnos_por_clase(self,clase):
         return self._dao.lista_de_alumnos_en_clase(clase)
+
+    def listar_por_descripcion(self):
+        return self._dao.listar_por_descripcion_y_turno()
     

@@ -5,6 +5,7 @@ from Servicios.curso_service import *
 from Servicios.clase_service import *
 from Dominio.alumno import *
 from Presentacion.elementos import *
+from Presentacion.ventana_inscripciones import *
 from tkinter import messagebox
 
 
@@ -216,6 +217,11 @@ class Ventana_Alumnos():
         print (opcion)
         if opcion == "Registrar nuevo alumno":
             self.ventana_registro_alumno(None)
+
+        elif opcion == "Inscribir a un Curso":
+            from Presentacion.ventana_inscripciones import Ventana_Inscripciones
+            ventana_insc=Ventana_Inscripciones(self._contenido)
+            ventana_insc.ventana_registro_inscripcion(None)
         else:
             self.lista_de_alumnos()
             
@@ -599,7 +605,8 @@ class Ventana_Alumnos():
         self._botones.grid(column=0,row=2,columnspan=1)
         opciones = [
             "Registrar nuevo alumno",
-            "Consultar alumnos"
+            "Consultar alumnos",
+            "Inscribir a un Curso"
         ]
         fila=0
         for opcion in opciones:

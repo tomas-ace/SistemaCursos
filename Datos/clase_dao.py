@@ -76,3 +76,16 @@ class Clase_DAO():
         conexion.commit()
         conexion.close()
         return alumnos
+    
+    def listar_por_descripcion_y_turno(self):
+        conexion = sqlite3.connect("Datos/cursos_db.db")
+        cursor = conexion.cursor()
+        cursor.execute("""
+            SELECT cu.Descripcion, c.Turno
+            FROM Clase c
+            JOIN Curso cu ON c.IdCurso = cu.IdCurso
+            where c.anio=2026
+        """)
+        clases = cursor.fetchall()
+        conexion.close()
+        return clases

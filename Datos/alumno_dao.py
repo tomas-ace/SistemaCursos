@@ -137,4 +137,17 @@ class Alumno_DAO():
         conexion.close()
         
         return resultado != None
+
+    def listar_nombre_y_apellido(self):
+        conexion = sqlite3.connect("Datos/cursos_db.db")
+        cursor = conexion.cursor()
+        cursor.execute("""
+            SELECT Nombre, Apellido
+            FROM Alumno
+        """)
+        alumnos = cursor.fetchall()
+        conexion.close()
+        return alumnos
+
+
 print(Alumno_DAO().obtener_cursos_por_alumno(2)) 
