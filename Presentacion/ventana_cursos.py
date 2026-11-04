@@ -220,7 +220,7 @@ class Ventana_Cursos():
                 #cargo las variabkes con los datos
                 id_curso = datos_curso[0]
                 descripcion = StringVar(value=datos_curso[1])
-                duracion = IntVar(value=datos_curso[2])
+                duracion = StringVar(value=datos_curso[2])
                 
         
                 #campos 
@@ -259,6 +259,10 @@ class Ventana_Cursos():
         def guardar_modificacion(self, id_curso, descripcion, duracion, ventana):
                 curso_actualizado = Curso(id_curso, descripcion, duracion)
                 servicio_curso = Curso_Service()
-                servicio_curso.modificar_curso(curso_actualizado)
-                print(f"Curso {id_curso} modificado con éxito")
-                ventana.destroy()
+                resultado=servicio_curso.modificar_curso(curso_actualizado)
+                if resultado == True:
+                    messagebox.showinfo("Éxito", "Curso modificado correctamente.", parent=ventana)
+                    ventana.destroy()
+                else:
+                    messagebox.showerror("Error", resultado, parent=ventana)
+                

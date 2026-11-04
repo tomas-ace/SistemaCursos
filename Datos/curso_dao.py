@@ -60,3 +60,12 @@ class Curso_DAO():
         conexion.commit()
         conexion.close()
         return cursos
+    
+    def existe_curso(self, descripcion):
+        conexion=sqlite3.connect("Datos/cursos_db.db")
+        cursor = conexion.cursor()
+        cursor.execute("SELECT idCurso FROM Curso WHERE Descripcion = ?", (descripcion,))
+        resultado = cursor.fetchone()
+        conexion.commit()
+        conexion.close()
+        return resultado is not None
