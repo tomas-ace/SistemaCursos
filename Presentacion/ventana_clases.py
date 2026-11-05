@@ -7,6 +7,7 @@ from Servicios.asistencia_service import *
 from Dominio.nota import *
 from Servicios.notas_service import *
 from tkinter import messagebox
+from datetime import datetime
 
 
 class Ventana_Clases():
@@ -322,26 +323,18 @@ class Ventana_Clases():
                 
         def ventana_tomar_lista(self, id_clase):
             servicio_classe=Clase_Service()
+            fecha_actual = datetime.now().strftime("%Y-%m-%d")
+            servicio_asistencia = Asistencia_Service()
+            if servicio_asistencia.existe_asistencia(fecha_actual, id_clase):
+                messagebox.showinfo("Información", "La asistencia para esta clase ya ha sido registrada hoy.")
+                return
             alumnos=servicio_classe.lista_de_alumnos_por_clase(id_clase)
             ventana = Toplevel(self._contenido)
             ventana.title("Tomar Lista")
             ventana.geometry("700x600")
             ventana.configure(bg=blanco)
 
-            frame_fecha = Frame(ventana, bg=blanco)
-            frame_fecha.pack(pady=20)
             
-            Label(frame_fecha, text="Día:", bg=blanco).grid(row=0, column=0)
-            entry_dia = Entry(frame_fecha, width=5)
-            entry_dia.grid(row=0, column=1, padx=10)
-
-            Label(frame_fecha, text="Mes:", bg=blanco).grid(row=0, column=2)
-            entry_mes = Entry(frame_fecha, width=10)
-            entry_mes.grid(row=0, column=3, padx=10)
-            
-            Label(frame_fecha, text="Año:", bg=blanco).grid(row=0, column=4)
-            entry_anio = Entry(frame_fecha, width=8)
-            entry_anio.grid(row=0, column=5, padx=10)
 
             lista_asistencia = [] 
 
@@ -367,17 +360,16 @@ class Ventana_Clases():
 
             Button(
                 ventana, text="Guardar Asistencia", bg=azul, fg=blanco, font=("Arial", 12, "bold"),
-                command=lambda: self.guardar_asistencia(entry_dia.get(), entry_mes.get(), entry_anio.get(), ventana,lista_asistencia)
+                command=lambda: self.guardar_asistencia(fecha_actual, ventana,lista_asistencia)
             ).pack(pady=20)
 
 
-        def guardar_asistencia(self, dia, mes, anio, ventana,lista):
-            fecha_completa = f"{anio}-{mes}-{dia}"
+        def guardar_asistencia(self, fecha, ventana,lista):
             for alumno in lista:
                 print(alumno)
                 id_inscripcion=alumno[0]
                 estado = alumno[1].get() 
-                asistencia=Asistencia(fecha_completa,estado,id_inscripcion)
+                asistencia=Asistencia(fecha,estado,id_inscripcion)
                 asistencia_service= Asistencia_Service()
                 asistencia_service.registrar_asistencia(asistencia)
 

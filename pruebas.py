@@ -1,6 +1,6 @@
 from Dominio.alumno import Alumno
 from Datos.alumno_dao import Alumno_DAO
-
+from datetime import datetime
 #PRUEBA REGISTRAR ALUMNO (CAMBIAR DATOS PORQUE YA ESTAN REPETIDOS)
 # alumno = Alumno(None,"Juan","Perez","2002-05-14","1235","21221","juanz@gmail.com")
 # alumno_dao = Alumno_DAO(alumno)
@@ -28,3 +28,6 @@ from Datos.alumno_dao import Alumno_DAO
 # for nombre, boton in hola.items():
 #     print(nombre)
 #     print(boton)
+
+fecha_actual = datetime.now().strftime("%Y-%m-%d")
+print("Fecha actual:", fecha_actual)

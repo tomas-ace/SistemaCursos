@@ -6,3 +6,6 @@ class Asistencia_Service():
         self._dao.registrar_asistencia(asistencia)
     def asistencia_por_clase(self,id_clase):
         return self._dao.obtener_asistencias_por_clase(id_clase)
+    
+    def existe_asistencia(self, fecha, id_clase):
+        return self._dao.existe_asistencia_para_fecha_y_clase(fecha, id_clase)

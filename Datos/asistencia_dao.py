@@ -49,3 +49,15 @@ class Asistencia_DAO():
             conexion.close()
             return datos
   
+    def existe_asistencia_para_fecha_y_clase(self, fecha, id_clase):
+        conexion = sqlite3.connect("Datos/cursos_db.db")
+        cursor = conexion.cursor()
+        cursor.execute("""
+            SELECT COUNT(*) 
+            FROM Asistencia a
+            JOIN Inscripcion i ON a.IdInscripcion = i.IdInscripcion
+            WHERE a.Fecha = ? AND i.IdClase = ?
+        """, (fecha, id_clase))
+        resultado = cursor.fetchone()[0]
+        conexion.close()
+        return resultado > 0
