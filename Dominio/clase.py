@@ -17,3 +17,6 @@ class Clase():
     def get_estado(self):
         return self._estado
     
+    def set_año(self,año):
+        self._año=año
+    

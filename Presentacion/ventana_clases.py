@@ -6,7 +6,7 @@ from Dominio.asistencia import *
 from Servicios.asistencia_service import *
 from Dominio.nota import *
 from Servicios.notas_service import *
-
+from tkinter import messagebox
 
 
 class Ventana_Clases():
@@ -486,8 +486,8 @@ class Ventana_Clases():
             #datoss
             
             
-            turno = StringVar()
-            anio = IntVar()
+            turno = StringVar(value="Mañana")
+            anio = StringVar(value="2026")
             
             
             Label(
@@ -560,7 +560,13 @@ class Ventana_Clases():
             id_curso = datos_curso[0]
             print(id_curso, anio, turno)
             
+            
+            
             nueva_clase=Clase(None,anio,turno,"Activa",id_curso)
             servicio_clase=Clase_Service()
-            servicio_clase.nueva_clase(nueva_clase)
-            ventana.destroy()
+            resultado = servicio_clase.nueva_clase(nueva_clase)
+            if resultado==True:
+                messagebox.showinfo("Exito", "Curso registrado correctamente.", parent=ventana)
+                ventana.destroy()
+            else:
+                messagebox.showerror("Error", resultado, parent=ventana)

@@ -4,8 +4,30 @@ class Clase_Service():
         self._dao=Clase_DAO()   
     
     def nueva_clase(self, clase):
+        resultado = self.datos_validos(clase)
+        if resultado != True:
+            return resultado
+        else:
+            self._dao.registrar_clase(clase)
+            return True
         
-        self._dao.registrar_clase(clase)
+    def datos_validos(self, clase):
+        if clase.get_año().isdigit():
+                anio_entero = int(clase.get_año())
+                clase.set_año(anio_entero)
+        else:
+            return "El año de la clase debe ser un número entero válido."
+        
+        if clase.get_año()=="" or clase.get_turno()=="":
+            return "No se pueden dejar campos vacíos."
+        elif clase.get_año() <= 2025:
+            return "Ingrese un año válido para la clase."
+        elif self._dao.contar_clase_por_curso_y_anio(clase.get_id_curso(), clase.get_año()) > 3:
+            return "Ya existen 3 clases para este curso en el año seleccionado."
+        else:
+            return True
+        
+    
         
     def listar_clases(self):
         return self._dao.listar_clases()

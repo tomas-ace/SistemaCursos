@@ -89,3 +89,15 @@ class Clase_DAO():
         clases = cursor.fetchall()
         conexion.close()
         return clases
+    
+    def contar_clase_por_curso_y_anio(self, id_curso, anio):
+        conexion = sqlite3.connect("Datos/cursos_db.db")
+        cursor = conexion.cursor()
+        cursor.execute("""
+            SELECT COUNT(*) FROM Clase
+            WHERE IdCurso = ? AND Anio = ?
+        """, (id_curso, anio))
+        cantidad = cursor.fetchone()[0]
+        conexion.close()
+        return cantidad
+        
