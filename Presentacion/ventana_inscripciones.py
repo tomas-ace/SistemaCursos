@@ -1,9 +1,11 @@
+from datetime import datetime
 from tkinter import *
 from Presentacion.elementos import *
 from Dominio.inscripcion import *
 from Servicios.inscripcion_service import *
 from Presentacion.ventana_clases import *
 from Servicios.alumno_service import *
+from tkinter import messagebox
 
 class Ventana_Inscripciones():
         def __init__(self,contenido):
@@ -148,68 +150,69 @@ class Ventana_Inscripciones():
 
             frame_contenido=Frame(ventana, bg=blanco)
             frame_contenido.grid(column=0, row=1, padx=20, pady=10,rowspan=4,columnspan=4)
-
-            alumno=self.seleccion_alumno(frame_contenido)
-
-            curso=self.seleccion_curso(frame_contenido)
-        
-    #botones
+            self.mostrar_listas(frame_contenido)
     
-            # Button(
-            #     ventana,
-            #     text="Registrar",
-            #     font=("Arial", 12),
-            #     bg=azul,
-            #     fg=blanco,
-            #     bd=0,
-            #     padx=30,
-            #     pady=12,
-            #     command=lambda: self.registrar(f"{anio.get()}-{mes.get()}-{dia.get()}", tree_clases, tree_alumnos, ventana)
-            # ).grid(padx=(0, 10), column=0, row=16)
-                
-    
-            # Button(
-            #     ventana,
-            #     text="Cancelar",
-            #     font=("Arial", 12),
-            #     bg=gris,
-            #     fg=blanco,
-            #     bd=0,
-            #     padx=30,
-            #     pady=12,
-            #     command=lambda: self.cancelar(ventana)
-            # ).grid(padx=(0, 10), column=1, row=16)
-        def seleccion_alumno(self,contenedor):
+        def mostrar_listas(self,contenedor):
+            for widget in contenedor.winfo_children():
+                widget.destroy()
             service_alumnos=Alumno_Service()
             lista_de_alumnos=service_alumnos.lista_por_nombre_apellido()
             encabezados_alumnos = ["Nombre", "Apellido"]
             tree_alumnos=treeview(contenedor, encabezados_alumnos, lista_de_alumnos)
             Button(
                     contenedor,
-                    text="Seleccionar Alumno",
+                    text="Siguiente",
                     font=("Arial", 12),
                     bg=azul,
                     fg=blanco,
                     bd=0,
                     padx=30,
                     pady=12,
-                    command=lambda: self.alumno_seleccionado(tree_alumnos)
+                    command=lambda: self.guardar_y_avanzar(tree_alumnos,contenedor)
                 ).grid(padx=(0, 10), column=0, row=16)
-            return self.alumno_seleccionado(tree_alumnos)
+           
 
-        def alumno_seleccionado(self,tree_alumnos):
+        def guardar_y_avanzar(self,tree_alumnos,contenedor):
             seleccion = tree_alumnos.selection()
             if not seleccion:
+                messagebox.showwarning("Atencion", "Por favor, seleccione un alumno de la lista.")
                 return
-
             item_id = seleccion[0]
-            datos_alumno = tree_alumnos.item(item_id)['values']
-            return datos_alumno
-        def seleccion_curso(self,contenedor):
+            alumno_seleccionado_para_inscribir = tree_alumnos.item(item_id)['values']
+            
+            self.mostrar_cursos(contenedor, alumno_seleccionado_para_inscribir)
+        def mostrar_cursos(self,contenedor,alumno):
+            for widget in contenedor.winfo_children():
+                widget.destroy()
             service_cursos=Clase_Service()
-            lista_de_cursos=service_cursos.lista_por_nombre_apellido()
+            lista_de_cursos=service_cursos.listar_por_descripcion()
             encabezados_cursos = ["Descripcion", "Turno"]
             tree_cursos=treeview(contenedor, encabezados_cursos, lista_de_cursos)
+            Button(
+                    contenedor,
+                    text="Finalizar Inscripcion",
+                    font=("Arial", 12),
+                    bg=azul,
+                    fg=blanco,
+                    bd=0,
+                    padx=30,
+                    pady=12,
+                    command=lambda: self.guardar_inscripcion(tree_cursos,alumno)
+                ).grid(padx=(0, 10), column=0, row=16)
+        
+        def guardar_inscripcion(self,tree_cursos,alumno):
+            seleccion = tree_cursos.selection()
+            if not seleccion:
+                messagebox.showwarning("Atencion", "Por favor, seleccione un curso de la lista.")
+                return
+            item_id = seleccion[0]
+            curso_seleccionado_para_inscribir = tree_cursos.item(item_id)['values']
+            fecha_actual = datetime.now().strftime("%Y-%m-%d")
+            nueva_inscripcion=Inscripcion(None, fecha_actual, "En Curso", alumno[0], curso_seleccionado_para_inscribir[0])
+            servicio_inscripcion=Inscripcion_Service()
+            servicio_inscripcion.nueva_inscripcion(nueva_inscripcion)
+            messagebox.showinfo("Exito", "Inscripción realizada con éxito.")
+            
         def registrar(self, fecha, clase, alumno, ventana):
             clase_seleccion = clase.selection()
             if not clase_seleccion:
