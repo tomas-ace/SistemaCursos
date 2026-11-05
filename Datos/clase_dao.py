@@ -81,10 +81,10 @@ class Clase_DAO():
         conexion = sqlite3.connect("Datos/cursos_db.db")
         cursor = conexion.cursor()
         cursor.execute("""
-            SELECT cu.Descripcion, c.Turno
+            SELECT c.IdClase,cu.Descripcion, c.Turno
             FROM Clase c
             JOIN Curso cu ON c.IdCurso = cu.IdCurso
-            where c.anio=2026
+            where c.anio=2026 and c.estado="Activa"
         """)
         clases = cursor.fetchall()
         conexion.close()
@@ -100,4 +100,28 @@ class Clase_DAO():
         cantidad = cursor.fetchone()[0]
         conexion.close()
         return cantidad
+    def anio_de_clase(self, id_clase):
+        conexion = sqlite3.connect("Datos/cursos_db.db")
+        cursor = conexion.cursor()
+        print("antes de la consulta el id es ", id_clase)
+        cursor.execute("""
+            SELECT Anio FROM Clase
+            WHERE IdClase = ?
+        """, (id_clase,))
         
+        anio = cursor.fetchone()[0]
+        print("el anio es ", anio)
+        conexion.close()
+        return anio
+    def curso_de_clase(self, id_clase):
+        conexion = sqlite3.connect("Datos/cursos_db.db")
+        cursor = conexion.cursor()
+        cursor.execute("""
+            SELECT IdCurso FROM Clase
+            WHERE IdClase = ?
+        """, (id_clase,))
+        id_curso = cursor.fetchone()[0]
+        conexion.close()
+        return id_curso
+    
+    

@@ -1,4 +1,5 @@
 from Datos.inscripcion_dao import Inscripcion_DAO
+from Datos.clase_dao import Clase_DAO
 class Inscripcion_Service():
     def __init__(self):
         self._dao=Inscripcion_DAO()
@@ -10,7 +11,23 @@ class Inscripcion_Service():
         return self._dao.listar_inscripciones()
     
     def nueva_inscripcion(self, inscripcion):
-        return self._dao.registrar_inscripcion(inscripcion)
+        print("el id del alumnoo es ", inscripcion.get_legajo())
+        clase_dao = Clase_DAO()
+        anio = clase_dao.anio_de_clase(inscripcion.get_id_clase())
+        print("el anio de la clase es ", anio)
+        curso= clase_dao.curso_de_clase(inscripcion.get_id_clase())
+        print("el curso de la clase es ", curso)
+        if self._dao.ya_esta_inscripto(inscripcion.get_legajo(), curso, anio):
+            return "El alumno ya está inscripto en el curso para este año."
+        elif self._dao.contar_inscripciones_de_alumno_en_el_anio(inscripcion.get_legajo(), anio) >= 2:
+            return "El alumno ya tiene 2 inscripciones en el año seleccionado."
+        elif self._dao.cantidad_alumnos_por_clase(inscripcion.get_id_clase()) >= 3:
+            return "La clase seleccionada ya tiene 20 alumnos inscriptos."
+        else:
+            self._dao.registrar_inscripcion(inscripcion)
+            return True
+        
+        
     
     def modificar_estado_de_inscripcion(self, id_inscripcion, nuevo_estado):
         return self._dao.modificar_estado(id_inscripcion, nuevo_estado)

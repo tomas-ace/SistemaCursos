@@ -142,7 +142,7 @@ class Alumno_DAO():
         conexion = sqlite3.connect("Datos/cursos_db.db")
         cursor = conexion.cursor()
         cursor.execute("""
-            SELECT Nombre, Apellido
+            SELECT Legajo, Nombre, Apellido
             FROM Alumno
         """)
         alumnos = cursor.fetchall()

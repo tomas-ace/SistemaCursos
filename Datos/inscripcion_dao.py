@@ -65,3 +65,41 @@ class Inscripcion_DAO():
             conexion.commit()
             conexion.close()
             return inscripciones
+        
+    def ya_esta_inscripto(self,legajo, id_curso, anio):
+            conexion = sqlite3.connect("Datos/cursos_db.db")
+            cursor = conexion.cursor()
+            cursor.execute("""
+                SELECT COUNT(*) 
+                FROM Inscripcion i
+                JOIN Clase cl ON i.IdClase = cl.IdClase
+                WHERE i.Legajo = ? AND cl.IdCurso = ? AND cl.Anio = ?
+            """, (legajo, id_curso, anio))
+            cantidad = cursor.fetchone()[0]
+            conexion.close()
+            return cantidad>0
+        
+    def contar_inscripciones_de_alumno_en_el_anio(self, legajo,anio):
+        conexion = sqlite3.connect("Datos/cursos_db.db")
+        cursor = conexion.cursor()
+        cursor.execute("""
+            SELECT COUNT(*) 
+            FROM Inscripcion i
+            JOIN Clase cl ON i.IdClase = cl.IdClase
+            WHERE i.Legajo = ? AND cl.Anio = ?
+        """, (legajo, anio))
+        cantidad = cursor.fetchone()[0]
+        conexion.close()
+        return cantidad
+
+
+    def cantidad_alumnos_por_clase(self, id_clase):
+            conexion = sqlite3.connect("Datos/cursos_db.db")
+            cursor = conexion.cursor()
+            cursor.execute("""
+                SELECT COUNT(*) FROM Inscripcion
+                WHERE IdClase = ?
+            """, (id_clase,))
+            cantidad = cursor.fetchone()[0]
+            conexion.close()
+            return cantidad
