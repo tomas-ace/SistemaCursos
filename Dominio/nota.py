@@ -16,4 +16,5 @@ class Nota():
             return self._id_inscripcion
     def get_descripcion(self):
             return self._descripcion
-
+    def set_nota(self,nota):
+            self._nota=nota    

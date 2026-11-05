@@ -276,7 +276,7 @@ class Ventana_Clases():
                     for alumno in alumnos:
                         nombre = f"{alumno[1]} {alumno[2]}"
                         id_inscripcion=alumno[3]
-                        nota = IntVar(value=1) 
+                        nota = StringVar(value="1") 
                         
                         lista_notas.append([id_inscripcion, nota])
 
@@ -295,17 +295,30 @@ class Ventana_Clases():
         
         
         def guardar_notas(self,descripcion, dia, mes, anio, ventana,lista):
+                    print ("entre a guardar notas")
                     fecha_completa = f"{anio}-{mes}-{dia}"
+                    nota_detalle_service= Nota_Service()
+                    todas_validas=True
                     for alumno in lista:
                         print(alumno)
                         id_inscripcion=alumno[0]
                         nota = alumno[1].get() 
                         nota_detalle=Nota(None,fecha_completa,nota,descripcion,id_inscripcion)
-                        nota_detalle_service= Nota_Service()
-                        nota_detalle_service.registrar_nota(nota_detalle)
-        
+                        validacion=nota_detalle_service.datos_validos(nota_detalle)
+                        if validacion != True:
+                            messagebox.showerror("Error", validacion,parent=ventana)
+                            todas_validas=False
+                            break
+                    if todas_validas:
+                        for alumno in lista:
+                            id_inscripcion=alumno[0]
+                            nota = alumno[1].get() 
+                            nota_detalle=Nota(None,fecha_completa,nota,descripcion,id_inscripcion)
+                            nota_detalle_service.registrar_nota(nota_detalle)
+                        messagebox.showinfo("Exito", "Notas registradas correctamente.",parent=ventana)
+                        ventana.destroy()
+                    
                         
-                    ventana.destroy()
                 
         def ventana_tomar_lista(self, id_clase):
             servicio_classe=Clase_Service()
@@ -570,3 +583,5 @@ class Ventana_Clases():
                 ventana.destroy()
             else:
                 messagebox.showerror("Error", resultado, parent=ventana)
+                
+                

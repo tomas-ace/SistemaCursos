@@ -70,7 +70,7 @@ class Clase_DAO():
             FROM Alumno a
                 JOIN Inscripcion i ON a.Legajo = i.Legajo
                 JOIN Clase c ON i.IdClase = c.IdClase 
-                WHERE c.IdClase = ?;
+                WHERE c.IdClase = ? and i.Estado = "En Curso";
                 """,(clase,))
         alumnos=cursor.fetchall()
         conexion.commit()

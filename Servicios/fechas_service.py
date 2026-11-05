@@ -14,7 +14,7 @@ class Fechas_Service():
             return f"El mes en el campo Fecha de {uso} debe estar entre 01 y 12."
         elif int(partes_fecha[2]) < 1 or int(partes_fecha[2]) > 31:
             return f"El día en el campo Fecha de {uso} debe estar entre 01 y 31."
-        elif uso=="Nacimiento" and int(partes_fecha[0]) < 1900 or int(partes_fecha[0]) > 2008:
+        elif uso=="Nacimiento" and (int(partes_fecha[0]) < 1900 or int(partes_fecha[0]) > 2008):
             return f"El año en el campo Fecha de {uso} debe estar entre 1900 y 2008."
         elif (uso=="Inscripcion" or uso=="Nota" or uso=="Asistencia") and int (partes_fecha[0]) < 2026:
             return f"El año en el campo Fecha debe ser posterior a 2025."
