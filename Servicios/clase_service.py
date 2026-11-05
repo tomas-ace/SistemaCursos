@@ -22,7 +22,7 @@ class Clase_Service():
             return "No se pueden dejar campos vacíos."
         elif clase.get_año() <= 2025:
             return "Ingrese un año válido para la clase."
-        elif self._dao.contar_clase_por_curso_y_anio(clase.get_id_curso(), clase.get_año()) > 3:
+        elif self._dao.contar_clase_por_curso_y_anio(clase.get_id_curso(), clase.get_año()) >= 3:
             return "Ya existen 3 clases para este curso en el año seleccionado."
         else:
             return True

@@ -220,6 +220,7 @@ class Ventana_Inscripciones():
                 messagebox.showerror("Error", resultado,parent=contenedor)
             else:
                 messagebox.showinfo("Exito", "Inscripción realizada con éxito.",parent=contenedor)
+                contenedor.destroy()
                      
         def mostrar(self):
             print("hola")

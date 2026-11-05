@@ -79,15 +79,15 @@ class Inscripcion_DAO():
             conexion.close()
             return cantidad>0
         
-    def contar_inscripciones_de_alumno_en_el_anio(self, legajo,anio):
+    def contar_inscripciones_de_alumno_activas(self, legajo):
         conexion = sqlite3.connect("Datos/cursos_db.db")
         cursor = conexion.cursor()
         cursor.execute("""
             SELECT COUNT(*) 
             FROM Inscripcion i
             JOIN Clase cl ON i.IdClase = cl.IdClase
-            WHERE i.Legajo = ? AND cl.Anio = ?
-        """, (legajo, anio))
+            WHERE i.Legajo = ? AND cl.Estado = 'Activa' AND i.Estado = 'En Curso'
+        """, (legajo, ))
         cantidad = cursor.fetchone()[0]
         conexion.close()
         return cantidad

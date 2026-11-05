@@ -19,8 +19,8 @@ class Inscripcion_Service():
         print("el curso de la clase es ", curso)
         if self._dao.ya_esta_inscripto(inscripcion.get_legajo(), curso, anio):
             return "El alumno ya está inscripto en el curso para este año."
-        elif self._dao.contar_inscripciones_de_alumno_en_el_anio(inscripcion.get_legajo(), anio) >= 2:
-            return "El alumno ya tiene 2 inscripciones en el año seleccionado."
+        elif self._dao.contar_inscripciones_de_alumno_activas(inscripcion.get_legajo()) >= 2:
+            return "El alumno ya tiene 2 inscripciones este año."
         elif self._dao.cantidad_alumnos_por_clase(inscripcion.get_id_clase()) >= 3:
             return "La clase seleccionada ya tiene 20 alumnos inscriptos."
         else:
