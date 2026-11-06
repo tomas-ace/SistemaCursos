@@ -98,7 +98,7 @@ class Inscripcion_DAO():
             cursor = conexion.cursor()
             cursor.execute("""
                 SELECT COUNT(*) FROM Inscripcion
-                WHERE IdClase = ?
+                WHERE IdClase = ? and Estado = 'En Curso'
             """, (id_clase,))
             cantidad = cursor.fetchone()[0]
             conexion.close()

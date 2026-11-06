@@ -8,12 +8,12 @@ class Alumno_DAO():
         cursor = conexion.cursor()
 
         datos = [
-            alumno.get_nombre(),
-            alumno.get_apellido(),
+            alumno.get_nombre().strip(),
+            alumno.get_apellido().strip(),
             alumno.get_fecha_nacimiento(),
             alumno.get_dni(),
             alumno.get_telefono(),
-            alumno.get_mail()
+            alumno.get_mail().strip()
         ]
 
         cursor.execute("""

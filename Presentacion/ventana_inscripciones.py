@@ -128,7 +128,6 @@ class Ventana_Inscripciones():
             ventana.destroy()  
         
         def ventana_registro_inscripcion(self,ventana_none):
-            from Presentacion.ventana_clases import Ventana_Clases
             if ventana_none == None:
                 pass
             else:
@@ -150,9 +149,9 @@ class Ventana_Inscripciones():
 
             frame_contenido=Frame(ventana, bg=blanco)
             frame_contenido.grid(column=0, row=1, padx=20, pady=10,rowspan=4,columnspan=4)
-            self.mostrar_listas(frame_contenido)
+            self.mostrar_listas(frame_contenido,ventana)
     
-        def mostrar_listas(self,contenedor):
+        def mostrar_listas(self,contenedor,ventana):
             for widget in contenedor.winfo_children():
                 widget.destroy()
             service_alumnos=Alumno_Service()
@@ -169,11 +168,11 @@ class Ventana_Inscripciones():
                     bd=0,
                     padx=30,
                     pady=12,
-                    command=lambda: self.guardar_y_avanzar(tree_alumnos,contenedor)
+                    command=lambda: self.guardar_y_avanzar(tree_alumnos,contenedor,ventana)
                 ).grid(padx=(0, 10), column=0, row=16)
            
 
-        def guardar_y_avanzar(self,tree_alumnos,contenedor):
+        def guardar_y_avanzar(self,tree_alumnos,contenedor,ventana):
             seleccion = tree_alumnos.selection()
             if not seleccion:
                 messagebox.showwarning("Atencion", "Por favor, seleccione un alumno de la lista.")
@@ -182,8 +181,8 @@ class Ventana_Inscripciones():
             alumno_seleccionado_para_inscribir = tree_alumnos.item(item_id)['values']
             print ("el alumno seleccionado es ",alumno_seleccionado_para_inscribir)
             print("el id del alumno es ",alumno_seleccionado_para_inscribir[0])
-            self.mostrar_cursos(contenedor, alumno_seleccionado_para_inscribir)
-        def mostrar_cursos(self,contenedor,alumno):
+            self.mostrar_cursos(contenedor, alumno_seleccionado_para_inscribir, ventana)
+        def mostrar_cursos(self,contenedor,alumno,ventana):
             for widget in contenedor.winfo_children():
                 widget.destroy()
             service_cursos=Clase_Service()
@@ -200,10 +199,10 @@ class Ventana_Inscripciones():
                     bd=0,
                     padx=30,
                     pady=12,
-                    command=lambda: self.guardar_inscripcion(tree_cursos,alumno,contenedor)
+                    command=lambda: self.guardar_inscripcion(tree_cursos,alumno,contenedor,ventana)
                 ).grid(padx=(0, 10), column=0, row=16)
         
-        def guardar_inscripcion(self,tree_cursos,alumno,contenedor):
+        def guardar_inscripcion(self,tree_cursos,alumno,contenedor,ventana):
             seleccion = tree_cursos.selection()
             if not seleccion:
                 messagebox.showwarning("Atencion", "Por favor, seleccione un curso de la lista.")
@@ -220,7 +219,7 @@ class Ventana_Inscripciones():
                 messagebox.showerror("Error", resultado,parent=contenedor)
             else:
                 messagebox.showinfo("Exito", "Inscripción realizada con éxito.",parent=contenedor)
-                contenedor.destroy()
+                ventana.destroy()
                      
         def mostrar(self):
             print("hola")

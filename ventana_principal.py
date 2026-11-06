@@ -51,9 +51,6 @@ def mostrar_seccion(seccion):
     elif seccion == "Cursos":
         cursos=Ventana_Cursos(contenido)
         cursos.mostrar()
-    elif seccion == "Inscripciones":
-        inscripciones=Ventana_Inscripciones(contenido)
-        inscripciones.mostrar()
     
 
 

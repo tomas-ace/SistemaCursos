@@ -16,17 +16,17 @@ class Alumno_Service():
     def cantidad_de_alumnos(self):
         return self._dao.contar_alumnos()
 
-    def datos_validos(self, alumno):
+    def datos_validos(self, alumno, modificar=False):
         fecha_valida = Fechas_Service().validar_fecha(alumno.get_fecha_nacimiento(),"Nacimiento")
         if alumno.get_dni() == "":
             return "El campo DNI no puede estar vacío."
-        elif self._dao.existe_dni(alumno.get_dni()):
+        elif self._dao.existe_dni(alumno.get_dni()) and not modificar:
             return "DNI ya existe en el sistema."
         elif not alumno.get_dni().isdigit() or (len(alumno.get_dni()) != 8 and len(alumno.get_dni()) != 7):
             return "El campo DNI debe contener solo números y tener 7 u 8 dígitos."
-        elif alumno.get_nombre() == "":
+        elif alumno.get_nombre() == "" or alumno.get_nombre().strip() == "":
             return "El campo Nombre no puede estar vacío."
-        elif alumno.get_apellido() == "":
+        elif alumno.get_apellido() == "" or alumno.get_apellido().strip() == "":
             return "El campo Apellido no puede estar vacío."
         elif not alumno.get_telefono().isdigit() or not (7 <= len(alumno.get_telefono()) <= 15):
             return "El campo Teléfono debe contener solo números y tener entre 7 y 15 dígitos."
@@ -38,7 +38,7 @@ class Alumno_Service():
         return self._dao.listar_alumnos()
     
     def modificar_alumno(self,alumno):
-        resultado = self.datos_validos(alumno)
+        resultado = self.datos_validos(alumno, modificar=True)
         if not resultado:
                 return resultado
         elif self._dao.existe_dni_en_otro_alumno(alumno.get_dni(), alumno.get_legajo()):
