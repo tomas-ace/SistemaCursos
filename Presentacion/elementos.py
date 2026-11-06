@@ -7,17 +7,24 @@ blanco = "#B0C6E6"
 gris = "#6b7280"
 texto = "#111827"
 borde = "#d1d5db"
+celeste= "#abdbee"
 
 def treeview(contenedor, encabezados,datos):
     frame=Frame(contenedor)
-    frame.grid(column=0,row=0)
+    frame.grid(column=0,row=0,padx=5, pady=10)
     tree=ttk.Treeview(frame, columns=encabezados, show="headings") #headings oculta la columna fantasma de python
     for titulo in encabezados:
-        tree.heading(titulo, text=titulo) #le asigna a cada columna us nombre
-        
+        tree.heading(titulo, text=titulo, anchor="center") #le asigna a cada columna us nombre
+        tree.column(titulo, anchor="center", width=120)
+    tree.tag_configure('par',background=celeste)
+    tree.tag_configure('impar',background='white')
+    nro=1
     for fila in datos:
-        tree.insert('','end', values=fila) #'' se deja vacio siempre para estas tabalas, end para que se inserte al final
-    
+        if nro % 2 == 0:
+            tree.insert('','end', values=fila,tags=('par',)) #'' se deja vacio siempre para estas tabalas, end para que se inserte al final
+        else:
+            tree.insert('','end', values=fila,tags=('impar',))
+        nro+=1
     barra_scroll = ttk.Scrollbar(frame, orient="vertical", command=tree.yview) #.yview mueve el ejey
     tree.configure(yscrollcommand=barra_scroll.set)#para cuando se mueva la ruedita se mueva la barra
     

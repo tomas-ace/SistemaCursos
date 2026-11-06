@@ -77,3 +77,15 @@ class Asistencia_DAO():
         ausencias = cursor.fetchone()[0]
         conexion.close()
         return ausencias
+    
+    def obtener_asistencia_por_inscripcion(self,inscripcion):
+        conexion = sqlite3.connect("Datos/cursos_db.db")
+        cursor = conexion.cursor()
+        cursor.execute("SELECT Fecha, Estado FROM Asistencia WHERE idInscripcion = ?" ,  (inscripcion,))
+        asistencia = cursor.fetchall()
+        print("en la consulta", asistencia)
+        if not asistencia:
+                conexion.close()
+                return "Sin Datos"
+        conexion.close()
+        return asistencia

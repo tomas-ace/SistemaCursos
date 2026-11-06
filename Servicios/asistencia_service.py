@@ -4,6 +4,7 @@ class Asistencia_Service():
         self._dao=Asistencia_DAO()
     def registrar_asistencia(self,asistencia):
         self._dao.registrar_asistencia(asistencia)
+        
     def asistencia_por_clase(self,id_clase):
         return self._dao.obtener_asistencias_por_clase(id_clase)
     
@@ -16,4 +17,7 @@ class Asistencia_Service():
         if ausencias+presencias==0:
             return 0
         porcentaje = (presencias / (ausencias+presencias)) * 100
-        return porcentaje
+        return f"{porcentaje:.2f}"
+    
+    def asistencia_por_inscripcion(self,inscripcion):
+        return self._dao.obtener_asistencia_por_inscripcion(inscripcion)

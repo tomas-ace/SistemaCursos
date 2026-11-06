@@ -31,3 +31,6 @@ class Inscripcion_Service():
     
     def modificar_estado_de_inscripcion(self, id_inscripcion, nuevo_estado):
         return self._dao.modificar_estado(id_inscripcion, nuevo_estado)
+    
+    def dar_de_baja_alumno(self,id_inscripcion):
+        self._dao.dar_de_baja(id_inscripcion)

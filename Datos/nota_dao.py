@@ -62,10 +62,9 @@ class Nota_DAO():
                 WHERE IdInscripcion = ? AND n.Nota != 1
             """, (id_inscripcion,))
         promedio = cursor.fetchone()[0]
-        if promedio is None:
-            return "Sin notas"
         conexion.close()
         return promedio
+    
     def notas_inscripcion(self,id_inscripcion):
         conexion = sqlite3.connect("Datos/cursos_db.db")
         cursor = conexion.cursor()
@@ -76,6 +75,7 @@ class Nota_DAO():
             """, (id_inscripcion,))
         notas = cursor.fetchall()
         if notas is None:
+            conexion.close()
             return "Sin notas"
         conexion.close()
         return notas

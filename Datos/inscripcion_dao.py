@@ -103,3 +103,16 @@ class Inscripcion_DAO():
             cantidad = cursor.fetchone()[0]
             conexion.close()
             return cantidad
+        
+    def dar_de_baja(self,id_inscripcion):
+        conexion=sqlite3.connect("Datos/cursos_db.db")
+        cursor = conexion.cursor()
+        
+        cursor.execute("""
+            UPDATE Inscripcion
+            SET Estado = 'Baja'
+            WHERE IdInscripcion = ?
+        """,(id_inscripcion,))
+        
+        conexion.commit()
+        conexion.close()

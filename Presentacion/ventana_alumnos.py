@@ -229,8 +229,8 @@ class Ventana_Alumnos():
         if contenedor == None:
             ventana_lista = Toplevel(self._contenido)
             ventana_lista.title("Lista de alumnos")
-            ventana_lista.geometry("700x600")
-            ventana_lista.maxsize(700, 300)
+            ventana_lista.geometry("600x320")
+            ventana_lista.maxsize(600, 320)
             ventana_lista.configure(bg=blanco)
             Label(
                 ventana_lista,
@@ -261,17 +261,6 @@ class Ventana_Alumnos():
                         command=lambda: self.ventana_registro_alumno(ventana_lista)
                     ).pack(side="left", padx=10)
             
-            Button(
-                frame_acciones,
-                text="Modificar Seleccionado",
-                font=("Arial", 11, "bold"),
-                bg=gris,
-                fg=blanco,
-                bd=0,
-                padx=20,
-                pady=10,
-                command=lambda: self.preparar_modificacion(tree,ventana_lista)
-            ).pack(side="left", padx=10)
             
             Button(
                         frame_acciones,
@@ -333,7 +322,31 @@ class Ventana_Alumnos():
                 bg=blanco,
                 fg=gris
             ).grid(row=i, column=1, pady=8, padx=10)
-
+        frame_botones = Frame(ventana_detalle, bg=blanco)
+        frame_botones.pack(pady=10)
+        Button(
+                frame_botones,
+                text="Modificar Datos",
+                font=("Arial", 11, "bold"),
+                bg=gris,
+                fg=blanco,
+                bd=0,
+                padx=20,
+                pady=10,
+                command=lambda: self.ventana_modificar_alumno(datos_alumno,ventana_detalle)
+            ).grid(row=0,column=0,padx=10)
+        Button(
+                frame_botones,
+                text="Inscribir a un Curso",
+                font=("Arial", 11, "bold"),
+                bg=gris,
+                fg=blanco,
+                bd=0,
+                padx=20,
+                pady=10,
+                command=lambda: self.inscripcion(datos_alumno,ventana_detalle)
+            ).grid(row=0,column=2,padx=10)
+        
         Label(ventana_detalle, text="Historial Académico", font=("Arial", 16, "bold"), bg=blanco).pack(pady=(30, 10))
         frame_datos_cursada = Frame(ventana_detalle, bg=blanco)
         frame_datos_cursada.pack(padx=20, pady=10, fill="both", expand=True)
@@ -364,27 +377,27 @@ class Ventana_Alumnos():
             asistencia = servicio_asistencia.calcular_porcentaje_asistencia(id_inscripcion)
 
             #frame de los datos
-            frame_cursos = Frame(frame_datos_cursada, bg=blanco, highlightbackground="black", highlightthickness=2, padx=10, pady=10)
+            frame_cursos = Frame(frame_datos_cursada, bg='white', highlightbackground="black", highlightthickness=2, padx=10, pady=10)
             frame_cursos.grid(row=fila_actual, column=columna_actual, padx=15, pady=15, sticky="nsew")
 
             #titulo
-            Label(frame_cursos, text=nombre_curso, font=("Arial", 14, "bold"), bg=blanco).pack(anchor="w", pady=(0, 10))
+            Label(frame_cursos, text=nombre_curso, font=("Arial", 14, "bold"), bg='white').pack(anchor="w", pady=(0, 10))
             
             #separador
             Frame(frame_cursos, height=2, bg="black").pack(fill="x", pady=(0, 10))
 
-            Label(frame_cursos, text=f"Año: {anio}", font=("Arial", 11), bg=blanco).pack(anchor="w")
-            Label(frame_cursos, text=f"Turno: {turno}", font=("Arial", 11), bg=blanco).pack(anchor="w")
-            Label(frame_cursos, text=f"Estado: {estado}", font=("Arial", 11, "italic"), bg=blanco, fg=gris).pack(anchor="w", pady=(5, 10))
-            Label(frame_cursos, text=f"Asistencia: {asistencia}%", font=("Arial", 11, "bold"), bg=blanco).pack(anchor="w")
-            Label(frame_cursos, text=f"Promedio: {promedio}", font=("Arial", 11, "bold"), bg=blanco).pack(anchor="w", pady=(0, 15))
+            Label(frame_cursos, text=f"Año: {anio}", font=("Arial", 11), bg='white').pack(anchor="w")
+            Label(frame_cursos, text=f"Turno: {turno}", font=("Arial", 11), bg='white').pack(anchor="w")
+            Label(frame_cursos, text=f"Estado: {estado}", font=("Arial", 11, "italic"), bg='white', fg=gris).pack(anchor="w", pady=(5, 10))
+            Label(frame_cursos, text=f"Asistencia: {asistencia}%", font=("Arial", 11, "bold"), bg='white').pack(anchor="w")
+            Label(frame_cursos, text=f"Promedio: {promedio}", font=("Arial", 11, "bold"), bg='white').pack(anchor="w", pady=(0, 15))
 
-            frame_botones_card = Frame(frame_cursos, bg=blanco)
+            frame_botones_card = Frame(frame_cursos, bg='white')
             frame_botones_card.pack(fill="x", side="bottom")
 
             
-            Button(frame_botones_card, text="Notas", font=("Arial", 9), command=lambda id_ins=id_inscripcion: self.ver_notas(id_ins)).pack(side="left", padx=2)
-            Button(frame_botones_card, text="Asist.", font=("Arial", 9), command=lambda id_ins=id_inscripcion: self.ver_asistencia(id_ins)).pack(side="left", padx=2)
+            Button(frame_botones_card, text="Notas", font=("Arial", 9), bg=azul,fg="white",command=lambda id_ins=id_inscripcion: self.ver_notas(id_ins)).pack(side="left", padx=2)
+            Button(frame_botones_card, text="Asistencia", font=("Arial", 9), bg=azul,fg="white",command=lambda id_ins=id_inscripcion: self.ver_asistencias(id_ins)).pack(side="left", padx=2)
             Button(frame_botones_card, text="Baja", font=("Arial", 9), bg="#ff4c4c", fg="white", command=lambda id_ins=id_inscripcion: self.dar_de_baja(id_ins)).pack(side="right", padx=2)
 
             columna_actual += 1
@@ -392,21 +405,38 @@ class Ventana_Alumnos():
                 columna_actual = 0
                 fila_actual += 1
                 
-            
-    # def ver_notas(self,id_inscripcion):
-    #     pass
-    def ver_asistencia(self,id_inscripcion):
-        pass
+    def inscripcion(self,datos_alumno,ventana_detalle):
+        legajo=datos_alumno[0]
+        ventana_insc=Ventana_Inscripciones(self._contenido)
+        ventana = Toplevel(self._contenido) 
+        ventana_detalle.destroy()   
+        ventana.title("Registrar nueva inscripcion")
+        ventana.geometry("600x600")
+        ventana.configure(bg=blanco)
+        Label(
+            ventana,
+            text="Registrar nueva inscripcion",
+            font=("Arial", 20, "bold"),
+            bg=blanco,
+            fg=texto
+        ).grid(pady=(10, 25), column=0, row=0)
+
+        frame_contenido=Frame(ventana, bg=blanco)
+        frame_contenido.grid(column=0, row=1, padx=20, pady=10,rowspan=4,columnspan=4)
+        ventana_insc.mostrar_cursos(frame_contenido,legajo,ventana)
+    
     def dar_de_baja(self,id_inscripcion):
-        pass
+        service=Inscripcion_Service()
+        service.dar_de_baja_alumno(id_inscripcion)
+        
         
         
     def ver_notas(self, id_inscripcion):
         notas=Nota_Service().obtener_notas_inscripcion(id_inscripcion)
         ventana_notas = Toplevel(self._contenido)
         ventana_notas.title("Notas del alumno")
-        ventana_notas.geometry("1200x400")
-        ventana_notas.maxsize(1200, 400)
+        ventana_notas.geometry("700x350")
+        ventana_notas.maxsize(700,350)
         ventana_notas.configure(bg=blanco)
 
         Label(
@@ -444,61 +474,44 @@ class Ventana_Alumnos():
             command=ventana_notas.destroy
         ).grid(pady=15, column=0, row=2)     
     
-    def inasistencias_alumno(self, alumno_id):
-        inasistencias=Alumno_Service().inasistencias_por_alumno(alumno_id)
-        ventana_inasistencias = Toplevel(self._contenido)
-        ventana_inasistencias.title("Inasistencias del alumno")
-        ventana_inasistencias.geometry("900x400")
-        ventana_inasistencias.configure(bg=blanco)
-
-        Label(
-            ventana_inasistencias,
-            text="Historial de Inasistencias",
-            font=("Arial", 18, "bold"),
-            bg=blanco
-            
-        ).grid(pady=(15, 10),column=0, row=0)
-
+    def ver_asistencias(self, inscripcion):
+        asistencia=Asistencia_Service().asistencia_por_inscripcion(inscripcion)
+        ventana_asistencias = Toplevel(self._contenido)
+        ventana_asistencias.title("Asistencia en el Curso")
+        ventana_asistencias.geometry("450x350")
+        ventana_asistencias.maxsize(450,350)
+        ventana_asistencias.configure(bg=blanco)
     
-        if not inasistencias:
+        if asistencia =="Sin Datos":
             Label(
-                ventana_inasistencias,
-                text="Este alumno no tiene inasistencias registradas.",
+                ventana_asistencias,
+                text="Este alumno no tiene asistencias registradas.",
                 font=("Arial", 12),
                 bg=blanco,
                 fg=gris
             ).grid(pady=30, column=0, row=1)
             return 
 
-        columnas = ["Curso", "Año", "Fecha"]
+        columnas = ["Fecha","Estado"]
 
-        tabla_inasistencias = treeview(ventana_inasistencias, columnas, inasistencias)
+        tabla_inasistencias = treeview(ventana_asistencias, columnas, asistencia)
         
         
         Button(
-            ventana_inasistencias,
+            ventana_asistencias,
             text="Cerrar",
             font=("Arial", 11, "bold"),
             bg=gris,
             fg=blanco,
             padx=20,
             pady=10,
-            command=ventana_inasistencias.destroy
+            command=ventana_asistencias.destroy
         ).grid(pady=15, column=0, row=2)
-    def preparar_modificacion(self,tree,ventana): 
-        seleccion = tree.selection()
-        if not seleccion:
-            print("seleccione un alumno de la tabla.")
-            return
-
-        item_id = seleccion[0]#guarda el id interno del treeviewe que le asigna tkinter
-        print("item_id:", item_id)
-        datos_alumno = tree.item(item_id)['values']#guarda los valores de la fila en una lista
-        print("datos_alumno:", datos_alumno[0])
-        ventana.destroy() 
-        self.ventana_modificar_alumno(datos_alumno)
+   
+    
         
-    def ventana_modificar_alumno(self,datos_alumno):
+    def ventana_modificar_alumno(self,datos_alumno,ventana_vieja):
+        ventana_vieja.destroy()
         ventana = Toplevel(self._contenido)
         ventana.title("Modificar alumno")
         ventana.geometry("600x600")

@@ -152,8 +152,8 @@ class Ventana_Inscripciones():
             self.mostrar_listas(frame_contenido,ventana)
     
         def mostrar_listas(self,contenedor,ventana):
-            for widget in contenedor.winfo_children():
-                widget.destroy()
+            for elemento in contenedor.winfo_children():
+                elemento.destroy()
             service_alumnos=Alumno_Service()
             lista_de_alumnos=service_alumnos.lista_por_nombre_apellido()
             encabezados_alumnos = ["ID","Nombre", "Apellido"]
@@ -181,10 +181,10 @@ class Ventana_Inscripciones():
             alumno_seleccionado_para_inscribir = tree_alumnos.item(item_id)['values']
             print ("el alumno seleccionado es ",alumno_seleccionado_para_inscribir)
             print("el id del alumno es ",alumno_seleccionado_para_inscribir[0])
-            self.mostrar_cursos(contenedor, alumno_seleccionado_para_inscribir, ventana)
+            self.mostrar_cursos(contenedor, alumno_seleccionado_para_inscribir[0], ventana)
         def mostrar_cursos(self,contenedor,alumno,ventana):
-            for widget in contenedor.winfo_children():
-                widget.destroy()
+            for elemento in contenedor.winfo_children():
+                elemento.destroy()
             service_cursos=Clase_Service()
             lista_de_cursos=service_cursos.listar_por_descripcion()
             encabezados_cursos = ["ID","Descripcion", "Turno"]
@@ -211,8 +211,8 @@ class Ventana_Inscripciones():
             curso_seleccionado_para_inscribir = tree_cursos.item(item_id)['values']
             fecha_actual = datetime.now().strftime("%Y-%m-%d")
             
-            print("antes de crear la inscripcion el id del alumno es ",alumno[0])
-            nueva_inscripcion=Inscripcion(None, fecha_actual, "En Curso", alumno[0], curso_seleccionado_para_inscribir[0])
+          
+            nueva_inscripcion=Inscripcion(None, fecha_actual, "En Curso", alumno, curso_seleccionado_para_inscribir[0])
             servicio_inscripcion=Inscripcion_Service()
             resultado=servicio_inscripcion.nueva_inscripcion(nueva_inscripcion)
             if resultado != True:

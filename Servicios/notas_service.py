@@ -31,6 +31,11 @@ class Nota_Service():
         return self._dao.obtener_notas_por_clase(id_clase)
     
     def promedio_alumno_en_clase(self, id_inscripcion):
-        return self._dao.obtener_promedio_alumno_por_clase(id_inscripcion)
+        promedio= self._dao.obtener_promedio_alumno_por_clase(id_inscripcion)
+        print("el promedio es ", promedio)
+        if promedio == None:
+            return "Sin notas"
+        else:
+            return f"{promedio:.2f}"
     def obtener_notas_inscripcion(self,id_inscripcion):
         return self._dao.notas_inscripcion(id_inscripcion)
