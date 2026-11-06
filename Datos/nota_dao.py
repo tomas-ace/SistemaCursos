@@ -53,3 +53,30 @@ class Nota_DAO():
         conexion.close()
         return datos
  
+    def obtener_promedio_alumno_por_clase(self,id_inscripcion):
+        conexion = sqlite3.connect("Datos/cursos_db.db")
+        cursor = conexion.cursor()
+        cursor.execute("""
+                SELECT AVG(Nota)
+                FROM Nota n
+                WHERE IdInscripcion = ? AND n.Nota != 1
+            """, (id_inscripcion,))
+        promedio = cursor.fetchone()[0]
+        if promedio is None:
+            return "Sin notas"
+        conexion.close()
+        return promedio
+    def notas_inscripcion(self,id_inscripcion):
+        conexion = sqlite3.connect("Datos/cursos_db.db")
+        cursor = conexion.cursor()
+        cursor.execute("""
+                SELECT Fecha, Descripcion, Nota 
+                FROM Nota
+                WHERE idInscripcion = ? 
+            """, (id_inscripcion,))
+        notas = cursor.fetchall()
+        if notas is None:
+            return "Sin notas"
+        conexion.close()
+        return notas
+       

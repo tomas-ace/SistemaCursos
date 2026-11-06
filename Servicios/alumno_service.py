@@ -39,7 +39,7 @@ class Alumno_Service():
     
     def modificar_alumno(self,alumno):
         resultado = self.datos_validos(alumno, modificar=True)
-        if not resultado:
+        if resultado != True:
                 return resultado
         elif self._dao.existe_dni_en_otro_alumno(alumno.get_dni(), alumno.get_legajo()):
             return "El DNI ingresado ya existe en otro alumno. Por favor, ingrese un DNI válido."

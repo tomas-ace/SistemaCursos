@@ -61,3 +61,19 @@ class Asistencia_DAO():
         resultado = cursor.fetchone()[0]
         conexion.close()
         return resultado > 0
+    
+    def cantidad_presencias(self, id_inscripcion):
+        conexion = sqlite3.connect("Datos/cursos_db.db")
+        cursor = conexion.cursor()
+        cursor.execute("SELECT COUNT(*) FROM Asistencia WHERE idInscripcion = ? AND estado = 'Presente'", (id_inscripcion,))
+        presentes = cursor.fetchone()[0]
+        conexion.close()
+        return presentes
+    
+    def cantidad_ausencias(self,id_inscripcion):
+        conexion = sqlite3.connect("Datos/cursos_db.db")
+        cursor = conexion.cursor()
+        cursor.execute("SELECT COUNT(*) FROM Asistencia WHERE idInscripcion = ? AND estado = 'Ausente'", (id_inscripcion,))
+        ausencias = cursor.fetchone()[0]
+        conexion.close()
+        return ausencias

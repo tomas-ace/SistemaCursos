@@ -175,7 +175,7 @@ class Ventana_Inscripciones():
         def guardar_y_avanzar(self,tree_alumnos,contenedor,ventana):
             seleccion = tree_alumnos.selection()
             if not seleccion:
-                messagebox.showwarning("Atencion", "Por favor, seleccione un alumno de la lista.")
+                messagebox.showwarning("Atencion", "Por favor, seleccione un alumno de la lista.", parent=contenedor)
                 return
             item_id = seleccion[0]
             alumno_seleccionado_para_inscribir = tree_alumnos.item(item_id)['values']
@@ -205,7 +205,7 @@ class Ventana_Inscripciones():
         def guardar_inscripcion(self,tree_cursos,alumno,contenedor,ventana):
             seleccion = tree_cursos.selection()
             if not seleccion:
-                messagebox.showwarning("Atencion", "Por favor, seleccione un curso de la lista.")
+                messagebox.showwarning("Atencion", "Por favor, seleccione un curso de la lista.",parent=contenedor)
                 return
             item_id = seleccion[0]
             curso_seleccionado_para_inscribir = tree_cursos.item(item_id)['values']

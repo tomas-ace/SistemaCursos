@@ -19,6 +19,8 @@ class Curso_Service():
         resultado = self.datos_validos(curso,modificar=True)
         if resultado != True:
             return resultado
+        elif self._dao.existe_curso_en_otro_curso(curso.get_descripcion(), curso.get_id_curso()):
+            return "El curso ingresado ya existe en otro curso. Por favor, ingrese un curso válido."
         else:
             self._dao.modificar_curso(curso)
             return True

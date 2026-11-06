@@ -84,7 +84,7 @@ class Clase_DAO():
             SELECT c.IdClase,cu.Descripcion, c.Turno
             FROM Clase c
             JOIN Curso cu ON c.IdCurso = cu.IdCurso
-            where c.anio=2026 and c.estado="Activa"
+            where c.estado="Activa"
         """)
         clases = cursor.fetchall()
         conexion.close()

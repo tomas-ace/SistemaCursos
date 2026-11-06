@@ -229,7 +229,8 @@ class Ventana_Alumnos():
         if contenedor == None:
             ventana_lista = Toplevel(self._contenido)
             ventana_lista.title("Lista de alumnos")
-            ventana_lista.geometry("1500x600")
+            ventana_lista.geometry("700x600")
+            ventana_lista.maxsize(700, 300)
             ventana_lista.configure(bg=blanco)
             Label(
                 ventana_lista,
@@ -244,6 +245,7 @@ class Ventana_Alumnos():
         columnas = ["ID", "Nombre", "Apellido", "DNI", "Telefono", "Email", "Fecha de nacimiento"]
         datos_alumnos = Alumno_Service().listar_alumnos()
         tree=treeview(ventana_lista, columnas, datos_alumnos)
+        tree["displaycolumns"] = ("Nombre", "Apellido")
         frame_acciones = Frame(ventana_lista, bg=blanco)
         frame_acciones.grid(column=0, row=2, padx=20, pady=10)
 
@@ -296,7 +298,8 @@ class Ventana_Alumnos():
         ventana.destroy()
         ventana_detalle = Toplevel(self._contenido)
         ventana_detalle.title("Detalle del alumno")
-        ventana_detalle.geometry("600x600")
+        ventana_detalle.geometry("1100x700")
+        ventana_detalle.minsize(1100,700)
         ventana_detalle.configure(bg=blanco)
 
 
@@ -305,7 +308,7 @@ class Ventana_Alumnos():
             text="Detalle del alumno",
             font=("Arial", 20, "bold"),
             bg=blanco
-            
+                
         ).pack(pady=(20, 20))
 
        
@@ -315,10 +318,7 @@ class Ventana_Alumnos():
         for i in range(len(titulos_columnas)):
             if i==0:
                 continue
-
             titulo = titulos_columnas[i]
-            
-            
             Label(
                 frame_datos,
                 text=titulo,
@@ -326,8 +326,6 @@ class Ventana_Alumnos():
                 bg=blanco,
                 width=18
             ).grid(row=i, column=0, pady=8, padx=10)
-
-           
             Label(
                 frame_datos,
                 text=str(datos_alumno[i]),
@@ -336,88 +334,79 @@ class Ventana_Alumnos():
                 fg=gris
             ).grid(row=i, column=1, pady=8, padx=10)
 
+        Label(ventana_detalle, text="Historial Académico", font=("Arial", 16, "bold"), bg=blanco).pack(pady=(30, 10))
         frame_datos_cursada = Frame(ventana_detalle, bg=blanco)
-        frame_datos_cursada.pack(pady=40)
+        frame_datos_cursada.pack(padx=20, pady=10, fill="both", expand=True)
+        id_alumno = datos_alumno[0]
+        servicio_alumno = Alumno_Service()
+        servicio_nota = Nota_Service()
+        servicio_asistencia = Asistencia_Service()
+        historial_cursos = servicio_alumno.cursos_por_alumno(id_alumno)
+        if not historial_cursos:
+            Label(frame_datos_cursada, text="El alumno no registra inscripciones en ningún curso.", font=("Arial", 12, "italic"), bg=blanco, fg=gris).pack()
+            return
+        columna_actual = 0
+        fila_actual = 0
+        max_columnas_por_fila = 3 
 
-        Button(
-            frame_datos_cursada,
-            text="Cursos",
-            font=("Arial", 11, "bold"),
-            bg=azul,
-            fg=blanco,
-            padx=20,
-            pady=10,
-            command=lambda: self.cursos_alumno(datos_alumno[0])
-        ).grid(column=0,row=0, padx=10)
+        for curso in historial_cursos:
+            id_inscripcion = curso[0]
+            id_clase = curso[1]
+            nombre_curso = curso[2]
+            anio = curso[3]
+            if curso[4]=="Maniana":
+                turno = "Mañana"
+            else:
+                turno = curso[4]
+            estado = curso[5]
+            print("antes del servicio el idinsc es: ", id_inscripcion)
+            promedio = servicio_nota.promedio_alumno_en_clase(id_inscripcion)
+            asistencia = servicio_asistencia.calcular_porcentaje_asistencia(id_inscripcion)
 
-        Button(
-            frame_datos_cursada,
-            text="Notas",
-            font=("Arial", 11, "bold"),
-            bg=azul,
-            fg=blanco,
-            padx=20,
-            pady=10,
-            command=lambda: self.notas_alumno(datos_alumno[0])
-        ).grid(column=1,row=0, padx=10)
+            #frame de los datos
+            frame_cursos = Frame(frame_datos_cursada, bg=blanco, highlightbackground="black", highlightthickness=2, padx=10, pady=10)
+            frame_cursos.grid(row=fila_actual, column=columna_actual, padx=15, pady=15, sticky="nsew")
 
-        Button(
-            frame_datos_cursada,
-            text="Inasistencias",
-            font=("Arial", 11, "bold"),
-            bg=azul,
-            fg=blanco,
-            padx=20,
-            pady=10,
-            command=lambda: self.inasistencias_alumno(datos_alumno[0])
-        ).grid(column=2,row=0, padx=10)
-    def cursos_alumno(self, alumno_id):
-        cursos=Alumno_Service().cursos_por_alumno(alumno_id)
-        ventana_cursos = Toplevel(self._contenido)
-        ventana_cursos.title("Cursos del alumno")
-        ventana_cursos.geometry("1200x400")
-        ventana_cursos.configure(bg=blanco)
-
-        Label(
-            ventana_cursos,
-            text="Historial de Cursos",
-            font=("Arial", 18, "bold"),
-            bg=blanco
+            #titulo
+            Label(frame_cursos, text=nombre_curso, font=("Arial", 14, "bold"), bg=blanco).pack(anchor="w", pady=(0, 10))
             
-        ).grid(pady=(15, 10),column=0, row=0)
+            #separador
+            Frame(frame_cursos, height=2, bg="black").pack(fill="x", pady=(0, 10))
 
-    
-        if not cursos:
-            Label(
-                ventana_cursos,
-                text="Este alumno no está inscripto en ningún curso actualmente.",
-                font=("Arial", 12),
-                bg=blanco,
-                fg=gris
-            ).grid(pady=30, column=0, row=1)
-            return 
+            Label(frame_cursos, text=f"Año: {anio}", font=("Arial", 11), bg=blanco).pack(anchor="w")
+            Label(frame_cursos, text=f"Turno: {turno}", font=("Arial", 11), bg=blanco).pack(anchor="w")
+            Label(frame_cursos, text=f"Estado: {estado}", font=("Arial", 11, "italic"), bg=blanco, fg=gris).pack(anchor="w", pady=(5, 10))
+            Label(frame_cursos, text=f"Asistencia: {asistencia}%", font=("Arial", 11, "bold"), bg=blanco).pack(anchor="w")
+            Label(frame_cursos, text=f"Promedio: {promedio}", font=("Arial", 11, "bold"), bg=blanco).pack(anchor="w", pady=(0, 15))
 
-        columnas = ["Descripción", "Duración", "Turno", "Año", "Fecha de Inscripción", "Estado"]
+            frame_botones_card = Frame(frame_cursos, bg=blanco)
+            frame_botones_card.pack(fill="x", side="bottom")
 
-        tabla_cursos = treeview(ventana_cursos, columnas, cursos)
+            
+            Button(frame_botones_card, text="Notas", font=("Arial", 9), command=lambda id_ins=id_inscripcion: self.ver_notas(id_ins)).pack(side="left", padx=2)
+            Button(frame_botones_card, text="Asist.", font=("Arial", 9), command=lambda id_ins=id_inscripcion: self.ver_asistencia(id_ins)).pack(side="left", padx=2)
+            Button(frame_botones_card, text="Baja", font=("Arial", 9), bg="#ff4c4c", fg="white", command=lambda id_ins=id_inscripcion: self.dar_de_baja(id_ins)).pack(side="right", padx=2)
+
+            columna_actual += 1
+            if columna_actual >= max_columnas_por_fila:
+                columna_actual = 0
+                fila_actual += 1
+                
+            
+    # def ver_notas(self,id_inscripcion):
+    #     pass
+    def ver_asistencia(self,id_inscripcion):
+        pass
+    def dar_de_baja(self,id_inscripcion):
+        pass
         
         
-        Button(
-            ventana_cursos,
-            text="Cerrar",
-            font=("Arial", 11, "bold"),
-            bg=gris,
-            fg=blanco,
-            bd=0,
-            padx=20,
-            pady=10,
-            command=ventana_cursos.destroy
-        ).grid(pady=15, column=0, row=2)
-    def notas_alumno(self, alumno_id):
-        notas=Alumno_Service().notas_por_alumno(alumno_id)
+    def ver_notas(self, id_inscripcion):
+        notas=Nota_Service().obtener_notas_inscripcion(id_inscripcion)
         ventana_notas = Toplevel(self._contenido)
         ventana_notas.title("Notas del alumno")
         ventana_notas.geometry("1200x400")
+        ventana_notas.maxsize(1200, 400)
         ventana_notas.configure(bg=blanco)
 
         Label(
@@ -432,15 +421,14 @@ class Ventana_Alumnos():
         if not notas:
             Label(
                 ventana_notas,
-                text="Este alumno no tiene notas registradas.",
+                text="Este alumno no tiene notas registradas en este curso.",
                 font=("Arial", 12),
                 bg=blanco,
                 fg=gris
             ).grid(pady=30, column=0, row=1)
             return 
 
-        columnas = ["Fecha", "Descripcion", "Curso", "Año", "Nota"]
-
+        columnas = ["Fecha", "Descripcion", "Nota"]
         tabla_notas = treeview(ventana_notas, columnas, notas)
         
         

@@ -69,3 +69,11 @@ class Curso_DAO():
         conexion.commit()
         conexion.close()
         return resultado is not None
+    
+    def existe_curso_en_otro_curso(self, descripcion, id_curso):
+        conexion=sqlite3.connect("Datos/cursos_db.db")
+        cursor = conexion.cursor()
+        cursor.execute("SELECT idCurso FROM Curso WHERE Descripcion = ? AND idCurso != ?", (descripcion, id_curso))
+        resultado = cursor.fetchone()
+        conexion.close()
+        return resultado != None

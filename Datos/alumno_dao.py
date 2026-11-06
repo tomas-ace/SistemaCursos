@@ -81,7 +81,7 @@ class Alumno_DAO():
         conexion = sqlite3.connect("Datos/cursos_db.db")
         cursor = conexion.cursor()
         cursor.execute("""
-            SELECT c.Descripcion,c.Duracion ,cl.Turno,cl.Anio, i.Fecha_Inscripcion, i.Estado
+            SELECT i.IdInscripcion, cl.IdClase, c.Descripcion, cl.Anio, cl.Turno, i.Estado
             FROM Curso c
             JOIN Clase cl ON cl.IdCurso = c.IdCurso
             JOIN Inscripcion i ON i.IdClase = cl.IdClase

@@ -29,3 +29,8 @@ class Nota_Service():
         
     def notas_por_alumno(self,id_clase):
         return self._dao.obtener_notas_por_clase(id_clase)
+    
+    def promedio_alumno_en_clase(self, id_inscripcion):
+        return self._dao.obtener_promedio_alumno_por_clase(id_inscripcion)
+    def obtener_notas_inscripcion(self,id_inscripcion):
+        return self._dao.notas_inscripcion(id_inscripcion)
