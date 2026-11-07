@@ -13,11 +13,10 @@ class Ventana_Cursos():
             from Presentacion.ventana_clases import Ventana_Clases
             if opcion == "Registrar nuevo curso":
                 self.ventana_registro_curso(None)
-            elif opcion == "Clases":
+            elif opcion == "Gestion de Clases":
                 
                 clase_ventana=Ventana_Clases(self._contenido)
                 clase_ventana.vista_tarjetas_clases()
-                #clase_ventana.mostrar()
             else:
                 self.lista_de_cursos()
                 
@@ -139,7 +138,7 @@ class Ventana_Cursos():
             opciones = [
                 "Registrar nuevo curso",
                 "Consultar cursos",
-                "Clases" 
+                "Gestion de Clases" 
             ]
             fila = 0
             for opcion in opciones:
