@@ -53,3 +53,18 @@ class Clase_Service():
         else:
             return self._dao.lista_de_alumnos_con_estado_y_filtro(clase, filtro)
     
+    def listar_clases_con_filtros(filtro_estado,filtro_curso):
+        pass
+    
+    def obtener_clases_filtradas(self, filtro_estado, filtro_curso):
+        if filtro_estado == "Todas" and filtro_curso == "Todos los Cursos":
+            return self._dao.listar_todas_las_clases()
+            
+        elif filtro_estado != "Todas" and filtro_curso == "Todos los Cursos":
+            return self._dao.listar_clases_por_estado(filtro_estado)
+            
+        elif filtro_estado == "Todas" and filtro_curso != "Todos los Cursos":
+            return self._dao.listar_clases_por_curso(filtro_curso)
+            
+        else:
+            return self._dao.listar_clases_por_estado_y_curso(filtro_estado, filtro_curso)

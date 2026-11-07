@@ -14,13 +14,13 @@ class Ventana_Cursos():
             if opcion == "Registrar nuevo curso":
                 self.ventana_registro_curso(None)
             elif opcion == "Clases":
-                for elemento in self._contenido.winfo_children():
-                        elemento.destroy()
-                print("clases")
+                
                 clase_ventana=Ventana_Clases(self._contenido)
-                clase_ventana.mostrar()
+                clase_ventana.vista_tarjetas_clases()
+                #clase_ventana.mostrar()
             else:
                 self.lista_de_cursos()
+                
         def ventana_registro_curso(self,ventana_none):
                 if ventana_none == None:
                     pass

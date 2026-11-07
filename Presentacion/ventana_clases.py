@@ -8,6 +8,7 @@ from Dominio.nota import *
 from Servicios.notas_service import *
 from tkinter import messagebox
 from datetime import datetime
+from Servicios.curso_service import *
 
 
 class Ventana_Clases():
@@ -705,4 +706,95 @@ class Ventana_Clases():
             else:
                 messagebox.showerror("Error", resultado, parent=ventana)
                 
+        def vista_tarjetas_clases(self, contenedor=None, filtro_estado="Todas", filtro_curso="Todos los Cursos"):
+            if contenedor is None:
+                ventana_clases = Toplevel(self._contenido)
+                ventana_clases.title("Gestión de Clases")
+                ventana_clases.geometry("1100x700")
+                ventana_clases.configure(bg=blanco)
+            else:
+                ventana_clases = contenedor
+                for elemento in ventana_clases.winfo_children():
+                    elemento.destroy()
+
+            Label(ventana_clases, text="Gestión de Clases", font=("Arial", 20, "bold"), bg=blanco).pack(pady=(20, 10))
+
+            frame_filtros = Frame(ventana_clases, bg=blanco)
+            frame_filtros.pack(pady=10)
+
+            opcion_estado = StringVar(value=filtro_estado)
+            Radiobutton(frame_filtros, text="Todas", variable=opcion_estado, value="Todas", bg=blanco).grid(row=0, column=0, padx=5)
+            Radiobutton(frame_filtros, text="Activas", variable=opcion_estado, value="Activa", bg=blanco).grid(row=0, column=1, padx=5)
+            Radiobutton(frame_filtros, text="Inactivas", variable=opcion_estado, value="Inactiva", bg=blanco).grid(row=0, column=2, padx=10)
+
+            Label(frame_filtros, text="Curso:", bg=blanco, font=("Arial", 10, "bold")).grid(row=0, column=3, padx=(10, 5))
+            
+            servicio_curso = Curso_Service() 
+            nombres_cursos = ["Todos los Cursos"]
+            lista_de_cursos = servicio_curso.listar_cursos()
+            for curso in lista_de_cursos:
+                nombre = curso[1]
+                nombres_cursos.append(nombre)
+            
+            
+            combo_cursos = ttk.Combobox(frame_filtros, values=nombres_cursos, state="readonly", width=30)
+            combo_cursos.set(filtro_curso)
+            combo_cursos.grid(row=0, column=4, padx=5)
+
+            
+            Button(
+                frame_filtros, text="Aplicar Filtros", bg=azul, fg="white", font=("Arial", 10, "bold"), bd=0, padx=15, pady=5,
+                command=lambda: self.vista_tarjetas_clases(ventana_clases, opcion_estado.get(), combo_cursos.get())
+            ).grid(row=0, column=5, padx=15)
+
+            Button(
+                frame_filtros, text="Agregar Nueva Clase", bg=gris, fg="white", font=("Arial", 10, "bold"), bd=0, padx=15, pady=5,
+                command=lambda: self.ventana_registro_clase(ventana_clases)
+            ).grid(row=0, column=6, padx=5)
+
+            frame_grid = Frame(ventana_clases, bg=blanco)
+            frame_grid.pack(padx=20, pady=10, fill="both", expand=True)
+
+            
+            servicio_clases = Clase_Service()
+            datos_clases = servicio_clases.obtener_clases_filtradas(filtro_estado, filtro_curso)
+
+            if not datos_clases:
+                Label(frame_grid, text="No se encontraron clases con estos filtros.", font=("Arial", 12, "italic"), bg=blanco, fg=gris).pack(pady=40)
+                return
+
+            columna_actual = 0
+            fila_actual = 0
+            max_columnas_por_fila = 7
+
+            for clase in datos_clases:
+                id_clase = clase[0]
+                nombre_curso = clase[1]
+                turno = clase[2]
+                anio = clase[3]
+                estado = clase[4]
+                cant_alumnos = clase[5]
+
                 
+                card = Frame(frame_grid, bg="white", highlightbackground="black", highlightthickness=2, padx=15, pady=15)
+                card.grid(row=fila_actual, column=columna_actual, padx=15, pady=15, sticky="nsew")
+
+                Label(card, text=nombre_curso, font=("Arial", 14, "bold"), bg="white", wraplength=220).pack(anchor="w", pady=(0, 5))
+                Frame(card, height=2, bg="black").pack(fill="x", pady=(0, 10))
+
+                Label(card, text=f"ID Clase: {id_clase}", font=("Arial", 11), bg="white").pack(anchor="w")
+                Label(card, text=f"Año: {anio} | Turno: {turno}", font=("Arial", 11), bg="white").pack(anchor="w")
+                Label(card, text=f"Estado: {estado}", font=("Arial", 11, "italic"), bg="white", fg=gris).pack(anchor="w", pady=(5, 5))
+                
+                Label(card, text=f"Alumnos Inscritos: {cant_alumnos}", font=("Arial", 11, "bold"), bg="white").pack(anchor="w", pady=(0, 15))
+
+                frame_botones_card = Frame(card, bg="white")
+                frame_botones_card.pack(fill="x", side="bottom")
+
+                Button(frame_botones_card, text="Consultar", font=("Arial", 9, "bold"), bg=azul, fg="white", bd=0, padx=15, command=lambda id_c=id_clase: self.consultar_clase(id_c)).pack(side="left")
+                Button(frame_botones_card, text="Mod. Estado", font=("Arial", 9, "bold"), bg=gris, fg="white", bd=0, padx=10, command=lambda id_c=id_clase: self.modificar_estado(id_c)).pack(side="right")
+
+                columna_actual += 1
+                if columna_actual >= max_columnas_por_fila:
+                    columna_actual = 0
+                    fila_actual += 1

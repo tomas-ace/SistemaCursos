@@ -168,5 +168,58 @@ class Clase_DAO():
         id_curso = cursor.fetchone()[0]
         conexion.close()
         return id_curso
+    def listar_todas_las_clases(self):
+        conexion = sqlite3.connect("Datos/cursos_db.db")
+        cursor = conexion.cursor()
+        cursor.execute("""
+            SELECT c.IdClase, cu.Descripcion, c.Turno, c.Anio, c.Estado,
+                   (SELECT COUNT(*) FROM Inscripcion i WHERE i.IdClase = c.IdClase AND i.Estado = 'En Curso') as Cant_Alumnos
+            FROM Clase c
+            JOIN Curso cu ON c.IdCurso = cu.IdCurso
+        """)
+        clases = cursor.fetchall()
+        conexion.close()
+        return clases
     
+    def listar_clases_por_curso(self, nombre_curso):
+        conexion = sqlite3.connect("Datos/cursos_db.db")
+        cursor = conexion.cursor()
+        cursor.execute("""
+            SELECT c.IdClase, cu.Descripcion, c.Turno, c.Anio, c.Estado,
+                   (SELECT COUNT(*) FROM Inscripcion i WHERE i.IdClase = c.IdClase AND i.Estado = 'En Curso') as Cant_Alumnos
+            FROM Clase c
+            JOIN Curso cu ON c.IdCurso = cu.IdCurso
+            WHERE cu.Descripcion = ?
+        """, (nombre_curso,))
+        clases = cursor.fetchall()
+        conexion.close()
+        return clases
+    
+    def listar_clases_por_estado(self, estado):
+        conexion = sqlite3.connect("Datos/cursos_db.db")
+        cursor = conexion.cursor()
+        cursor.execute("""
+            SELECT c.IdClase, cu.Descripcion, c.Turno, c.Anio, c.Estado,
+                   (SELECT COUNT(*) FROM Inscripcion i WHERE i.IdClase = c.IdClase AND i.Estado = 'En Curso') as Cant_Alumnos
+            FROM Clase c
+            JOIN Curso cu ON c.IdCurso = cu.IdCurso
+            WHERE c.Estado = ?
+        """, (estado,))
+        clases = cursor.fetchall()
+        conexion.close()
+        return clases
+    
+    def listar_clases_por_estado_y_curso(self, estado, nombre_curso):
+        conexion = sqlite3.connect("Datos/cursos_db.db")
+        cursor = conexion.cursor()
+        cursor.execute("""
+            SELECT c.IdClase, cu.Descripcion, c.Turno, c.Anio, c.Estado,
+                   (SELECT COUNT(*) FROM Inscripcion i WHERE i.IdClase = c.IdClase AND i.Estado = 'En Curso') as Cant_Alumnos
+            FROM Clase c
+            JOIN Curso cu ON c.IdCurso = cu.IdCurso
+            WHERE c.Estado = ? AND cu.Descripcion = ?
+        """, (estado, nombre_curso))
+        clases = cursor.fetchall()
+        conexion.close()
+        return clases
     
