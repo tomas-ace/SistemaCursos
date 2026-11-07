@@ -426,10 +426,10 @@ class Ventana_Alumnos():
         ventana_insc.mostrar_cursos(frame_contenido,legajo,ventana)
     
     def dar_de_baja(self,id_inscripcion):
-        service=Inscripcion_Service()
-        service.dar_de_baja_alumno(id_inscripcion)
-        
-        
+        valor=messagebox.askokcancel("Confirmacion","¿Estas seguro que quieres dar de baja al alumno?")
+        if valor==True:
+            service=Inscripcion_Service()
+            service.dar_de_baja_alumno(id_inscripcion)
         
     def ver_notas(self, id_inscripcion):
         notas=Nota_Service().obtener_notas_inscripcion(id_inscripcion)

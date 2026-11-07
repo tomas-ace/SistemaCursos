@@ -243,15 +243,6 @@ class Ventana_Clases():
             
             frame_tabla = Frame(ventana_asistencias)
             frame_tabla.grid(row=3,column=1,columnspan=6, padx=20, pady=10)
-            
-            # if datos_clases==None:
-            #     Label(
-            #         frame_tabla, 
-            #         text="No hay alumnos para esos filtros", 
-            #         font=("Arial", 16, "bold"), 
-            #         bg="white"
-            #     ).grid(pady=15,row=0,column=0)
-            # else:         
             treeview(frame_tabla, encabezados, datos_clases)
     
         def lista_presencias(self,id_clase):
@@ -275,20 +266,48 @@ class Ventana_Clases():
             datos_asistencias = servicio_asistencia.asistencia_por_clase(id_clase) 
             
            
-            encabezados = ["Nombre","Apellido", "Fecha", "Estado"]
+            encabezados = ["IdInsc","Nombre","Apellido", "Fecha", "Estado"]
             
           
             frame_tabla = Frame(ventana_asistencias)
             frame_tabla.pack(fill="both", expand=True, padx=20, pady=10)
             
            
-            treeview(frame_tabla, encabezados, datos_asistencias)
-        def lista_notas(self,id_clase):
-            ventana_notas = Toplevel(self._contenido)
-            ventana_notas.title(f"Notas - Clase {id_clase}")
-            ventana_notas.geometry("1000x400")
-            ventana_notas.configure(bg="white")
+            tree=treeview(frame_tabla, encabezados, datos_asistencias)
+            tree["displaycolumns"] = ("Nombre", "Apellido", "Fecha", "Estado")
+            frame_boton=Frame(ventana_asistencias)
+            frame_boton.pack(padx=20, pady=10)
+            Button(
+                    frame_boton, text="Editar Estado", bg=azul, fg=blanco, font=("Arial", 12, "bold"),
+                    command=lambda: self.editar_asistencia(tree,ventana_asistencias,id_clase)
+                ).pack(pady=20)
             
+        def editar_asistencia(self,tree,ventana,id_clase):
+            seleccion = tree.selection()
+            if not seleccion:
+                return
+            
+            item_id = seleccion[0]
+            datos_clase = tree.item(item_id)['values']
+            ventana.destroy()
+            id_insc=datos_clase[0]
+            fecha=datos_clase[3]
+            estado=datos_clase[4]
+            service=Asistencia_Service()
+            service.editar_estado(id_insc,fecha,estado)
+            self.lista_presencias(id_clase)
+            
+            
+        def lista_notas(self,id_clase,contenedor=None):
+            if contenedor is None:
+                ventana_notas = Toplevel(self._contenido)
+                ventana_notas.title(f"Notas - Clase {id_clase}")
+                ventana_notas.geometry("1000x400")
+                ventana_notas.configure(bg="white")
+            else:
+                ventana_notas = contenedor
+                for elemento in ventana_notas.winfo_children():
+                    elemento.destroy()
             Label(
                 ventana_notas, 
                 text="Registro de Notas", 
@@ -297,21 +316,54 @@ class Ventana_Clases():
             ).pack(pady=15)
         
             servicio_notas = Nota_Service()
-            
-
             datos_notas = servicio_notas.notas_por_alumno(id_clase)
-            print("antes del error")
-            print (datos_notas)
-            print(id_clase)
-    
-            encabezados = ["Nombre","Apellido","Descripción", "Nota", "Fecha"]
-            
-           
+            encabezados = ["Id","Nombre","Apellido","Descripción", "Nota", "Fecha"]
             frame_tabla = Frame(ventana_notas)
             frame_tabla.pack(fill="both", expand=True, padx=20, pady=10)
             
      
-            treeview(frame_tabla, encabezados, datos_notas)
+            tree = treeview(frame_tabla, encabezados, datos_notas)
+            tree["displaycolumns"] = ("Nombre", "Apellido", "Descripción", "Nota", "Fecha")
+            frame_edicion = Frame(ventana_notas, bg="white")
+            frame_edicion.pack(pady=10)
+
+            Label(frame_edicion, text="Nueva Nota:", font=("Arial", 11, "bold"), bg="white").grid(row=0, column=0, padx=5)
+
+            entry_nota = Entry(frame_edicion, font=("Arial", 11), width=8)
+            entry_nota.grid(row=0, column=1, padx=5)
+
+            Button(
+                frame_edicion, 
+                text="Guardar Cambio", 
+                font=("Arial", 10, "bold"), 
+                bg=azul, 
+                fg="white", 
+                bd=0, 
+                padx=15, 
+                pady=5,
+                command=lambda: self.guardar_edicion_nota(tree, entry_nota, id_clase, ventana_notas)
+            ).grid(row=0, column=2, padx=10)
+            
+        def guardar_edicion_nota(self, tree, entry, id_clase, ventana):
+            seleccion = tree.selection()
+            
+            if not seleccion:
+                messagebox.showwarning("Atención", "Seleccione una nota de la tabla para editar.", parent=ventana)
+                return
+                
+            nueva_nota_texto = entry.get()
+            item_id = seleccion[0]
+            datos_fila = tree.item(item_id)['values']
+            id_nota = datos_fila[0] 
+            servicio_notas = Nota_Service()
+            resultado=servicio_notas.editar_nota(id_nota, nueva_nota_texto) 
+            
+            if resultado==True:
+                messagebox.showinfo("Exito", "Nota modificada correctamente",parent=ventana)
+            else:
+                messagebox.showerror("Error", resultado,parent=ventana)
+        
+            self.lista_notas(id_clase, contenedor=ventana) 
                 
         def ventana_agregar_notas(self, id_clase):
                     servicio_classe=Clase_Service()
@@ -432,20 +484,25 @@ class Ventana_Clases():
 
             Button(
                 ventana, text="Guardar Asistencia", bg=azul, fg=blanco, font=("Arial", 12, "bold"),
-                command=lambda: self.guardar_asistencia(fecha_actual, ventana,lista_asistencia)
+                command=lambda: self.guardar_asistencia(fecha_actual, ventana,lista_asistencia,id_clase)
             ).pack(pady=20)
 
 
-        def guardar_asistencia(self, fecha, ventana,lista):
+        def guardar_asistencia(self, fecha, ventana,lista,id_clase):
+            asistencia_service= Asistencia_Service()
+            quedo_alguno_libre=False
             for alumno in lista:
                 print(alumno)
                 id_inscripcion=alumno[0]
                 estado = alumno[1].get() 
                 asistencia=Asistencia(fecha,estado,id_inscripcion)
-                asistencia_service= Asistencia_Service()
-                asistencia_service.registrar_asistencia(asistencia)
-
                 
+                resultado=asistencia_service.registrar_asistencia(asistencia)
+                if resultado==True:
+                    quedo_alguno_libre=True
+            if quedo_alguno_libre:
+                messagebox.showwarning("Atención", "Uno o mas alumnos han superado el límite de inasistencias y su estado cambió automáticamente a 'Libre'.")
+            asistencia_service.registrar_libres(fecha,id_clase)
             ventana.destroy()
                 
         def preparar_modificacion(self,tree,ventana_lista):

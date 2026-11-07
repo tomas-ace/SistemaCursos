@@ -20,22 +20,15 @@ class Nota_DAO():
         
         conexion.commit()
         conexion.close()
-    def modificar_nota(self,nota_con_nuevos_datos):
+    def modificar_nota(self,id_nota,nueva_nota):
         conexion=sqlite3.connect("Datos/cursos_db.db")
         cursor = conexion.cursor()
         
-        nuevosDatos=[
-            nota_con_nuevos_datos.get_fecha(),
-            nota_con_nuevos_datos.get_IdInscripcion(),
-            nota_con_nuevos_datos.get_nota(),
-            nota_con_nuevos_datos.get_descripcion(),
-            nota_con_nuevos_datos.get_id()
-        ]
         cursor.execute("""
             UPDATE Nota
-            SET Fecha = ?, Estado = ?, IdInscripcion = ?, Nota = ?, Descripcion = ?
+            SET Nota = ?
             WHERE IdNota = ?
-        """,nuevosDatos)
+        """,(nueva_nota,id_nota))
         
         conexion.commit()
         conexion.close()
@@ -43,7 +36,7 @@ class Nota_DAO():
         conexion = sqlite3.connect("Datos/cursos_db.db")
         cursor = conexion.cursor()
         cursor.execute("""
-                SELECT a.Nombre,a.Apellido, n.Descripcion, n.Nota ,n.Fecha
+                SELECT n.IdNota,a.Nombre,a.Apellido, n.Descripcion, n.Nota ,n.Fecha
                 FROM Nota n
                 join Inscripcion i on n.IdInscripcion=i.IdInscripcion
                 join Alumno a on a.Legajo=I.legajo

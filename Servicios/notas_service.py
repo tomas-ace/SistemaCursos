@@ -39,3 +39,15 @@ class Nota_Service():
             return f"{promedio:.2f}"
     def obtener_notas_inscripcion(self,id_inscripcion):
         return self._dao.notas_inscripcion(id_inscripcion)
+    
+    def editar_nota(self,id_nota,nota_nueva):
+        if nota_nueva.isdigit():
+            nota_entero = int(nota_nueva)
+        else:
+            return "La nota debe ser un numero"
+        if nota_entero < 1 or nota_entero> 10:
+                return "La nota debe estar entre 1 y 10."
+        else:
+            self._dao.modificar_nota(id_nota,nota_entero)
+            return True
+                
