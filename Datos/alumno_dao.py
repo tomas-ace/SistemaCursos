@@ -142,8 +142,11 @@ class Alumno_DAO():
         conexion = sqlite3.connect("Datos/cursos_db.db")
         cursor = conexion.cursor()
         cursor.execute("""
-            SELECT Legajo, Nombre, Apellido
-            FROM Alumno
+            SELECT a.Legajo, a.Nombre, a.Apellido
+            FROM Alumno a
+            LEFT JOIN Inscripcion i ON a.Legajo = i.Legajo AND i.Estado = 'En Curso'
+            GROUP BY a.Legajo, a.Nombre, a.Apellido
+            HAVING COUNT(i.IdInscripcion) < 3;
         """)
         alumnos = cursor.fetchall()
         conexion.close()

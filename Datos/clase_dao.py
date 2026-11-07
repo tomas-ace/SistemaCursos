@@ -62,6 +62,20 @@ class Clase_DAO():
         conexion.close()
         return clases
     
+    def listar_clases_con_filtro(self,filtro):
+        conexion=sqlite3.connect("Datos/cursos_db.db")
+        cursor = conexion.cursor()
+        cursor.execute("""
+            SELECT c.IdClase,c.Anio,c.Turno,c.Estado, Cu.Descripcion
+            FROM Clase c
+            JOIN Curso cu ON c.IdCurso = cu.IdCurso
+            where c.Estado= ?
+        """,(filtro,))
+        clases = cursor.fetchall()
+        conexion.commit()
+        conexion.close()
+        return clases
+    
     def lista_de_alumnos_en_clase(self,clase):
         conexion=sqlite3.connect("Datos/cursos_db.db")
         cursor = conexion.cursor()
@@ -76,6 +90,37 @@ class Clase_DAO():
         conexion.commit()
         conexion.close()
         return alumnos
+    
+    def lista_de_alumnos_con_estado(self,clase):
+        conexion = sqlite3.connect("Datos/cursos_db.db")
+        cursor = conexion.cursor()
+        
+        cursor.execute("""
+            SELECT a.Nombre, a.Apellido, i.Estado
+            FROM Alumno a
+            JOIN Inscripcion i ON a.Legajo = i.Legajo
+            WHERE i.IdClase = ?
+        """, (clase,)) 
+        
+        resultados = cursor.fetchall()
+        conexion.close()
+        
+        return resultados
+    def lista_de_alumnos_con_estado_y_filtro(self,clase,filtro):
+        conexion = sqlite3.connect("Datos/cursos_db.db")
+        cursor = conexion.cursor()
+        
+        cursor.execute("""
+            SELECT a.Nombre, a.Apellido, i.Estado
+            FROM Alumno a
+            JOIN Inscripcion i ON a.Legajo = i.Legajo
+            WHERE i.IdClase = ? and i.Estado= ?
+        """, (clase,filtro)) 
+        
+        resultados = cursor.fetchall()
+        
+        conexion.close()
+        return resultados 
     
     def listar_por_descripcion_y_turno(self):
         conexion = sqlite3.connect("Datos/cursos_db.db")

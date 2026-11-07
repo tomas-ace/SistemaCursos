@@ -22,63 +22,74 @@ class Ventana_Clases():
        
                     
                     
-        def lista_de_clases(self, contenedor=None):
+        def lista_de_clases(self, contenedor=None,filtro_actual="Todas"):
             if contenedor is None:
                 ventana_lista = Toplevel(self._contenido)
-                ventana_lista.title("Lista de clases")
-                ventana_lista.geometry("1200x600")
-                ventana_lista.configure(bg=blanco)
-                Label(
+            else:
+                ventana_lista = contenedor
+                for elemento in contenedor.winfo_children():
+                    elemento.destroy()
+                    
+            ventana_lista.geometry("1200x600")
+            Label(
                     ventana_lista,
                     text="Lista de clases",
                     font=("Arial", 20, "bold"),
                     bg=blanco,
                     fg=texto
                 ).grid(pady=(10, 25), column=0, row=0)
-            else:
-                ventana_lista = contenedor
+            ventana_lista.title("Lista de clases")
+            ventana_lista.configure(bg=blanco)
             columnas = ["IDClase", "Anio", "Turno", "Estado", "Curso"]
-            datos_clases = Clase_Service().listar_clases()
-            tree=treeview(ventana_lista, columnas, datos_clases)
+            frame_filtros=Frame(ventana_lista,bg=blanco)
+            frame_filtros.grid(padx=5,row=1,column=0)
+            opcion_filtro=StringVar(value=filtro_actual)
+            Radiobutton(frame_filtros, text="Todas", variable=opcion_filtro, value="Todas", bg=blanco, font=("Arial", 10)).grid(padx=5,row=1,column=0)
+            Radiobutton(frame_filtros, text="Activas", variable=opcion_filtro, value="Activa", bg=blanco, font=("Arial", 10)).grid(padx=5,row=1,column=1)
+            Radiobutton(frame_filtros, text="Inactivas", variable=opcion_filtro, value="Inactiva", bg=blanco, font=("Arial", 10)).grid(padx=5,row=1,column=2)
+            Button(frame_filtros,text="Aplicar Filtros",font=("Arial", 11, "bold"),bg=azul,fg=blanco,bd=0,padx=20,pady=10,command=lambda: self.lista_de_clases(contenedor=ventana_lista,filtro_actual=opcion_filtro.get())).grid(padx=5,row=1,column=3)
+            frame_treeview=Frame(ventana_lista,bg=blanco)
+            frame_treeview.grid(column=0,row=2)
+            datos_clases = Clase_Service().listar_clases(filtro_actual)
+            tree=treeview(frame_treeview, columnas, datos_clases)
             frame_acciones = Frame(ventana_lista, bg=blanco)
-            frame_acciones.grid(column=0, row=2, padx=20, pady=10)
+            frame_acciones.grid(column=0, row=3, padx=20, pady=10)
 
-            if contenedor is None:
-                Button(
-                    frame_acciones,
-                    text="Agregar Nuevo",
-                    font=("Arial", 11, "bold"),
-                    bg=azul,
-                    fg=blanco,
-                    bd=0,
-                    padx=20,
-                    pady=10,
-                    command=lambda: self.ventana_registro_clase(ventana_lista)
-                ).pack(side="left", padx=10)
-        
-                Button(
-                    frame_acciones,
-                    text="Modificar Estado",
-                    font=("Arial", 11, "bold"),
-                    bg=gris,
-                    fg=blanco,
-                    bd=0,
-                    padx=20,
-                    pady=10,
-                    command=lambda: self.preparar_modificacion(tree,ventana_lista)
-                ).pack(side="left", padx=10)
-                
-                Button(
-                    frame_acciones,
-                    text="Ver Detalle",
-                    font=("Arial", 11, "bold"),
-                    bg=gris,
-                    fg=blanco,
-                    bd=0,
-                    padx=20,
-                    pady=10,
-                    command=lambda: self.detalle_clase(tree,ventana_lista)
-                ).pack(side="left", padx=10)
+            Button(
+                frame_acciones,
+                text="Agregar Nuevo",
+                font=("Arial", 11, "bold"),
+                bg=azul,
+                fg=blanco,
+                bd=0,
+                padx=20,
+                pady=10,
+                command=lambda: self.ventana_registro_clase(ventana_lista)
+            ).pack(side="left", padx=10)
+    
+            Button(
+                frame_acciones,
+                text="Modificar Estado",
+                font=("Arial", 11, "bold"),
+                bg=gris,
+                fg=blanco,
+                bd=0,
+                padx=20,
+                pady=10,
+                command=lambda: self.preparar_modificacion(tree,ventana_lista)
+            ).pack(side="left", padx=10)
+            
+            Button(
+                frame_acciones,
+                text="Ver Detalle",
+                font=("Arial", 11, "bold"),
+                bg=gris,
+                fg=blanco,
+                bd=0,
+                padx=20,
+                pady=10,
+                command=lambda: self.detalle_clase(tree,ventana_lista)
+            ).pack(side="left", padx=10)
             return tree
         
         def detalle_clase(self,tree,ventana):
@@ -182,6 +193,67 @@ class Ventana_Clases():
                     command=lambda: self.ventana_agregar_notas(datos_clase[0])
                 ).grid(column=3,row=0, padx=10)
                 
+                Button(
+                        frame_datos_cursada,
+                        text="Lista de Alumnos",
+                        font=("Arial", 11, "bold"),
+                        bg=azul,
+                        fg=blanco,
+                        bd=0,
+                        padx=20,
+                        pady=10,
+                        command=lambda: self.ventana_lista_de_alumnos(datos_clase[0])
+                    ).grid(column=4,row=0, padx=10)
+                
+                
+        def ventana_lista_de_alumnos(self,id_clase,contenedor=None,filtro_actual="Todos"):
+            if contenedor !=None:
+                for elemento in contenedor.winfo_children():
+                    elemento.destroy()
+                ventana_asistencias=contenedor
+            else:
+                ventana_asistencias = Toplevel(self._contenido)
+                ventana_asistencias.title("Lista de Alumnos")
+                ventana_asistencias.geometry("600x400")
+                
+                
+                ventana_asistencias.configure(bg="white") 
+            
+            Label(
+                ventana_asistencias, 
+                text="Lista de Alumnos", 
+                font=("Arial", 16, "bold"), 
+                bg="white"
+            ).grid(pady=15,row=0,column=0)
+            
+            opcion_filtro=StringVar(value=filtro_actual)
+            Radiobutton(ventana_asistencias, text="Todos", variable=opcion_filtro, value="Todos", bg=blanco, font=("Arial", 10)).grid(padx=5,row=1,column=0)
+            Radiobutton(ventana_asistencias, text="En Curso", variable=opcion_filtro, value="En Curso", bg=blanco, font=("Arial", 10)).grid(padx=5,row=1,column=1)
+            Radiobutton(ventana_asistencias, text="Libre", variable=opcion_filtro, value="Libre", bg=blanco, font=("Arial", 10)).grid(padx=5,row=1,column=2)
+            Radiobutton(ventana_asistencias, text="Baja", variable=opcion_filtro, value="Baja", bg=blanco, font=("Arial", 10)).grid(padx=5,row=1,column=3)
+            Radiobutton(ventana_asistencias, text="Aprobado", variable=opcion_filtro, value="Aprobado", bg=blanco, font=("Arial", 10)).grid(padx=5,row=1,column=4)
+            Radiobutton(ventana_asistencias, text="Desaprobado", variable=opcion_filtro, value="Desaprobado", bg=blanco, font=("Arial", 10)).grid(padx=5,row=1,column=5)
+            Button(ventana_asistencias,text="Aplicar Filtros",font=("Arial", 11, "bold"),bg=azul,fg=blanco,bd=0,padx=20,pady=10,command=lambda: self.ventana_lista_de_alumnos(id_clase,contenedor=ventana_asistencias,filtro_actual=opcion_filtro.get())).grid(padx=5,row=2,column=2,columnspan=2,pady=10)
+            servicio_clase = Clase_Service()
+            datos_clases = servicio_clase.lista_con_estado(id_clase,filtro_actual) 
+            
+            
+            encabezados = ["Nombre","Apellido","Estado"]
+            
+            
+            frame_tabla = Frame(ventana_asistencias)
+            frame_tabla.grid(row=3,column=1,columnspan=6, padx=20, pady=10)
+            
+            # if datos_clases==None:
+            #     Label(
+            #         frame_tabla, 
+            #         text="No hay alumnos para esos filtros", 
+            #         font=("Arial", 16, "bold"), 
+            #         bg="white"
+            #     ).grid(pady=15,row=0,column=0)
+            # else:         
+            treeview(frame_tabla, encabezados, datos_clases)
+    
         def lista_presencias(self,id_clase):
             ventana_asistencias = Toplevel(self._contenido)
             ventana_asistencias.title(f"Asistencias - Clase {id_clase}")
