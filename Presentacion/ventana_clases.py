@@ -249,7 +249,8 @@ class Ventana_Clases():
         def lista_presencias(self,id_clase):
             ventana_asistencias = Toplevel(self._contenido)
             ventana_asistencias.title(f"Asistencias - Clase {id_clase}")
-            ventana_asistencias.geometry("1200x400")
+            ventana_asistencias.geometry("550x400")
+            ventana_asistencias.maxsize(550,400)
             
             
             ventana_asistencias.configure(bg="white") 
@@ -279,9 +280,13 @@ class Ventana_Clases():
             frame_boton=Frame(ventana_asistencias)
             frame_boton.pack(padx=20, pady=10)
             Button(
+                    frame_boton, text="Tomar Lista", bg=azul, fg=blanco, font=("Arial", 12, "bold"),
+                    command=lambda: self.ventana_tomar_lista(id_clase)
+                ).grid(pady=10,column=0,row=0,padx=5)
+            Button(
                     frame_boton, text="Editar Estado", bg=azul, fg=blanco, font=("Arial", 12, "bold"),
                     command=lambda: self.editar_asistencia(tree,ventana_asistencias,id_clase)
-                ).pack(pady=20)
+                ).grid(pady=10,column=1,row=0,padx=5)
             
         def editar_asistencia(self,tree,ventana,id_clase):
             seleccion = tree.selection()
@@ -303,7 +308,7 @@ class Ventana_Clases():
             if contenedor is None:
                 ventana_notas = Toplevel(self._contenido)
                 ventana_notas.title(f"Notas - Clase {id_clase}")
-                ventana_notas.geometry("1000x400")
+                ventana_notas.geometry("680x450")
                 ventana_notas.configure(bg="white")
             else:
                 ventana_notas = contenedor
@@ -325,9 +330,20 @@ class Ventana_Clases():
      
             tree = treeview(frame_tabla, encabezados, datos_notas)
             tree["displaycolumns"] = ("Nombre", "Apellido", "Descripción", "Nota", "Fecha")
+            Button(
+                            frame_tabla, 
+                            text="Agregar Notas", 
+                            font=("Arial", 10, "bold"), 
+                            bg=azul, 
+                            fg="white", 
+                            bd=0, 
+                            padx=15, 
+                            pady=5,
+                            command=lambda: self.ventana_agregar_notas(id_clase)
+                        ).grid(row=1, column=0, padx=10)
             frame_edicion = Frame(ventana_notas, bg="white")
             frame_edicion.pack(pady=10,anchor="w")
-            Label(frame_edicion, text="Editar nota (seleccione nota para editar):", font=("Arial", 11, "bold"), bg="white").grid(row=0, column=0, padx=5)
+            Label(frame_edicion, text="Editar nota (seleccione nota para editar):", font=("Arial", 11, "bold"), bg="white").grid(row=0, column=0, padx=5,pady=10)
             Label(frame_edicion, text="Nueva Nota:", font=("Arial", 11, "bold"), bg="white").grid(row=1, column=0, padx=5)
 
             entry_nota = Entry(frame_edicion, font=("Arial", 11), width=8)
@@ -345,17 +361,7 @@ class Ventana_Clases():
                 command=lambda: self.guardar_edicion_nota(tree, entry_nota, id_clase, ventana_notas)
             ).grid(row=1, column=2, padx=10)
             
-            Button(
-                frame_edicion, 
-                text="Agregar Notas", 
-                font=("Arial", 10, "bold"), 
-                bg=azul, 
-                fg="white", 
-                bd=0, 
-                padx=15, 
-                pady=5,
-                command=lambda: self.ventana_agregar_notas(id_clase)
-            ).grid(row=0, column=2, padx=10)
+            
             
         def guardar_edicion_nota(self, tree, entry, id_clase, ventana):
             seleccion = tree.selection()
@@ -764,10 +770,29 @@ class Ventana_Clases():
                 command=lambda: self.ventana_registro_clase(ventana_clases)
             ).grid(row=0, column=6, padx=5)
 
-            frame_grid = Frame(ventana_clases, bg=blanco)
+            
+            
+            contenedor_scroll = Frame(ventana_clases, bg=blanco)
+            contenedor_scroll.pack(padx=20, pady=10, fill="both", expand=True)
+
+            canvas = Canvas(contenedor_scroll, bg=blanco, highlightthickness=0)
+            scrollbar = ttk.Scrollbar(contenedor_scroll, orient="vertical", command=canvas.yview)
+
+            canvas.configure(yscrollcommand=scrollbar.set)
+            scrollbar.pack(side="right", fill="y")
+            canvas.pack(side="left", fill="both", expand=True)
+            frame_grid = Frame(canvas, bg=blanco)
             frame_grid.pack(padx=20, pady=10, fill="both", expand=True)
 
-            
+            canvas_window = canvas.create_window((0, 0), window=frame_grid, anchor="nw")
+            frame_grid.bind(
+                "<Configure>",
+                lambda e: canvas.configure(scrollregion=canvas.bbox("all"))
+            )
+            canvas.bind(
+                "<Configure>",
+                lambda e: canvas.itemconfig(canvas_window, width=e.width)
+            )
             servicio_clases = Clase_Service()
             datos_clases = servicio_clases.obtener_clases_filtradas(filtro_estado, filtro_curso)
 
@@ -787,25 +812,27 @@ class Ventana_Clases():
                 estado = clase[4]
                 cant_alumnos = clase[5]
 
+                if turno=="Maniana":
+                     turno="Mañana"
                 
-                card = Frame(frame_grid, bg="white", highlightbackground="black", highlightthickness=2, padx=15, pady=15)
-                card.grid(row=fila_actual, column=columna_actual, padx=15, pady=15, sticky="nsew")
+                card = Frame(frame_grid, bg="white", highlightbackground="black", highlightthickness=2, padx=10, pady=10)
+                card.grid(row=fila_actual, column=columna_actual, padx=10, pady=10, sticky="nsew")
 
-                Label(card, text=nombre_curso, font=("Arial", 14, "bold"), bg="white", wraplength=220).pack(anchor="w", pady=(0, 5))
-                Frame(card, height=2, bg="black").pack(fill="x", pady=(0, 10))
+                Label(card, text=nombre_curso, font=("Arial", 12, "bold"), bg="white", wraplength=180).pack(anchor="w", pady=(0, 5))
+                Frame(card, height=2, bg="black").pack(fill="x", pady=(0, 5))
 
-                Label(card, text=f"ID Clase: {id_clase}", font=("Arial", 11), bg="white").pack(anchor="w")
-                Label(card, text=f"Año: {anio} | Turno: {turno}", font=("Arial", 11), bg="white").pack(anchor="w")
-                Label(card, text=f"Estado: {estado}", font=("Arial", 11, "italic"), bg="white", fg=gris).pack(anchor="w", pady=(5, 5))
+                Label(card, text=f"ID Clase: {id_clase}", font=("Arial", 9), bg="white").pack(anchor="w")
+                Label(card, text=f"Año: {anio} | Turno: {turno}", font=("Arial", 9), bg="white").pack(anchor="w")
+                Label(card, text=f"Estado: {estado}", font=("Arial", 9, "italic"), bg="white", fg=gris).pack(anchor="w", pady=(5, 5))
                 
-                Label(card, text=f"Alumnos Activos: {cant_alumnos}", font=("Arial", 11, "bold"), bg="white").pack(anchor="w", pady=(0, 15))
+                Label(card, text=f"Alumnos Activos: {cant_alumnos}", font=("Arial", 10, "bold"), bg="white").pack(anchor="w", pady=(0, 15))
 
                 frame_botones_card = Frame(card, bg="white")
                 frame_botones_card.pack(fill="x", side="bottom")
 
-                Button(frame_botones_card, text="Notas", font=("Arial", 9, "bold"), bg=azul, fg="white", bd=0, padx=15, command=lambda id_c=id_clase: self.lista_notas(id_c)).grid(row=0,column=0,padx=5)
-                Button(frame_botones_card, text="Asistencias", font=("Arial", 9, "bold"), bg=azul, fg="white", bd=0, padx=15, command=lambda id_c=id_clase: self.lista_presencias(id_c)).grid(row=0,column=1,padx=5)
-                Button(frame_botones_card, text="Cambiar a Inactiva", font=("Arial", 9, "bold"), bg="red", fg="white", bd=0, padx=10, command=lambda id_c=id_clase: self.modificar_estado(id_c)).grid(row=1,column=0, columnspan=2,pady=5)
+                Button(frame_botones_card, text="Notas", font=("Arial", 8, "bold"), bg=azul, fg="white", bd=0, padx=10,pady=2, command=lambda id_c=id_clase: self.lista_notas(id_c)).grid(row=0,column=0,padx=2)
+                Button(frame_botones_card, text="Asistencias", font=("Arial", 8, "bold"), bg=azul, fg="white", bd=0, padx=10,pady=2, command=lambda id_c=id_clase: self.lista_presencias(id_c)).grid(row=0,column=1,padx=2)
+                Button(frame_botones_card, text="Cambiar a Inactiva", font=("Arial", 8, "bold"), bg="red", fg="white", bd=0, padx=5,pady=2, command=lambda id_c=id_clase: self.modificar_estado(id_c)).grid(row=1,column=0, columnspan=2,pady=5)
 
                 columna_actual += 1
                 if columna_actual >= max_columnas_por_fila:
