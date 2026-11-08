@@ -1,4 +1,5 @@
 from Datos.clase_dao import Clase_DAO
+from Servicios.notas_service import *
 class Clase_Service():
     def __init__(self):
         self._dao=Clase_DAO()   
@@ -68,3 +69,20 @@ class Clase_Service():
             
         else:
             return self._dao.listar_clases_por_estado_y_curso(filtro_estado, filtro_curso)
+
+        
+    def cerrar_clase_y_evaluar(self, id_clase):
+        self._dao.marcar_clase_inactiva(id_clase)
+        inscripciones_a_evaluar = self._dao.obtener_alumnos_evaluables(id_clase)
+        servicio_nota = Nota_Service()
+        
+        for id_inscripcion in inscripciones_a_evaluar:
+            promedio = servicio_nota.promedio_alumno_en_clase(id_inscripcion[0])
+            if promedio=="Sin notas":
+                promedio=0
+                
+            if promedio >= 7.0:
+                nuevo_estado = "Aprobado"
+            else:
+                nuevo_estado = "Desaprobado"
+            self._dao.actualizar_estado_inscripcion(id_inscripcion, nuevo_estado)

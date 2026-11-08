@@ -728,8 +728,12 @@ class Ventana_Clases():
             if contenedor is None:
                 ventana_clases = Toplevel(self._contenido)
                 ventana_clases.title("Gestión de Clases")
-                ventana_clases.geometry("1100x700")
+                ancho_pantalla = ventana_clases.winfo_screenwidth()
+                alto_pantalla = ventana_clases.winfo_screenheight()
+                ventana_clases.geometry(f"{ancho_pantalla}x{alto_pantalla}")
+                ventana_clases.minsize(ancho_pantalla, alto_pantalla)
                 ventana_clases.configure(bg=blanco)
+                ventana_clases.state('zoomed')
             else:
                 ventana_clases = contenedor
                 for elemento in ventana_clases.winfo_children():
@@ -832,9 +836,25 @@ class Ventana_Clases():
 
                 Button(frame_botones_card, text="Notas", font=("Arial", 8, "bold"), bg=azul, fg="white", bd=0, padx=10,pady=2, command=lambda id_c=id_clase: self.lista_notas(id_c)).grid(row=0,column=0,padx=2)
                 Button(frame_botones_card, text="Asistencias", font=("Arial", 8, "bold"), bg=azul, fg="white", bd=0, padx=10,pady=2, command=lambda id_c=id_clase: self.lista_presencias(id_c)).grid(row=0,column=1,padx=2)
-                Button(frame_botones_card, text="Cambiar a Inactiva", font=("Arial", 8, "bold"), bg="red", fg="white", bd=0, padx=5,pady=2, command=lambda id_c=id_clase: self.modificar_estado(id_c)).grid(row=1,column=0, columnspan=2,pady=5)
+                Button(frame_botones_card, text="Cambiar a Inactiva", font=("Arial", 8, "bold"), bg="red", fg="white", bd=0, padx=5,pady=2, command=lambda id_c=id_clase: self.modificar_estado(id_c,ventana_clases)).grid(row=1,column=0, columnspan=2,pady=5)
 
                 columna_actual += 1
                 if columna_actual >= max_columnas_por_fila:
                     columna_actual = 0
                     fila_actual += 1
+
+
+
+        def modificar_estado(self, id_clase, ventana_padre):
+                respuesta = messagebox.askyesno(
+                    "Cerrar Clase", 
+                    "¿Está seguro que desea cerrar esta clase? Esta acción pasará la clase a 'Inactiva' y evaluará automáticamente a todos los alumnos regulares calculando sus promedios.",
+                    parent=ventana_padre
+                )
+                
+                if respuesta:
+                    servicio_clases = Clase_Service()
+                    servicio_clases.cerrar_clase_y_evaluar(id_clase)
+                    
+                    messagebox.showinfo("Éxito", "La clase ha sido cerrada y los alumnos fueron evaluados exitosamente.", parent=ventana_padre)
+                    self.vista_tarjetas_clases(contenedor=ventana_padre)

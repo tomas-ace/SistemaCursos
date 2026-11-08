@@ -222,4 +222,31 @@ class Clase_DAO():
         clases = cursor.fetchall()
         conexion.close()
         return clases
-    
+
+
+    def marcar_clase_inactiva(self, id_clase):
+        conexion = sqlite3.connect("Datos/cursos_db.db")
+        cursor = conexion.cursor()
+        cursor.execute("UPDATE Clase SET Estado = 'Inactiva' WHERE IdClase = ?", (id_clase,))
+        conexion.commit()
+        conexion.close()
+
+    def obtener_alumnos_evaluables(self, id_clase):
+        conexion = sqlite3.connect("Datos/cursos_db.db")
+        cursor = conexion.cursor()
+        cursor.execute("""
+            SELECT IdInscripcion 
+            FROM Inscripcion 
+            WHERE IdClase = ? AND Estado = 'En Curso'
+        """, (id_clase,))
+        resultados = cursor.fetchall()
+        conexion.close()
+        
+        return resultados
+
+    def actualizar_estado_inscripcion(self, id_inscripcion, nuevo_estado):
+        conexion = sqlite3.connect("Datos/cursos_db.db")
+        cursor = conexion.cursor()
+        cursor.execute("UPDATE Inscripcion SET Estado = ? WHERE IdInscripcion = ?", (nuevo_estado, id_inscripcion))
+        conexion.commit()
+        conexion.close()
