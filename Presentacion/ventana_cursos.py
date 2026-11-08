@@ -28,13 +28,14 @@ class Ventana_Cursos():
                 ventana = Toplevel(self._contenido)
         
                 ventana.title("Registrar curso")
-                ventana.geometry("600x600")
+                ventana.geometry("590x300")
                 ventana.configure(bg=blanco)
+                form_frame = Frame(ventana, bg="white", highlightbackground=azul, highlightthickness=1, padx=40, pady=30)
+                form_frame.pack(expand=True, pady=20)
                 Label(
-                    ventana,
+                    form_frame,
                     text="Registrar nuevo curso",
                     font=("Arial", 20, "bold"),
-                    bg=blanco,
                     fg=texto
                 ).grid(pady=(10, 25), column=0, row=0)
         
@@ -46,38 +47,36 @@ class Ventana_Cursos():
                 
                 
                 Label(
-                        ventana,
+                        form_frame,
                         text="Nombre",
                         font=("Arial", 12, "bold"),
-                        bg=blanco,
                         fg=texto
                     ).grid(column=0, row=1)
                 self._descripcion = Entry(
-                    ventana,
+                    form_frame,
                     font=("Arial", 12),
-                    textvariable=descripcion
+                    textvariable=descripcion, highlightbackground=azul, highlightthickness=1
                 )
                 self._descripcion.grid(pady=(5, 15), column=1, row=1,columnspan=2)
         
                 Label(
-                    ventana,
+                    form_frame,
                     text="Duración (Clases)",
                     font=("Arial", 12, "bold"),
-                    bg=blanco,
                     fg=texto
                 ).grid(column=0, row=2)
         
                 self._duracion = Entry(
-                    ventana,
+                    form_frame,
                     font=("Arial", 12),
-                    textvariable=duracion
+                    textvariable=duracion, highlightbackground=azul, highlightthickness=1
                 )
                 self._duracion.grid(pady=(5, 15), column=1, row=2,columnspan=2)
                             
                 #botones
         
                 Button(
-                    ventana,
+                    form_frame,
                     text="Registrar",
                     font=("Arial", 12),
                     bg=azul,
@@ -90,7 +89,7 @@ class Ventana_Cursos():
                    
         
                 Button(
-                    ventana,
+                    form_frame,
                     text="Cancelar",
                     font=("Arial", 12),
                     bg=gris,
@@ -149,7 +148,7 @@ class Ventana_Cursos():
                 if contenedor == None:
                     ventana_lista = Toplevel(self._contenido)
                     ventana_lista.title("Lista de cursos")
-                    ventana_lista.geometry("1200x600")
+                    ventana_lista.geometry("430x320")
                     ventana_lista.configure(bg=blanco)
                     Label(
                         ventana_lista,
@@ -205,14 +204,14 @@ class Ventana_Cursos():
         def ventana_modificar_curso(self,datos_curso):
                 ventana = Toplevel(self._contenido)
                 ventana.title("Modificar curso")
-                ventana.geometry("600x600")
+                ventana.geometry("450x300")
                 ventana.configure(bg=blanco)
-        
+                form_frame = Frame(ventana, bg="white", highlightbackground=azul_oscuro, highlightthickness=1, padx=40, pady=30)
+                form_frame.pack(expand=True, pady=20)
                 Label(
-                    ventana,
+                    form_frame,
                     text="Modificar curso",
                     font=("Arial", 20, "bold"),
-                    bg=blanco,
                     fg=texto
                 ).grid(pady=(10, 25), column=0, row=0)
         
@@ -223,17 +222,17 @@ class Ventana_Cursos():
                 
         
                 #campos 
-                Label(ventana, text="Descripcion", font=("Arial", 12, "bold"), bg=blanco, fg=texto).grid(column=0, row=1)
-                Entry(ventana, font=("Arial", 12), textvariable=descripcion).grid(pady=(5, 15), column=1, row=1, columnspan=2)
+                Label(form_frame, text="Descripcion", font=("Arial", 12, "bold"), fg=texto).grid(column=0, row=1)
+                Entry(form_frame, font=("Arial", 12), textvariable=descripcion, highlightbackground=azul_oscuro, highlightthickness=1).grid(pady=(5, 15), column=1, row=1, columnspan=2)
         
-                Label(ventana, text="Duracion (Clases)", font=("Arial", 12, "bold"), bg=blanco, fg=texto).grid(column=0, row=2)
-                Entry(ventana, font=("Arial", 12), textvariable=duracion).grid(pady=(5, 15), column=1, row=2, columnspan=2)
+                Label(form_frame, text="Duracion (Clases)", font=("Arial", 12, "bold"),fg=texto).grid(column=0, row=2)
+                Entry(form_frame, font=("Arial", 12), textvariable=duracion, highlightbackground=azul_oscuro, highlightthickness=1).grid(pady=(5, 15), column=1, row=2, columnspan=2)
         
         
         
                 
                 Button(
-                    ventana,
+                    form_frame,
                     text="Guardar Cambios",
                     font=("Arial", 12),
                     bg=azul,
@@ -245,7 +244,7 @@ class Ventana_Cursos():
                 ).grid(padx=(0, 10), column=0, row=9)
         
                 Button(
-                    ventana,
+                    form_frame,
                     text="Cancelar",
                     font=("Arial", 12),
                     bg=gris,

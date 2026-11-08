@@ -21,25 +21,22 @@ class Ventana_Alumnos():
         ventana = Toplevel(self._contenido)
 
         ventana.title("Registrar alumno")
-        ventana.geometry("600x600")
+        ventana.geometry("550x650")
+        ventana.maxsize(550,650)
         ventana.configure(bg=blanco)
+        form_frame = Frame(ventana, bg="white", highlightbackground=azul, highlightthickness=1, padx=40, pady=30)
+        form_frame.pack(expand=True, pady=20)
         Label(
-            ventana,
+            form_frame,
             text="Registrar nuevo alumno",
-            font=("Arial", 20, "bold"),
-            bg=blanco
-            
-        ).grid(pady=(10, 25), column=0, row=0)
+            font=("Arial", 18, "bold"),
+            bg="white",
+            fg=azul
+        ).grid(row=0, column=0, columnspan=2, pady=(0, 30))
 
 
         #datoss
-        Label(
-            ventana,
-            text="Nombre",
-            font=("Arial", 12, "bold"),
-            bg=blanco
-            
-        ).grid(column=0, row=1)
+        
         nombre = StringVar()
         apellido = StringVar()
         dni = StringVar()
@@ -48,124 +45,119 @@ class Ventana_Alumnos():
         dia= StringVar()
         mes= StringVar()
         anio= StringVar()
+        Label(
+            form_frame,
+            text="Nombre",
+            font=("Arial", 12, "bold")
+            
+        ).grid(column=0, row=1)
         entry_nombre = Entry(
-            ventana,
+            form_frame,
             font=("Arial", 12),
-            textvariable=nombre
+            textvariable=nombre, highlightbackground=azul_oscuro, highlightthickness=1
         )
         entry_nombre.grid(pady=(5, 15), column=1, row=1,columnspan=2)
 
         Label(
-            ventana,
+            form_frame,
             text="Apellido",
-            font=("Arial", 12, "bold"),
-            bg=blanco
+            font=("Arial", 12, "bold")
             
         ).grid(column=0, row=2)
 
         entry_apellido = Entry(
-            ventana,
+            form_frame,
             font=("Arial", 12),
-            textvariable=apellido
+            textvariable=apellido, highlightbackground=azul_oscuro, highlightthickness=1
         )
         entry_apellido.grid(pady=(5, 15), column=1, row=2,columnspan=2)
         Label(
-            ventana,
+            form_frame,
             text="DNI",
-            font=("Arial", 12, "bold"),
-            bg=blanco
+            font=("Arial", 12, "bold")
             
         ).grid(column=0, row=3)
 
         entry_dni = Entry(
-            ventana,
+            form_frame,
             font=("Arial", 12),
-            textvariable=dni
+            textvariable=dni, highlightbackground=azul_oscuro, highlightthickness=1
         )
 
         entry_dni.grid(pady=(5, 15), column=1, row=3,columnspan=2)
         Label(
-            ventana,
+            form_frame,
             text="Email",
-            font=("Arial", 12, "bold"),
-            bg=blanco
-            
+            font=("Arial", 12, "bold")
         ).grid(column=0, row=4)
 
         entry_email = Entry(
-            ventana,
+            form_frame,
             font=("Arial", 12),
-            textvariable=email
+            textvariable=email, highlightbackground=azul_oscuro, highlightthickness=1
         )
 
         entry_email.grid(pady=(5, 25), column=1, row=4,columnspan=2)
             
         Label(
-                    ventana,
+                    form_frame,
                     text="Telefono",
-                    font=("Arial", 12, "bold"),
-                    bg=blanco
-                    
+                    font=("Arial", 12, "bold")
                 ).grid(column=0, row=5)
         entry_telefono = Entry(
-                    ventana,
+                    form_frame,
                     font=("Arial", 12),
-                    textvariable=telefono
+                    textvariable=telefono, highlightbackground=azul_oscuro, highlightthickness=1
                 )
         
         entry_telefono.grid(pady=(5, 25), column=1, row=5,columnspan=2)
         Label(
-                    ventana,
+                    form_frame,
                     text="Fecha de nacimiento",
-                    font=("Arial", 12, "bold"),
-                    bg=blanco
-                    
+                    font=("Arial", 12, "bold")
                 ).grid(column=0, row=6)
         Label(
-                    ventana,
+                    form_frame,
                     text="Dia",
-                    font=("Arial", 12, "bold"),
-                    bg=blanco
+                    font=("Arial", 12, "bold")
                     
                 ).grid(column=1, row=6)
         entry_dia = Entry(
-                            ventana,
+                            form_frame,
                             font=("Arial", 12),
                             width=7,
-                            textvariable=dia
+                            textvariable=dia, highlightbackground=azul_oscuro, highlightthickness=1
                         )
                 
         entry_dia.grid(pady=(5, 25), column=2, row=6)
 
         Label(
-                            ventana,
+                            form_frame,
                             text="Mes",
-                            font=("Arial", 12, "bold"),
-                            bg=blanco
+                            font=("Arial", 12, "bold")
                             
                         ).grid(column=1, row=7)
 
         entry_mes = Entry(
-                                    ventana,
+                                    form_frame,
                                     font=("Arial", 12),
                                     textvariable=mes,
-                                    width=7
+                                    width=7, highlightbackground=azul_oscuro, highlightthickness=1
                                 )
                         
         entry_mes.grid(pady=(5, 25), column=2, row=7)
 
         Label(
-                            ventana,
+                            form_frame,
                             text="Año",
-                            font=("Arial", 12, "bold"),
-                            bg=blanco
+                            font=("Arial", 12, "bold")
                             
                         ).grid(column=1, row=8)
         entry_anio = Entry(
-                                    ventana,
+                                    form_frame,
                                     font=("Arial", 12),
                                     textvariable=anio,
-                                    width=7
+                                    width=7, highlightbackground=azul_oscuro, highlightthickness=1
                                 )
                         
         entry_anio.grid(pady=(5, 25), column=2, row=8)
@@ -174,7 +166,7 @@ class Ventana_Alumnos():
         #botones
 
         Button(
-            ventana,
+            form_frame,
             text="Registrar",
             font=("Arial", 12),
             bg=azul,
@@ -187,7 +179,7 @@ class Ventana_Alumnos():
            
 
         Button(
-            ventana,
+            form_frame,
             text="Cancelar",
             font=("Arial", 12),
             bg=gris,
@@ -229,7 +221,7 @@ class Ventana_Alumnos():
         if contenedor == None:
             ventana_lista = Toplevel(self._contenido)
             ventana_lista.title("Lista de alumnos")
-            ventana_lista.geometry("600x320")
+            ventana_lista.geometry("400x320")
             ventana_lista.maxsize(600, 320)
             ventana_lista.configure(bg=blanco)
             Label(
@@ -279,7 +271,7 @@ class Ventana_Alumnos():
     def detalle_alumno(self,tree,ventana):
         seleccion = tree.selection()
         if not seleccion:
-            print("Por favor, seleccione un alumno de la tabla.")
+            messagebox.showinfo("Error","Por favor, seleccione un alumno de la tabla.", parent=ventana)
             return
          
         item_id = seleccion[0]
@@ -287,8 +279,8 @@ class Ventana_Alumnos():
         ventana.destroy()
         ventana_detalle = Toplevel(self._contenido)
         ventana_detalle.title("Detalle del alumno")
-        ventana_detalle.geometry("1100x700")
-        ventana_detalle.minsize(1100,700)
+        ventana_detalle.geometry("1100x900")
+        ventana_detalle.minsize(1100,900)
         ventana_detalle.configure(bg=blanco)
 
 
@@ -348,8 +340,29 @@ class Ventana_Alumnos():
             ).grid(row=0,column=2,padx=10)
         
         Label(ventana_detalle, text="Historial Académico", font=("Arial", 16, "bold"), bg=blanco).pack(pady=(30, 10))
-        frame_datos_cursada = Frame(ventana_detalle, bg=blanco)
+        contenedor_scroll = Frame(ventana_detalle, bg=blanco)
+        contenedor_scroll.pack(padx=20, pady=10, fill="both", expand=True)
+
+        canvas = Canvas(contenedor_scroll, bg=blanco, highlightthickness=0)
+        scrollbar = ttk.Scrollbar(contenedor_scroll, orient="vertical", command=canvas.yview)
+
+        canvas.configure(yscrollcommand=scrollbar.set)
+        scrollbar.pack(side="right", fill="y")
+        canvas.pack(side="left", fill="both", expand=True)
+        
+        frame_datos_cursada = Frame(canvas, bg=blanco)
         frame_datos_cursada.pack(padx=20, pady=10, fill="both", expand=True)
+
+        canvas_window = canvas.create_window((0, 0), window=frame_datos_cursada, anchor="nw")
+        frame_datos_cursada.bind(
+            "<Configure>",
+            lambda e: canvas.configure(scrollregion=canvas.bbox("all"))
+        )
+        canvas.bind(
+            "<Configure>",
+            lambda e: canvas.itemconfig(canvas_window, width=e.width)
+        )
+        
         id_alumno = datos_alumno[0]
         servicio_alumno = Alumno_Service()
         servicio_nota = Nota_Service()
@@ -516,12 +529,12 @@ class Ventana_Alumnos():
         ventana.title("Modificar alumno")
         ventana.geometry("600x600")
         ventana.configure(bg=blanco)
-
+        form_frame = Frame(ventana, bg="white", highlightbackground=azul, highlightthickness=1, padx=40, pady=30)
+        form_frame.pack(expand=True, pady=20)
         Label(
-            ventana,
+            form_frame,
             text="Modificar alumno",
-            font=("Arial", 20, "bold"),
-            bg=blanco
+            font=("Arial", 20, "bold")
             
         ).grid(pady=(10, 25), column=0, row=0)
 
@@ -535,23 +548,23 @@ class Ventana_Alumnos():
         nacimiento = datos_alumno[6]
 
         #campos 
-        Label(ventana, text="Nombre", font=("Arial", 12, "bold"), bg=blanco).grid(column=0, row=1)
-        Entry(ventana, font=("Arial", 12), textvariable=nombre).grid(pady=(5, 15), column=1, row=1, columnspan=2)
+        Label(form_frame, text="Nombre", font=("Arial", 12, "bold")).grid(column=0, row=1)
+        Entry(form_frame, font=("Arial", 12), textvariable=nombre, highlightbackground=azul_oscuro, highlightthickness=1).grid(pady=(5, 15), column=1, row=1, columnspan=2)
 
-        Label(ventana, text="Apellido", font=("Arial", 12, "bold"), bg=blanco).grid(column=0, row=2)
-        Entry(ventana, font=("Arial", 12), textvariable=apellido).grid(pady=(5, 15), column=1, row=2, columnspan=2)
+        Label(form_frame, text="Apellido", font=("Arial", 12, "bold")).grid(column=0, row=2)
+        Entry(form_frame, font=("Arial", 12), textvariable=apellido, highlightbackground=azul_oscuro, highlightthickness=1).grid(pady=(5, 15), column=1, row=2, columnspan=2)
 
-        Label(ventana, text="DNI", font=("Arial", 12, "bold"), bg=blanco).grid(column=0, row=3)
-        Entry(ventana, font=("Arial", 12), textvariable=dni).grid(pady=(5, 15), column=1, row=3, columnspan=2)
+        Label(form_frame, text="DNI", font=("Arial", 12, "bold")).grid(column=0, row=3)
+        Entry(form_frame, font=("Arial", 12), textvariable=dni, highlightbackground=azul_oscuro, highlightthickness=1).grid(pady=(5, 15), column=1, row=3, columnspan=2)
 
-        Label(ventana, text="Email", font=("Arial", 12, "bold"), bg=blanco).grid(column=0, row=4)
-        Entry(ventana, font=("Arial", 12), textvariable=email).grid(pady=(5, 25), column=1, row=4, columnspan=2)
+        Label(form_frame, text="Email", font=("Arial", 12, "bold")).grid(column=0, row=4)
+        Entry(form_frame, font=("Arial", 12), textvariable=email, highlightbackground=azul_oscuro, highlightthickness=1).grid(pady=(5, 25), column=1, row=4, columnspan=2)
 
-        Label(ventana, text="Telefono", font=("Arial", 12, "bold"), bg=blanco).grid(column=0, row=5)
-        Entry(ventana, font=("Arial", 12), textvariable=telefono).grid(pady=(5, 25), column=1, row=5, columnspan=2)
+        Label(form_frame, text="Telefono", font=("Arial", 12, "bold")).grid(column=0, row=5)
+        Entry(form_frame, font=("Arial", 12), textvariable=telefono, highlightbackground=azul_oscuro, highlightthickness=1).grid(pady=(5, 25), column=1, row=5, columnspan=2)
 
         Button(
-            ventana,
+            form_frame,
             text="Guardar Cambios",
             font=("Arial", 12),
             bg=azul,
@@ -563,7 +576,7 @@ class Ventana_Alumnos():
         ).grid(padx=(0, 10), column=0, row=9)
 
         Button(
-            ventana,
+            form_frame,
             text="Cancelar",
             font=("Arial", 12),
             bg=gris,

@@ -12,32 +12,35 @@ class Bienvenida():
     def crear_tarjeta(self,columna, fila, nombre, numero):
             tarjeta = Frame(
                     self._tarjetas,
-                    bg=blanco,
-                    highlightbackground=borde, #color borde de la tarjeta
-                    highlightthickness=2 #grosor borde de tarjetas
+                    bg="white",
+                    highlightbackground=azul, #color borde de la tarjeta
+                    highlightthickness=2, #grosor borde de tarjetas
+                    padx=15, 
+                    pady=20
                 )
             tarjeta.grid(
                     row=fila,
                     column=columna,
                     sticky="nsew", #se expande en todas las direcciones
-                    padx=5,
-                    pady=5
+                    padx=10,
+                    pady=10
                 )
-    
+            self._tarjetas.grid_columnconfigure(columna, weight=1, uniform="grupo_tarjetas")
+            self._tarjetas.grid_rowconfigure(fila, weight=1, uniform="grupo_filas")
             Label(
                     tarjeta,
                     text=nombre,
-                    font=("Arial", 11),
-                    bg=blanco
-                ).grid(padx=14, pady=(14, 5), column=0, row=0)
+                    font=("Arial", 11,"bold"),
+                    bg="white",
+                ).pack(anchor="center", pady=(0, 10))
     
             Label(
                     tarjeta,
                     text=numero,
-                    font=("Arial", 21, "bold"),
-                    bg=blanco,
+                    font=("Arial", 26, "bold"),
+                    bg="white",
                     fg=azul
-                ).grid(padx=14, pady=(0, 12), column=0, row=1)
+                ).pack(anchor="center")
                 
     def mostrar(self):
 

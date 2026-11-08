@@ -10,8 +10,8 @@ from Presentacion.ventana_inscripciones import *
 #ventana
 raiz = Tk()
 raiz.title("Sistema de Gestión Educativa")
-raiz.geometry("600x520")
-raiz.maxsize(600, 520)
+raiz.geometry("480x560")
+raiz.maxsize(480, 560)
 raiz.config(bg=blanco)
 
 #encabezado

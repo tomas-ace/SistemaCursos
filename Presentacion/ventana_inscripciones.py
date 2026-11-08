@@ -135,7 +135,7 @@ class Ventana_Inscripciones():
             ventana = Toplevel(self._contenido)
     
             ventana.title("Registrar nueva inscripcion")
-            ventana.geometry("600x600")
+            ventana.geometry("400x400")
             ventana.configure(bg=blanco)
             Label(
                 ventana,
@@ -159,8 +159,11 @@ class Ventana_Inscripciones():
             encabezados_alumnos = ["ID","Nombre", "Apellido"]
             tree_alumnos=treeview(contenedor, encabezados_alumnos, lista_de_alumnos)
             tree_alumnos["displaycolumns"] = ("Nombre", "Apellido")
+            
+            frame_botones=Frame(contenedor,bg=blanco)
+            frame_botones.grid(column=0,row=16,columnspan=2)
             Button(
-                    contenedor,
+                    frame_botones,
                     text="Siguiente",
                     font=("Arial", 12),
                     bg=azul,
@@ -169,8 +172,18 @@ class Ventana_Inscripciones():
                     padx=30,
                     pady=12,
                     command=lambda: self.guardar_y_avanzar(tree_alumnos,contenedor,ventana)
-                ).grid(padx=(0, 10), column=0, row=16)
-           
+                ).grid(padx=(0, 10), column=0, row=0)
+            Button(
+                    frame_botones,
+                    text="Cancelar",
+                    font=("Arial", 12),
+                    bg=azul,
+                    fg=blanco,
+                    bd=0,
+                    padx=30,
+                    pady=12,
+                    command=lambda: ventana.destroy()
+                ).grid(padx=(0, 10), column=1, row=0)
 
         def guardar_y_avanzar(self,tree_alumnos,contenedor,ventana):
             seleccion = tree_alumnos.selection()
@@ -190,8 +203,10 @@ class Ventana_Inscripciones():
             encabezados_cursos = ["ID","Descripcion", "Turno"]
             tree_cursos=treeview(contenedor, encabezados_cursos, lista_de_cursos)
             tree_cursos["displaycolumns"] = ("Descripcion", "Turno")
+            frame_botones=Frame(contenedor,bg=blanco)
+            frame_botones.grid(column=0,row=16,columnspan=2)
             Button(
-                    contenedor,
+                    frame_botones,
                     text="Finalizar Inscripcion",
                     font=("Arial", 12),
                     bg=azul,
@@ -200,7 +215,18 @@ class Ventana_Inscripciones():
                     padx=30,
                     pady=12,
                     command=lambda: self.guardar_inscripcion(tree_cursos,alumno,contenedor,ventana)
-                ).grid(padx=(0, 10), column=0, row=16)
+                ).grid(padx=(0, 10), column=0, row=0)
+            Button(
+                    frame_botones,
+                    text="Cancelar",
+                    font=("Arial", 12),
+                    bg=azul,
+                    fg=blanco,
+                    bd=0,
+                    padx=30,
+                    pady=12,
+                    command=lambda: ventana.destroy()
+                ).grid(padx=(0, 10), column=1, row=0)
         
         def guardar_inscripcion(self,tree_cursos,alumno,contenedor,ventana):
             seleccion = tree_cursos.selection()

@@ -639,8 +639,10 @@ class Ventana_Clases():
             ventana.title("Registrar clase")
             ventana.geometry("600x600")
             ventana.configure(bg=blanco)
+            form_frame = Frame(ventana, bg=blanco, highlightbackground=azul, highlightthickness=1, padx=40, pady=30)
+            form_frame.pack(expand=True, pady=20)
             Label(
-                ventana,
+                form_frame,
                 text="Registrar nueva clase",
                 font=("Arial", 20, "bold"),
                 bg=blanco,
@@ -656,32 +658,32 @@ class Ventana_Clases():
             
             
             Label(
-                    ventana,
+                    form_frame,
                     text="Año",
                     font=("Arial", 12, "bold"),
                     bg=blanco,
                     fg=texto
                 ).grid(column=0, row=1)
             self._descripcion = Entry(
-                ventana,
+                form_frame,
                 font=("Arial", 12),
                 textvariable=anio
             )
             self._descripcion.grid(pady=(5, 15), column=1, row=1,columnspan=2)
     
             Label(
-                ventana,
+                form_frame,
                 text="Turno",
                 font=("Arial", 12, "bold"),
                 bg=blanco,
                 fg=texto
             ).grid(column=0, row=2)
     
-            Radiobutton(ventana, text="Mañana", variable=turno, value="Mañana", font=("Arial", 12), bg=blanco, fg=texto).grid(column=1, row=2)
-            Radiobutton(ventana, text="Tarde", variable=turno, value="Tarde", font=("Arial", 12), bg=blanco, fg=texto).grid(column=1, row=3)
-            Radiobutton(ventana, text="Noche", variable=turno, value="Noche", font=("Arial", 12), bg=blanco, fg=texto).grid(column=1, row=4)
+            Radiobutton(form_frame, text="Mañana", variable=turno, value="Mañana", font=("Arial", 12), bg=blanco, fg=texto).grid(column=1, row=2)
+            Radiobutton(form_frame, text="Tarde", variable=turno, value="Tarde", font=("Arial", 12), bg=blanco, fg=texto).grid(column=1, row=3)
+            Radiobutton(form_frame, text="Noche", variable=turno, value="Noche", font=("Arial", 12), bg=blanco, fg=texto).grid(column=1, row=4)
 
-            frame_lista_cursos = Frame(ventana, bg=blanco)
+            frame_lista_cursos = Frame(form_frame, bg=blanco)
             frame_lista_cursos.grid(column=0, row=5, padx=20, pady=10,rowspan=4,columnspan=4)
             lista_de_cursos=Ventana_Cursos(frame_lista_cursos)
             tree=lista_de_cursos.lista_de_cursos(frame_lista_cursos)
@@ -690,7 +692,7 @@ class Ventana_Clases():
             #botones
     
             Button(
-                ventana,
+                form_frame,
                 text="Registrar",
                 font=("Arial", 12),
                 bg=azul,
@@ -703,7 +705,7 @@ class Ventana_Clases():
                 
     
             Button(
-                ventana,
+                form_frame,
                 text="Cancelar",
                 font=("Arial", 12),
                 bg=gris,
@@ -818,7 +820,7 @@ class Ventana_Clases():
 
             columna_actual = 0
             fila_actual = 0
-            max_columnas_por_fila = 7
+            max_columnas_por_fila = 9
 
             for clase in datos_clases:
                 id_clase = clase[0]
