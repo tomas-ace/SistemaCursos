@@ -522,6 +522,18 @@ class Ventana_Clases():
             if quedo_alguno_libre:
                 messagebox.showwarning("Atención", "Uno o mas alumnos han superado el límite de inasistencias y su estado cambió automáticamente a 'Libre'.")
             asistencia_service.registrar_libres(fecha,id_clase)
+            servicio_clase = Clase_Service()
+            
+            if servicio_clase.curso_finalizado(id_clase):
+                respuesta = messagebox.askyesno(
+                    "Fin de Cursada Detectado", 
+                    "Se ha alcanzado el límite de clases previstas para este curso. ¿Desea cerrar la clase ahora y calcular los promedios finales de los alumnos?"
+                )
+                
+                if respuesta:
+                    servicio_clase.cerrar_clase_y_evaluar(id_clase)
+                    messagebox.showinfo("Éxito", "La clase ha sido cerrada y los alumnos regulares fueron evaluados.")
+            
             ventana.destroy()
                 
         def preparar_modificacion(self,tree,ventana_lista):

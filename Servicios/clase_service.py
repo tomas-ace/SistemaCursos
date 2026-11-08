@@ -78,11 +78,19 @@ class Clase_Service():
         
         for id_inscripcion in inscripciones_a_evaluar:
             promedio = servicio_nota.promedio_alumno_en_clase(id_inscripcion[0])
+            
             if promedio=="Sin notas":
                 promedio=0
-                
-            if promedio >= 7.0:
+            promedio_int=float(promedio)    
+            if promedio_int >= 7.0:
                 nuevo_estado = "Aprobado"
             else:
                 nuevo_estado = "Desaprobado"
-            self._dao.actualizar_estado_inscripcion(id_inscripcion, nuevo_estado)
+            self._dao.actualizar_estado_inscripcion(id_inscripcion[0], nuevo_estado)
+            
+    def curso_finalizado(self,id_clase):
+        duracion_total = self._dao.obtener_duracion_por_clase(id_clase)
+        clases_dictadas = self._dao.obtener_cantidad_clases_dictadas(id_clase)
+        
+        return clases_dictadas >= duracion_total
+            

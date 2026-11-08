@@ -250,3 +250,37 @@ class Clase_DAO():
         cursor.execute("UPDATE Inscripcion SET Estado = ? WHERE IdInscripcion = ?", (nuevo_estado, id_inscripcion))
         conexion.commit()
         conexion.close()
+        
+    def obtener_duracion_por_clase(self, id_clase):
+        conexion = sqlite3.connect("Datos/cursos_db.db")
+        cursor = conexion.cursor()
+        
+        cursor.execute("""
+            SELECT cu.Duracion 
+            FROM Clase c 
+            JOIN Curso cu ON c.IdCurso = cu.IdCurso 
+            WHERE c.IdClase = ?
+        """, (id_clase,))
+        
+        resultado = cursor.fetchone()
+        conexion.close()
+        
+        return resultado[0]
+    
+    def obtener_cantidad_clases_dictadas(self, id_clase):
+        conexion = sqlite3.connect("Datos/cursos_db.db")
+        cursor = conexion.cursor()
+        
+        cursor.execute("""
+            SELECT COUNT(DISTINCT a.Fecha) 
+            FROM Asistencia a 
+            JOIN Inscripcion i ON a.IdInscripcion = i.IdInscripcion 
+            WHERE i.IdClase = ?
+        """, (id_clase,))
+        
+        resultado = cursor.fetchone()
+        conexion.close()
+        
+        if resultado is None:
+            return 0
+        return resultado[0]
