@@ -1,29 +1,65 @@
 Sistema de Gestión Académica para Cursos
+Tomas Acevedo
+Aplicación de escritorio desarrollada en Python con Tkinter y SQLite para administrar la actividad académica de una institución que dicta cursos.
 
-Descripción
+El sistema centraliza los datos de alumnos, cursos, clases e inscripciones, y permite registrar y consultar notas y asistencias.
+Tecnologías
+- Python
+- Tkinter para la interfaz gráfica.
+- SQLite para almacenar la información.
 
-Sistema de escritorio desarrollado en Python para gestionar la información académica de una institución educativa que dicta cursos.
-
-El proyecto busca centralizar la información de alumnos, cursos, clases e inscripciones, permitiendo administrar las cursadas y registrar las notas y asistencias de los estudiantes.
 
 Funcionalidades
+Alumnos
+- Registrar alumnos.
+- Consultar el listado de alumnos.
+- Modificar sus datos personales.
+- Consultar el historial de cursadas.
+- Consultar notas y asistencias de cada inscripción.
+- Inscribir a un alumno en una clase.
+- Dar de baja una inscripción.
+Cursos y clases
+- Registrar y consultar cursos.
+- Modificar los datos de un curso.
+- Crear clases asociadas a un curso, indicando año y turno.
+- Consultar las clases mediante filtros por curso y estado.
+- Consultar los alumnos de una clase y filtrar por estado.
+- Cerrar una clase y calcular el resultado final de las inscripciones que continúan En Curso.
+Notas
+- Registrar notas para los alumnos de una clase.
+- Consultar las notas registradas.
+- Modificar una nota mientras la clase está activa.
+- Calcular el promedio de cada inscripción.
+Asistencias
+- Tomar lista para una clase.
+- Consultar y corregir asistencias mientras la clase está activa.
+- Calcular el porcentaje de asistencia de cada inscripción.
+- Cambiar automáticamente a Libre cuando las inasistencias superan el límite establecido.
+- Registrar automáticamente como Ausente a los alumnos que ya están en estado Libre o Baja al tomar una nueva lista.
+Panel principal
+Muestra un resumen con la cantidad de alumnos, cursos, inscripciones activas y clases activas.
 
-Gestión de alumnos: registrar, consultar, modificar y visualizar información de los alumnos.
 
-Gestión de cursos: registrar, consultar y modificar los cursos disponibles.
-
-Gestión de clases: crear clases asociadas a un curso, consultar las clases y modificar su estado.
-
-Gestión de inscripciones: inscribir alumnos en clases, consultar las inscripciones y modificar su estado.
-
-Registro de notas: cargar y consultar las calificaciones de los alumnos.
-
-Registro de asistencias: tomar asistencia y consultar las inasistencias.
-
-Historial académico: consultar información de las cursadas, notas y asistencias de cada alumno.
-
-Panel principal: visualizar cantidades generales de alumnos, cursos, clases e inscripciones.
-
-Ejecución
-
-Ejecutar el archivo principal: ventana_principal.py
+Estructura del proyecto
+SistemaCursos/
+├── Datos/
+│   ├── cursos_db.db
+│   ├── ddl.sql
+│   └── *_dao.py
+├── Dominio/
+│   └── modelos del sistema
+├── Presentacion/
+│   └── ventanas y componentes Tkinter
+├── Servicios/
+│   └── validaciones y reglas de negocio
+├── ventana_principal.py
+└── README.md
+La aplicación está organizada en capas:
+- Presentación: ventanas, formularios, tablas y controles de Tkinter.
+- Servicios: validaciones y reglas de negocio.
+- Datos: consultas SQL y acceso a SQLite.
+- Dominio: clases que representan las entidades del sistema.
+Requisitos
+- Python 3 instalado.
+- Tkinter disponible en la instalación de Python.
+- No requiere conexión a Internet.
