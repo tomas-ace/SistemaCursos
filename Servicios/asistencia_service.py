@@ -20,6 +20,7 @@ class Asistencia_Service():
         
     def registrar_libres_y_bajas(self,fecha,id_clase):
         libres_a_procesar = self._dao.alumnos_libres_sin_asistencia(id_clase, fecha)
+        print("libres a procesar", libres_a_procesar)
         for inscripcion in libres_a_procesar:
             asistencia_libre = Asistencia(fecha, 'Ausente', inscripcion[0])
             self._dao.registrar_asistencia(asistencia_libre)

@@ -129,7 +129,7 @@ class Asistencia_DAO():
         cursor.execute("""
             SELECT IdInscripcion 
             FROM Inscripcion 
-            WHERE (Estado = 'Libre' OR Estado = 'Baja')
+            WHERE IdClase = ? AND (Estado = 'Libre' OR Estado = 'Baja')
               AND IdInscripcion NOT IN (
                   SELECT IdInscripcion FROM Asistencia WHERE Fecha = ?
               )

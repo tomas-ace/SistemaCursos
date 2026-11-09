@@ -41,8 +41,10 @@ class Ventana_Inscripciones():
                 elemento.destroy()
             service_alumnos=Alumno_Service()
             lista_de_alumnos=service_alumnos.lista_por_nombre_apellido()
+            print("lsita de alumnos",lista_de_alumnos)
             encabezados_alumnos = ["ID","Nombre", "Apellido"]
             tree_alumnos=treeview(contenedor, encabezados_alumnos, lista_de_alumnos)
+            
             tree_alumnos["displaycolumns"] = ("Nombre", "Apellido")
             
             frame_botones=Frame(contenedor,bg=blanco)
