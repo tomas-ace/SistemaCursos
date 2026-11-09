@@ -268,15 +268,22 @@ class Ventana_Alumnos():
         return tree
         
         
-    def detalle_alumno(self,tree,ventana):
-        seleccion = tree.selection()
-        if not seleccion:
-            messagebox.showinfo("Error","Por favor, seleccione un alumno de la tabla.", parent=ventana)
-            return
+    def detalle_alumno(self,tree=None,ventana=None,datos_actualizacion_ventana=None):
+        if datos_actualizacion_ventana is None:
+            seleccion = tree.selection()
+            if not seleccion:
+                messagebox.showinfo("Error","Por favor, seleccione un alumno de la tabla.", parent=ventana)
+                return
+             
+            item_id = seleccion[0]
+            datos_alumno = tree.item(item_id)['values']
+            if ventana is not None:
+                ventana.destroy()
+        else:
+            datos_alumno = datos_actualizacion_ventana
          
-        item_id = seleccion[0]
-        datos_alumno = tree.item(item_id)['values']
-        ventana.destroy()
+       
+       
         ventana_detalle = Toplevel(self._contenido)
         ventana_detalle.title("Detalle del alumno")
         ventana_detalle.geometry("1100x900")
@@ -411,7 +418,7 @@ class Ventana_Alumnos():
             
             Button(frame_botones_card, text="Notas", font=("Arial", 9), bg=azul,fg="white",command=lambda id_ins=id_inscripcion: self.ver_notas(id_ins)).pack(side="left", padx=2)
             Button(frame_botones_card, text="Asistencia", font=("Arial", 9), bg=azul,fg="white",command=lambda id_ins=id_inscripcion: self.ver_asistencias(id_ins)).pack(side="left", padx=2)
-            Button(frame_botones_card, text="Baja", font=("Arial", 9), bg="#ff4c4c", fg="white", command=lambda id_ins=id_inscripcion: self.dar_de_baja(id_ins,frame_botones_card)).pack(side="right", padx=2)
+            Button(frame_botones_card, text="Baja", font=("Arial", 9), bg="#ff4c4c", fg="white", command=lambda id_ins=id_inscripcion: self.dar_de_baja(id_ins,ventana_detalle, datos_alumno)).pack(side="right", padx=2)
 
             columna_actual += 1
             if columna_actual >= max_columnas_por_fila:
@@ -443,16 +450,18 @@ class Ventana_Alumnos():
         frame_contenido.grid(column=0, row=1, padx=20, pady=10,rowspan=4,columnspan=4)
         ventana_insc.mostrar_cursos(frame_contenido,legajo,ventana)
     
-    def dar_de_baja(self,id_inscripcion,contenedor):
+    def dar_de_baja(self, id_inscripcion, ventana_detalle, datos_alumno):
         service=Alumno_Service()
         inactivo=service.es_baja_o_libre(id_inscripcion)
         if inactivo:
-            messagebox.showerror("Error","Esta alumno ya esta dado de baja o esta libre",parent=contenedor)
+            messagebox.showerror("Error","Esta alumno ya esta dado de baja o esta libre",parent=ventana_detalle)
             return
-        valor=messagebox.askokcancel("Confirmacion","¿Estas seguro que quieres dar de baja al alumno?",parent=contenedor)
+        valor=messagebox.askokcancel("Confirmacion","¿Estas seguro que quieres dar de baja al alumno?",parent=ventana_detalle)
         if valor==True:
             service=Inscripcion_Service()
             service.dar_de_baja_alumno(id_inscripcion)
+            ventana_detalle.destroy()
+            self.detalle_alumno(datos_actualizacion_ventana=datos_alumno)
         
     def ver_notas(self, id_inscripcion):
         notas=Nota_Service().obtener_notas_inscripcion(id_inscripcion)

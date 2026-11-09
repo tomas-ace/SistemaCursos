@@ -313,6 +313,7 @@ class Ventana_Clases():
                 return
             seleccion = tree.selection()
             if not seleccion:
+                messagebox.showerror("Error","Seleccione una asistencia")
                 return
             
             item_id = seleccion[0]
@@ -755,6 +756,7 @@ class Ventana_Clases():
         def registrar(self, anio, turno, tree, ventana):
             seleccion = tree.selection()
             if not seleccion:
+                messagebox.showerror("Error","Seleccione un curso")
                 return
     
             item_id = seleccion[0]

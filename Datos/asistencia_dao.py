@@ -19,20 +19,7 @@ class Asistencia_DAO():
         
         conexion.commit()
         conexion.close()
-    def modificar_asistencia(self,asistencia_con_nuevos_datos):
-        conexion = sqlite3.connect("Datos/cursos_db.db")
-        cursor = conexion.cursor()
-        nuevosDatos = [
-            asistencia_con_nuevos_datos.get_estado(),
-            asistencia_con_nuevos_datos.get_id_inscripcion(),  
-            asistencia_con_nuevos_datos.get_fecha()]
-        cursor.execute("""
-            UPDATE Asistencia
-            SET Estado = ?
-            WHERE IdInscripcion = ? and Fecha = ?
-        """, nuevosDatos)
-        conexion.commit()
-        conexion.close()
+    
     
     
     def obtener_asistencias_por_clase(self, id_clase):

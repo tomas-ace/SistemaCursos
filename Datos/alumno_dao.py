@@ -83,20 +83,7 @@ class Alumno_DAO():
         conexion.close()
         return cursos
     
-    def obtener_inasistencias_por_alumno(self, alumno_id):
-                conexion = sqlite3.connect("Datos/cursos_db.db")
-                cursor = conexion.cursor()
-                cursor.execute("""
-                    SELECT c.Descripcion, cl.Anio, a.Fecha
-                    FROM Asistencia a
-                    JOIN Inscripcion i ON i.IdInscripcion = a.IdInscripcion
-                    JOIN Clase cl ON cl.IdClase = i.IdClase
-                    JOIN Curso c ON c.IdCurso = cl.IdCurso
-                    WHERE i.Legajo = ? and a.Estado='Ausente'
-                """, (alumno_id,))
-                inasistencias = cursor.fetchall()
-                conexion.close()
-                return inasistencias
+        
 
     def existe_dni(self, dni):
         conexion = sqlite3.connect("Datos/cursos_db.db")

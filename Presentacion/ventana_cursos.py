@@ -194,6 +194,7 @@ class Ventana_Cursos():
         def preparar_modificacion(self,tree,ventana):
                 seleccion = tree.selection()
                 if not seleccion:
+                    messagebox.showerror("Error","Seleccione un curso")
                     return
         
                 item_id = seleccion[0]
