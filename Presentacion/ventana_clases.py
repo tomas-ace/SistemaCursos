@@ -215,26 +215,41 @@ class Ventana_Clases():
             else:
                 ventana_asistencias = Toplevel(self._contenido)
                 ventana_asistencias.title("Lista de Alumnos")
-                ventana_asistencias.geometry("600x400")
-                
+                ventana_asistencias.geometry("720x450")
+                ventana_asistencias.maxsize(720,450)
                 
                 ventana_asistencias.configure(bg="white") 
             
+            frame_top = Frame(ventana_asistencias, bg="white")
+            frame_top.pack(fill="x", padx=20, pady=(20, 10))
+
             Label(
-                ventana_asistencias, 
+                frame_top, 
                 text="Lista de Alumnos", 
-                font=("Arial", 16, "bold"), 
-                bg="white"
-            ).grid(pady=15,row=0,column=0)
+                font=("Arial", 18, "bold"), 
+                bg="white", 
+                fg=azul_oscuro 
+            ).pack(anchor="w", pady=(0, 15))
+            frame_controles = Frame(frame_top, bg="white")
+            frame_controles.pack(anchor="w", fill="x")
             
             opcion_filtro=StringVar(value=filtro_actual)
-            Radiobutton(ventana_asistencias, text="Todos", variable=opcion_filtro, value="Todos", bg=blanco, font=("Arial", 10)).grid(padx=5,row=1,column=0)
-            Radiobutton(ventana_asistencias, text="En Curso", variable=opcion_filtro, value="En Curso", bg=blanco, font=("Arial", 10)).grid(padx=5,row=1,column=1)
-            Radiobutton(ventana_asistencias, text="Libre", variable=opcion_filtro, value="Libre", bg=blanco, font=("Arial", 10)).grid(padx=5,row=1,column=2)
-            Radiobutton(ventana_asistencias, text="Baja", variable=opcion_filtro, value="Baja", bg=blanco, font=("Arial", 10)).grid(padx=5,row=1,column=3)
-            Radiobutton(ventana_asistencias, text="Aprobado", variable=opcion_filtro, value="Aprobado", bg=blanco, font=("Arial", 10)).grid(padx=5,row=1,column=4)
-            Radiobutton(ventana_asistencias, text="Desaprobado", variable=opcion_filtro, value="Desaprobado", bg=blanco, font=("Arial", 10)).grid(padx=5,row=1,column=5)
-            Button(ventana_asistencias,text="Aplicar Filtros",font=("Arial", 11, "bold"),bg=azul,fg=blanco,bd=0,padx=20,pady=10,command=lambda: self.ventana_lista_de_alumnos(id_clase,contenedor=ventana_asistencias,filtro_actual=opcion_filtro.get())).grid(padx=5,row=2,column=2,columnspan=2,pady=10)
+            Radiobutton(frame_controles, text="Todos", variable=opcion_filtro, value="Todos", bg="white", font=("Arial", 10)).grid(padx=5,row=0,column=0)
+            Radiobutton(frame_controles, text="En Curso", variable=opcion_filtro, value="En Curso", bg="white", font=("Arial", 10)).grid(padx=5,row=0,column=1)
+            Radiobutton(frame_controles, text="Libre", variable=opcion_filtro, value="Libre", bg="white", font=("Arial", 10)).grid(padx=5,row=0,column=2)
+            Radiobutton(frame_controles, text="Baja", variable=opcion_filtro, value="Baja", bg="white", font=("Arial", 10)).grid(padx=5,row=0,column=3)
+            Radiobutton(frame_controles, text="Aprobado", variable=opcion_filtro, value="Aprobado", bg="white", font=("Arial", 10)).grid(padx=5,row=0,column=4)
+            Radiobutton(frame_controles, text="Desaprobado", variable=opcion_filtro, value="Desaprobado", bg="white", font=("Arial", 10)).grid(padx=5,row=0,column=5)
+            Button(
+                    frame_controles,
+                    text="Aplicar Filtros",
+                    font=("Arial", 11, "bold"),
+                    bg=azul,
+                    fg=blanco,
+                    padx=20,
+                    pady=10,
+                    command=lambda: self.ventana_lista_de_alumnos(id_clase,contenedor=ventana_asistencias,filtro_actual=opcion_filtro.get())
+                ).grid(padx=5,row=0,column=6,columnspan=2,pady=10)
             servicio_clase = Clase_Service()
             datos_clases = servicio_clase.lista_con_estado(id_clase,filtro_actual) 
             
@@ -242,9 +257,12 @@ class Ventana_Clases():
             encabezados = ["Nombre","Apellido","Estado"]
             
             
-            frame_tabla = Frame(ventana_asistencias)
-            frame_tabla.grid(row=3,column=1,columnspan=6, padx=20, pady=10)
-            treeview(frame_tabla, encabezados, datos_clases)
+            frame_tabla = Frame(ventana_asistencias,bg="white")
+            frame_tabla.pack(fill="both", expand=True, padx=20, pady=(10, 20))
+            tree=treeview(frame_tabla, encabezados, datos_clases)
+            tree.column("Nombre", width=220, anchor="center")
+            tree.column("Apellido", width=220, anchor="center")
+            tree.column("Estado", width=220, anchor="center")
     
         def lista_presencias(self,id_clase):
             ventana_asistencias = Toplevel(self._contenido)
@@ -289,6 +307,10 @@ class Ventana_Clases():
                 ).grid(pady=10,column=1,row=0,padx=5)
             
         def editar_asistencia(self,tree,ventana,id_clase):
+            servicio_classe=Clase_Service()
+            if servicio_classe.esta_inactiva(id_clase):
+                messagebox.showerror("Error","No puedes modificar asistencia en una clase inactiva")
+                return
             seleccion = tree.selection()
             if not seleccion:
                 return
@@ -364,6 +386,10 @@ class Ventana_Clases():
             
             
         def guardar_edicion_nota(self, tree, entry, id_clase, ventana):
+            servicio_classe=Clase_Service()
+            if servicio_classe.esta_inactiva(id_clase):
+                messagebox.showerror("Error","No puedes modificar notas en una clase inactiva")
+                return
             seleccion = tree.selection()
             
             if not seleccion:
@@ -385,7 +411,12 @@ class Ventana_Clases():
             self.lista_notas(id_clase, contenedor=ventana) 
                 
         def ventana_agregar_notas(self, id_clase):
+            
                     servicio_classe=Clase_Service()
+                    if servicio_classe.esta_inactiva(id_clase):
+                        messagebox.showerror("Error","No puedes agregar notas en una clase inactiva")
+                        return
+                        
                     alumnos=servicio_classe.lista_de_alumnos_por_clase(id_clase)
                     ventana = Toplevel(self._contenido)
                     ventana.title("Agregar Notas")
@@ -466,6 +497,10 @@ class Ventana_Clases():
                 
         def ventana_tomar_lista(self, id_clase):
             servicio_classe=Clase_Service()
+            servicio_classe=Clase_Service()
+            if servicio_classe.esta_inactiva(id_clase):
+                messagebox.showerror("Error","No puedes tomar lista en una clase inactiva")
+                return
             fecha_actual = datetime.now().strftime("%Y-%m-%d")
             servicio_asistencia = Asistencia_Service()
             if servicio_asistencia.existe_asistencia(fecha_actual, id_clase):
@@ -820,7 +855,7 @@ class Ventana_Clases():
 
             columna_actual = 0
             fila_actual = 0
-            max_columnas_por_fila = 9
+            max_columnas_por_fila = 6
 
             for clase in datos_clases:
                 id_clase = clase[0]
@@ -850,7 +885,8 @@ class Ventana_Clases():
 
                 Button(frame_botones_card, text="Notas", font=("Arial", 8, "bold"), bg=azul, fg="white", bd=0, padx=10,pady=2, command=lambda id_c=id_clase: self.lista_notas(id_c)).grid(row=0,column=0,padx=2)
                 Button(frame_botones_card, text="Asistencias", font=("Arial", 8, "bold"), bg=azul, fg="white", bd=0, padx=10,pady=2, command=lambda id_c=id_clase: self.lista_presencias(id_c)).grid(row=0,column=1,padx=2)
-                Button(frame_botones_card, text="Cambiar a Inactiva", font=("Arial", 8, "bold"), bg="red", fg="white", bd=0, padx=5,pady=2, command=lambda id_c=id_clase: self.modificar_estado(id_c,ventana_clases)).grid(row=1,column=0, columnspan=2,pady=5)
+                Button(frame_botones_card, text="Alumnos", font=("Arial", 8, "bold"), bg=azul, fg="white", bd=0, padx=10,pady=2, command=lambda id_c=id_clase: self.ventana_lista_de_alumnos(id_c)).grid(row=0,column=2,padx=2)
+                Button(frame_botones_card, text="Cambiar a Inactiva", font=("Arial", 8, "bold"), bg="red", fg="white", bd=0, padx=5,pady=2, command=lambda id_c=id_clase: self.modificar_estado(id_c,ventana_clases)).grid(row=1,column=0, columnspan=3,pady=5)
 
                 columna_actual += 1
                 if columna_actual >= max_columnas_por_fila:
@@ -860,6 +896,11 @@ class Ventana_Clases():
 
 
         def modificar_estado(self, id_clase, ventana_padre):
+                service=Clase_Service()
+                inactiva=service.esta_inactiva(id_clase)
+                if inactiva:
+                    messagebox.showerror("Error","Esta clase ya esta inactiva",parent=ventana_padre)
+                    return
                 respuesta = messagebox.askyesno(
                     "Cerrar Clase", 
                     "¿Está seguro que desea cerrar esta clase? Esta acción pasará la clase a 'Inactiva' y evaluará automáticamente a todos los alumnos regulares calculando sus promedios.",

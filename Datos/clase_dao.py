@@ -284,3 +284,10 @@ class Clase_DAO():
         if resultado is None:
             return 0
         return resultado[0]
+    def estado_de_clase(self,id_clase):
+        conexion = sqlite3.connect("Datos/cursos_db.db")
+        cursor = conexion.cursor()
+        cursor.execute("SELECT Estado FROM Clase WHERE IdClase = ?", (id_clase,))
+        resultado = cursor.fetchone()
+        conexion.close() 
+        return resultado[0]

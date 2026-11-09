@@ -48,10 +48,21 @@ class Alumno_Service():
             return True
     def cursos_por_alumno(self, alumno_id):
         return self._dao.obtener_cursos_por_alumno(alumno_id)
-    def notas_por_alumno(self, alumno_id):
-        return self._dao.obtener_notas_por_alumno(alumno_id)
+    
     def inasistencias_por_alumno(self, alumno_id):
         return self._dao.obtener_inasistencias_por_alumno(alumno_id)
 
     def lista_por_nombre_apellido(self):
         return self._dao.listar_nombre_y_apellido()
+    
+    def cantidad_de_inscripciones_activas(self,legajo):
+        return self._dao.obtener_cantidad_insc_activas(legajo)
+    
+    def es_baja_o_libre(self,id_inscripcion):
+            estado=self._dao.estado_de_inscripcion(id_inscripcion)
+            if estado=="Libre":
+                return True
+            elif estado=="Baja":
+                return True
+            else:
+                return False

@@ -411,7 +411,7 @@ class Ventana_Alumnos():
             
             Button(frame_botones_card, text="Notas", font=("Arial", 9), bg=azul,fg="white",command=lambda id_ins=id_inscripcion: self.ver_notas(id_ins)).pack(side="left", padx=2)
             Button(frame_botones_card, text="Asistencia", font=("Arial", 9), bg=azul,fg="white",command=lambda id_ins=id_inscripcion: self.ver_asistencias(id_ins)).pack(side="left", padx=2)
-            Button(frame_botones_card, text="Baja", font=("Arial", 9), bg="#ff4c4c", fg="white", command=lambda id_ins=id_inscripcion: self.dar_de_baja(id_ins)).pack(side="right", padx=2)
+            Button(frame_botones_card, text="Baja", font=("Arial", 9), bg="#ff4c4c", fg="white", command=lambda id_ins=id_inscripcion: self.dar_de_baja(id_ins,frame_botones_card)).pack(side="right", padx=2)
 
             columna_actual += 1
             if columna_actual >= max_columnas_por_fila:
@@ -419,6 +419,11 @@ class Ventana_Alumnos():
                 fila_actual += 1
                 
     def inscripcion(self,datos_alumno,ventana_detalle):
+        service=Alumno_Service()
+        cantidad_inscripciones=service.cantidad_de_inscripciones_activas(datos_alumno[0])
+        if cantidad_inscripciones >= 3:
+            messagebox.showinfo("Maximo de clases","Este alumno ya esta cursando 3 clases actualmente")
+            return
         legajo=datos_alumno[0]
         ventana_insc=Ventana_Inscripciones(self._contenido)
         ventana = Toplevel(self._contenido) 
@@ -438,8 +443,13 @@ class Ventana_Alumnos():
         frame_contenido.grid(column=0, row=1, padx=20, pady=10,rowspan=4,columnspan=4)
         ventana_insc.mostrar_cursos(frame_contenido,legajo,ventana)
     
-    def dar_de_baja(self,id_inscripcion):
-        valor=messagebox.askokcancel("Confirmacion","¿Estas seguro que quieres dar de baja al alumno?")
+    def dar_de_baja(self,id_inscripcion,contenedor):
+        service=Alumno_Service()
+        inactivo=service.es_baja_o_libre(id_inscripcion)
+        if inactivo:
+            messagebox.showerror("Error","Esta alumno ya esta dado de baja o esta libre",parent=contenedor)
+            return
+        valor=messagebox.askokcancel("Confirmacion","¿Estas seguro que quieres dar de baja al alumno?",parent=contenedor)
         if valor==True:
             service=Inscripcion_Service()
             service.dar_de_baja_alumno(id_inscripcion)

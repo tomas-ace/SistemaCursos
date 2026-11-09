@@ -24,15 +24,7 @@ class Alumno_DAO():
 
         conexion.commit()
         conexion.close()
-    def obtener_alumno_por_dni(self,dni):
-        conexion = sqlite3.connect("Datos/cursos_db.db")
-        cursor = conexion.cursor()
-        cursor.execute("""
-            SELECT * FROM Alumno WHERE DNI = ?
-        """, (dni,))
-        alumno = cursor.fetchone()
-        conexion.close()
-        return alumno
+   
     def modificar_alumno(self,alumno_con_nuevos_datos):
         conexion = sqlite3.connect("Datos/cursos_db.db")
         cursor = conexion.cursor()
@@ -90,20 +82,7 @@ class Alumno_DAO():
         cursos = cursor.fetchall()
         conexion.close()
         return cursos
-    def obtener_notas_por_alumno(self, alumno_id):
-            conexion = sqlite3.connect("Datos/cursos_db.db")
-            cursor = conexion.cursor()
-            cursor.execute("""
-                SELECT n.Fecha, n.Descripcion, c.Descripcion, cl.Anio, n.Nota
-                FROM Nota n
-                JOIN Inscripcion i ON i.IdInscripcion = n.IdInscripcion
-                JOIN Clase cl ON cl.IdClase = i.IdClase
-                JOIN Curso c ON c.IdCurso = cl.IdCurso
-                WHERE i.Legajo = ?
-            """, (alumno_id,))
-            notas = cursor.fetchall()
-            conexion.close()
-            return notas
+    
     def obtener_inasistencias_por_alumno(self, alumno_id):
                 conexion = sqlite3.connect("Datos/cursos_db.db")
                 cursor = conexion.cursor()
@@ -152,5 +131,24 @@ class Alumno_DAO():
         conexion.close()
         return alumnos
 
-
-print(Alumno_DAO().obtener_cursos_por_alumno(2)) 
+    def obtener_cantidad_insc_activas(self,legajo):
+        conexion = sqlite3.connect("Datos/cursos_db.db")
+        cursor = conexion.cursor()
+        cursor.execute("""
+            SELECT COUNT(*) 
+            FROM Inscripcion 
+            WHERE Legajo = ? AND Estado = 'En Curso'
+        """, (legajo,))
+        
+        resultado = cursor.fetchone()
+        conexion.close()
+                    
+        return resultado[0]
+    
+    def estado_de_inscripcion(self,id_inscripcion):
+            conexion = sqlite3.connect("Datos/cursos_db.db")
+            cursor = conexion.cursor()
+            cursor.execute("SELECT Estado FROM Inscripcion WHERE IdInscripcion = ?", (id_inscripcion,))
+            resultado = cursor.fetchone()
+            conexion.close() 
+            return resultado[0]

@@ -54,8 +54,6 @@ class Clase_Service():
         else:
             return self._dao.lista_de_alumnos_con_estado_y_filtro(clase, filtro)
     
-    def listar_clases_con_filtros(filtro_estado,filtro_curso):
-        pass
     
     def obtener_clases_filtradas(self, filtro_estado, filtro_curso):
         if filtro_estado == "Todas" and filtro_curso == "Todos los Cursos":
@@ -93,4 +91,11 @@ class Clase_Service():
         clases_dictadas = self._dao.obtener_cantidad_clases_dictadas(id_clase)
         
         return clases_dictadas >= duracion_total
+    
+    def esta_inactiva(self,id_clase):
+        estado=self._dao.estado_de_clase(id_clase)
+        if estado=="Inactiva":
+            return True
+        else:
+            return False
             
