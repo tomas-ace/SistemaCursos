@@ -26,4 +26,4 @@ Panel principal: visualizar cantidades generales de alumnos, cursos, clases e in
 
 Ejecución
 
-Ejecutar el archivo principal: Ventana_Principal.py
+Ejecutar el archivo principal: ventana_principal.py
