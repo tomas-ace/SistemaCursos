@@ -21,23 +21,7 @@ class Clase_DAO():
         conexion.commit()
         conexion.close()
     
-    def modificar_estado(self,id_clase, nuevo_estado):
-        conexion=sqlite3.connect("Datos/cursos_db.db")
-        cursor = conexion.cursor()
-        
-        nuevosDatos=[
-            nuevo_estado,
-            id_clase
-            
-        ]
-        cursor.execute("""
-            UPDATE Clase
-            SET Estado = ?
-            WHERE IdClase = ?
-        """,nuevosDatos)
-        
-        conexion.commit()
-        conexion.close()
+    
     def contar_clases_activas(self):
         conexion=sqlite3.connect("Datos/cursos_db.db")
         cursor = conexion.cursor()
@@ -49,32 +33,7 @@ class Clase_DAO():
         conexion.close()
         return clases[0]
     
-    def listar_clases(self):
-        conexion=sqlite3.connect("Datos/cursos_db.db")
-        cursor = conexion.cursor()
-        cursor.execute("""
-            SELECT c.IdClase,c.Anio,c.Turno,c.Estado, Cu.Descripcion
-            FROM Clase c
-            JOIN Curso cu ON c.IdCurso = cu.IdCurso
-        """)
-        clases = cursor.fetchall()
-        conexion.commit()
-        conexion.close()
-        return clases
     
-    def listar_clases_con_filtro(self,filtro):
-        conexion=sqlite3.connect("Datos/cursos_db.db")
-        cursor = conexion.cursor()
-        cursor.execute("""
-            SELECT c.IdClase,c.Anio,c.Turno,c.Estado, Cu.Descripcion
-            FROM Clase c
-            JOIN Curso cu ON c.IdCurso = cu.IdCurso
-            where c.Estado= ?
-        """,(filtro,))
-        clases = cursor.fetchall()
-        conexion.commit()
-        conexion.close()
-        return clases
     
     def lista_de_alumnos_en_clase(self,clase):
         conexion=sqlite3.connect("Datos/cursos_db.db")
@@ -148,14 +107,14 @@ class Clase_DAO():
     def anio_de_clase(self, id_clase):
         conexion = sqlite3.connect("Datos/cursos_db.db")
         cursor = conexion.cursor()
-        print("antes de la consulta el id es ", id_clase)
+        
         cursor.execute("""
             SELECT Anio FROM Clase
             WHERE IdClase = ?
         """, (id_clase,))
         
         anio = cursor.fetchone()[0]
-        print("el anio es ", anio)
+        
         conexion.close()
         return anio
     def curso_de_clase(self, id_clase):

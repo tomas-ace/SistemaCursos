@@ -5,7 +5,7 @@ class Alumno_Service():
         self._dao=Alumno_DAO()
         
     def nuevo_alumno(self,alumno):
-        print("DNI del alumno:", alumno.get_dni())  
+        
         resultado = self.datos_validos(alumno)
         if resultado != True:
             return resultado
@@ -56,11 +56,15 @@ class Alumno_Service():
     def cantidad_de_inscripciones_activas(self,legajo):
         return self._dao.obtener_cantidad_insc_activas(legajo)
     
-    def es_baja_o_libre(self,id_inscripcion):
+    def es_inactivo(self,id_inscripcion):
             estado=self._dao.estado_de_inscripcion(id_inscripcion)
             if estado=="Libre":
                 return True
             elif estado=="Baja":
+                return True
+            elif estado=="Aprobado":
+                return True
+            elif estado=="Desaprobado":
                 return True
             else:
                 return False

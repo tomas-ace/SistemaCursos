@@ -70,7 +70,7 @@ class Asistencia_DAO():
         cursor = conexion.cursor()
         cursor.execute("SELECT Fecha, Estado FROM Asistencia WHERE idInscripcion = ?" ,  (inscripcion,))
         asistencia = cursor.fetchall()
-        print("en la consulta", asistencia)
+       
         if not asistencia:
                 conexion.close()
                 return "Sin Datos"
@@ -129,7 +129,7 @@ class Asistencia_DAO():
         cursor.execute("""
             SELECT IdInscripcion 
             FROM Inscripcion 
-            WHERE Estado = 'Libre' AND IdClase = ?
+            WHERE (Estado = 'Libre' OR Estado = 'Baja')
               AND IdInscripcion NOT IN (
                   SELECT IdInscripcion FROM Asistencia WHERE Fecha = ?
               )

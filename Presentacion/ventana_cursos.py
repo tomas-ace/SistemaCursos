@@ -115,7 +115,7 @@ class Ventana_Cursos():
         
                     
         def mostrar(self):
-            print("hola")
+            
             Label(
                 self._contenido,
                 text="Cursos",

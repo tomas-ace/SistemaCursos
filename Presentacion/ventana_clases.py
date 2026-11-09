@@ -15,197 +15,6 @@ class Ventana_Clases():
         def __init__(self,contenido):
                     self._contenido = contenido
                     self._botones = Frame(contenido, bg=blanco)
-        def mostrar_opcion_elegida(self,opcion):
-            if opcion == "Registrar nueva clase":
-                self.ventana_registro_clase(None)
-            else:
-                self.lista_de_clases()
-       
-                    
-                    
-        def lista_de_clases(self, contenedor=None,filtro_actual="Todas"):
-            if contenedor is None:
-                ventana_lista = Toplevel(self._contenido)
-            else:
-                ventana_lista = contenedor
-                for elemento in contenedor.winfo_children():
-                    elemento.destroy()
-                    
-            ventana_lista.geometry("1200x600")
-            Label(
-                    ventana_lista,
-                    text="Lista de clases",
-                    font=("Arial", 20, "bold"),
-                    bg=blanco,
-                    fg=texto
-                ).grid(pady=(10, 25), column=0, row=0)
-            ventana_lista.title("Lista de clases")
-            ventana_lista.configure(bg=blanco)
-            columnas = ["IDClase", "Anio", "Turno", "Estado", "Curso"]
-            frame_filtros=Frame(ventana_lista,bg=blanco)
-            frame_filtros.grid(padx=5,row=1,column=0)
-            opcion_filtro=StringVar(value=filtro_actual)
-            Radiobutton(frame_filtros, text="Todas", variable=opcion_filtro, value="Todas", bg=blanco, font=("Arial", 10)).grid(padx=5,row=1,column=0)
-            Radiobutton(frame_filtros, text="Activas", variable=opcion_filtro, value="Activa", bg=blanco, font=("Arial", 10)).grid(padx=5,row=1,column=1)
-            Radiobutton(frame_filtros, text="Inactivas", variable=opcion_filtro, value="Inactiva", bg=blanco, font=("Arial", 10)).grid(padx=5,row=1,column=2)
-            Button(frame_filtros,text="Aplicar Filtros",font=("Arial", 11, "bold"),bg=azul,fg=blanco,bd=0,padx=20,pady=10,command=lambda: self.lista_de_clases(contenedor=ventana_lista,filtro_actual=opcion_filtro.get())).grid(padx=5,row=1,column=3)
-            frame_treeview=Frame(ventana_lista,bg=blanco)
-            frame_treeview.grid(column=0,row=2)
-            datos_clases = Clase_Service().listar_clases(filtro_actual)
-            tree=treeview(frame_treeview, columnas, datos_clases)
-            frame_acciones = Frame(ventana_lista, bg=blanco)
-            frame_acciones.grid(column=0, row=3, padx=20, pady=10)
-
-            Button(
-                frame_acciones,
-                text="Agregar Nuevo",
-                font=("Arial", 11, "bold"),
-                bg=azul,
-                fg=blanco,
-                bd=0,
-                padx=20,
-                pady=10,
-                command=lambda: self.ventana_registro_clase(ventana_lista)
-            ).pack(side="left", padx=10)
-    
-            Button(
-                frame_acciones,
-                text="Modificar Estado",
-                font=("Arial", 11, "bold"),
-                bg=gris,
-                fg=blanco,
-                bd=0,
-                padx=20,
-                pady=10,
-                command=lambda: self.preparar_modificacion(tree,ventana_lista)
-            ).pack(side="left", padx=10)
-            
-            Button(
-                frame_acciones,
-                text="Ver Detalle",
-                font=("Arial", 11, "bold"),
-                bg=gris,
-                fg=blanco,
-                bd=0,
-                padx=20,
-                pady=10,
-                command=lambda: self.detalle_clase(tree,ventana_lista)
-            ).pack(side="left", padx=10)
-            return tree
-        
-        def detalle_clase(self,tree,ventana):
-                seleccion = tree.selection()
-                if not seleccion:
-                    print("Por favor, seleccione una clase de la tabla.")
-                    return
-                 
-                item_id = seleccion[0]
-                datos_clase = tree.item(item_id)['values']
-                ventana.destroy()
-                ventana_detalle = Toplevel(self._contenido)
-                ventana_detalle.title("Detalle de la clase")
-                ventana_detalle.geometry("600x600")
-                ventana_detalle.configure(bg=blanco)
-        
-        
-                Label(
-                    ventana_detalle,
-                    text="Detalle de la clase",
-                    font=("Arial", 20, "bold"),
-                    bg=blanco,
-                    fg=texto
-                ).pack(pady=(20, 20))
-        
-               
-                frame_datos = Frame(ventana_detalle, bg=blanco)
-                frame_datos.pack(pady=10)
-                titulos_columnas = ["ID:", "Año:", "Turno:", "Estado:", "Curso"]
-                for i in range(len(titulos_columnas)):
-                    if i==0:
-                        continue
-                    titulo = titulos_columnas[i]
-                    Label(
-                        frame_datos,
-                        text=titulo,
-                        font=("Arial", 12, "bold"),
-                        bg=blanco,
-                        fg=texto,
-                        width=18
-                    ).grid(row=i, column=0, pady=8, padx=10)
-        
-                   
-                    Label(
-                        frame_datos,
-                        text=str(datos_clase[i]),
-                        font=("Arial", 12),
-                        bg=blanco,
-                        fg=gris,
-                    ).grid(row=i, column=1, pady=8, padx=10)
-        
-                frame_datos_cursada = Frame(ventana_detalle, bg=blanco)
-                frame_datos_cursada.pack(pady=40)
-        
-                Button(
-                    frame_datos_cursada,
-                    text="Presencias",
-                    font=("Arial", 11, "bold"),
-                    bg=azul,
-                    fg=blanco,
-                    bd=0,
-                    padx=20,
-                    pady=10,
-                    command=lambda: self.lista_presencias(datos_clase[0])
-                ).grid(column=0,row=0, padx=10)
-        
-                Button(
-                    frame_datos_cursada,
-                    text="Notas",
-                    font=("Arial", 11, "bold"),
-                    bg=azul,
-                    fg=blanco,
-                    bd=0,
-                    padx=20,
-                    pady=10,
-                    command=lambda: self.lista_notas(datos_clase[0])
-                ).grid(column=1,row=0, padx=10)
-        
-                Button(
-                    frame_datos_cursada,
-                    text="Tomar Lista",
-                    font=("Arial", 11, "bold"),
-                    bg=azul,
-                    fg=blanco,
-                    bd=0,
-                    padx=20,
-                    pady=10,
-                    command=lambda: self.ventana_tomar_lista(datos_clase[0])
-                ).grid(column=2,row=0, padx=10)
-                
-                        
-                Button(
-                    frame_datos_cursada,
-                    text="Agregar Notas",
-                    font=("Arial", 11, "bold"),
-                    bg=azul,
-                    fg=blanco,
-                    bd=0,
-                    padx=20,
-                    pady=10,
-                    command=lambda: self.ventana_agregar_notas(datos_clase[0])
-                ).grid(column=3,row=0, padx=10)
-                
-                Button(
-                        frame_datos_cursada,
-                        text="Lista de Alumnos",
-                        font=("Arial", 11, "bold"),
-                        bg=azul,
-                        fg=blanco,
-                        bd=0,
-                        padx=20,
-                        pady=10,
-                        command=lambda: self.ventana_lista_de_alumnos(datos_clase[0])
-                    ).grid(column=4,row=0, padx=10)
-                
                 
         def ventana_lista_de_alumnos(self,id_clase,contenedor=None,filtro_actual="Todos"):
             if contenedor !=None:
@@ -471,12 +280,12 @@ class Ventana_Clases():
         
         
         def guardar_notas(self,descripcion, dia, mes, anio, ventana,lista):
-                    print ("entre a guardar notas")
+                    
                     fecha_completa = f"{anio}-{mes}-{dia}"
                     nota_detalle_service= Nota_Service()
                     todas_validas=True
                     for alumno in lista:
-                        print(alumno)
+                        
                         id_inscripcion=alumno[0]
                         nota = alumno[1].get() 
                         nota_detalle=Nota(None,fecha_completa,nota,descripcion,id_inscripcion)
@@ -547,7 +356,7 @@ class Ventana_Clases():
             asistencia_service= Asistencia_Service()
             quedo_alguno_libre=False
             for alumno in lista:
-                print(alumno)
+              
                 id_inscripcion=alumno[0]
                 estado = alumno[1].get() 
                 asistencia=Asistencia(fecha,estado,id_inscripcion)
@@ -557,7 +366,7 @@ class Ventana_Clases():
                     quedo_alguno_libre=True
             if quedo_alguno_libre:
                 messagebox.showwarning("Atención", "Uno o mas alumnos han superado el límite de inasistencias y su estado cambió automáticamente a 'Libre'.")
-            asistencia_service.registrar_libres(fecha,id_clase)
+            asistencia_service.registrar_libres_y_bajas(fecha,id_clase)
             servicio_clase = Clase_Service()
             
             if servicio_clase.curso_finalizado(id_clase):
@@ -572,98 +381,6 @@ class Ventana_Clases():
             
             ventana.destroy()
                 
-        def preparar_modificacion(self,tree,ventana_lista):
-            seleccion = tree.selection()
-            if not seleccion:
-                return
-    
-            item_id = seleccion[0]
-            datos_clase = tree.item(item_id)['values']
-            ventana_lista.destroy()  
-            self.ventana_modificar_clase(datos_clase)
-                    
-        def ventana_modificar_clase(self,datos_clase):
-                ventana = Toplevel(self._contenido)
-                ventana.title("Modificar Estado")
-                ventana.geometry("600x600")
-                ventana.configure(bg=blanco)
-                id_clase = datos_clase[0]
-                print(datos_clase)
-                estado_actual = datos_clase[3]
-                Label(
-                    ventana,
-                    text="Modificar Estado",
-                    font=("Arial", 20, "bold"),
-                    bg=blanco,
-                    fg=texto
-                ).grid(pady=(10, 25), column=0, row=0)
-        
-        
-                #campos 
-                Label(ventana, text="Estado", font=("Arial", 12, "bold"), bg=blanco, fg=texto).grid(column=0, row=1)
-                
-                estado=StringVar(value=estado_actual)
-                estado.set(estado_actual)
-                Radiobutton(ventana, text="Activo", variable=estado, value="Activa", font=("Arial", 12), bg=blanco, fg=texto).grid(column=0, row=2)
-                Radiobutton(ventana, text="Inactivo", variable=estado, value="Inactiva", font=("Arial", 12), bg=blanco, fg=texto).grid(column=0, row=3)
-                
-                
-                Button(
-                    ventana,
-                    text="Guardar Cambios",
-                    font=("Arial", 12),
-                    bg=azul,
-                    fg=blanco,
-                    bd=0,
-                    padx=20,
-                    pady=12,
-                    command=lambda: self.guardar_modificacion(id_clase,estado.get(),ventana)
-                ).grid(padx=(0, 10), column=0, row=9)
-        
-                Button(
-                    ventana,
-                    text="Cancelar",
-                    font=("Arial", 12),
-                    bg=gris,
-                    fg=blanco,
-                    bd=0,
-                    padx=20,
-                    pady=12,
-                    command=ventana.destroy
-                ).grid(padx=(0, 10), column=1, row=9)
-        def guardar_modificacion(self, id_clase, estado, ventana):
-                servicio_clase = Clase_Service()
-                servicio_clase.modificar_estado_de_clase(id_clase, estado)
-                ventana.destroy()         
-        def mostrar(self):
-            print("hola")
-            Label(
-                self._contenido,
-                text="Clases",
-                font=("Arial", 16, "bold"),
-                bg=blanco,
-                fg=texto
-            ).grid(column=0, row=0, padx=20, pady=10)
-    
-            Label(
-                self._contenido,
-                text="Seleccione la opcion que desee.",
-                font=("Arial", 11),
-                bg=blanco,
-                fg=gris
-            ).grid(column=0, row=1, padx=20, pady=10)
-    
-            
-            self._botones.grid(column=0, row=2, padx=20, pady=10)#coloca el contenedor y le dice que se ezpanda
-            opciones = [
-                "Registrar nueva clase",
-                "Consultar clases" 
-            ]
-            fila = 0
-            for opcion in opciones:
-                    crear_boton(opcion,fila,self._botones,lambda opcion_actual=opcion: self.mostrar_opcion_elegida(opcion_actual))
-                    fila += 1
-
         def ventana_registro_clase(self,ventana_none):
             from Presentacion.ventana_cursos import Ventana_Cursos
             if ventana_none == None:
@@ -762,7 +479,7 @@ class Ventana_Clases():
             item_id = seleccion[0]
             datos_curso = tree.item(item_id)['values']
             id_curso = datos_curso[0]
-            print(id_curso, anio, turno)
+            
             
             
             

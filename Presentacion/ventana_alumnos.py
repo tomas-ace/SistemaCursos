@@ -206,7 +206,7 @@ class Ventana_Alumnos():
         ventana.destroy()
     
     def mostrar_opcion_elegida(self,opcion):
-        print (opcion)
+        
         if opcion == "Registrar nuevo alumno":
             self.ventana_registro_alumno(None)
 
@@ -392,7 +392,7 @@ class Ventana_Alumnos():
             else:
                 turno = curso[4]
             estado = curso[5]
-            print("antes del servicio el idinsc es: ", id_inscripcion)
+           
             promedio = servicio_nota.promedio_alumno_en_clase(id_inscripcion)
             asistencia = servicio_asistencia.calcular_porcentaje_asistencia(id_inscripcion)
 
@@ -452,9 +452,9 @@ class Ventana_Alumnos():
     
     def dar_de_baja(self, id_inscripcion, ventana_detalle, datos_alumno):
         service=Alumno_Service()
-        inactivo=service.es_baja_o_libre(id_inscripcion)
+        inactivo=service.es_inactivo(id_inscripcion)
         if inactivo:
-            messagebox.showerror("Error","Esta alumno ya esta dado de baja o esta libre",parent=ventana_detalle)
+            messagebox.showerror("Error","Esta alumno no esta activo en este curso",parent=ventana_detalle)
             return
         valor=messagebox.askokcancel("Confirmacion","¿Estas seguro que quieres dar de baja al alumno?",parent=ventana_detalle)
         if valor==True:
@@ -618,7 +618,7 @@ class Ventana_Alumnos():
     
                 
     def mostrar(self):
-        print("hola")
+        
         Label(
             self._contenido,
             text="Alumnos",
@@ -643,7 +643,7 @@ class Ventana_Alumnos():
         ]
         fila=0
         for opcion in opciones:
-            print (opcion)
+            
             crear_boton(opcion,fila,self._botones,lambda opcion_actual=opcion: self.mostrar_opcion_elegida(opcion_actual)) #lambda para que no se me ejecuten las funciones 
             fila+=1 #opcion_actual congela la variable y la guarda, si no, se ejecuta siempre la ultima opcion
     

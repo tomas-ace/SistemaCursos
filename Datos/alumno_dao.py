@@ -112,7 +112,7 @@ class Alumno_DAO():
             FROM Alumno a
             LEFT JOIN Inscripcion i ON a.Legajo = i.Legajo AND i.Estado = 'En Curso'
             GROUP BY a.Legajo, a.Nombre, a.Apellido
-            HAVING COUNT(i.IdInscripcion) < 3;
+            HAVING COUNT(i.IdInscripcion) >= 3;
         """)
         alumnos = cursor.fetchall()
         conexion.close()

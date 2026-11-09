@@ -22,23 +22,6 @@ class Inscripcion_DAO():
         conexion.commit()
         conexion.close()
     
-    def modificar_estado(self,id_inscripcion, nuevo_estado):
-            conexion=sqlite3.connect("Datos/cursos_db.db")
-            cursor = conexion.cursor()
-            
-            nuevosDatos=[
-                nuevo_estado,
-                id_inscripcion
-                
-            ]
-            cursor.execute("""
-                UPDATE Inscripcion
-                SET Estado = ?
-                WHERE IdInscripcion = ?
-            """,nuevosDatos)
-            
-            conexion.commit()
-            conexion.close()
     
     def contar_inscripciones_activas(self):
         conexion=sqlite3.connect("Datos/cursos_db.db")
@@ -51,21 +34,7 @@ class Inscripcion_DAO():
         conexion.close()
         return inscripciones[0]
 
-    def listar_inscripciones(self):
-            conexion=sqlite3.connect("Datos/cursos_db.db")
-            cursor = conexion.cursor()
-            cursor.execute("""
-                SELECT i.IdInscripcion, i.Fecha_Inscripcion, i.Estado, a.Nombre, a.Apellido, c.Descripcion, cl.Anio, cl.Turno
-                FROM Inscripcion i
-                JOIN Alumno a ON i.Legajo = a.Legajo
-                JOIN Clase cl ON i.IdClase = cl.IdClase
-                JOIN Curso c ON cl.IdCurso = c.IdCurso
-            """)
-            inscripciones = cursor.fetchall()
-            conexion.commit()
-            conexion.close()
-            return inscripciones
-        
+   
     def ya_esta_inscripto(self,legajo, id_curso, anio):
             conexion = sqlite3.connect("Datos/cursos_db.db")
             cursor = conexion.cursor()

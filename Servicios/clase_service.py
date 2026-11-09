@@ -30,18 +30,10 @@ class Clase_Service():
         
     
         
-    def listar_clases(self,filtro):
-        if filtro=="Todas":
-            return self._dao.listar_clases()
-        else:
-            return self._dao.listar_clases_con_filtro(filtro)
     
     def cantidad_de_clases_activas(self):
         return self._dao.contar_clases_activas()
     
-    def modificar_estado_de_clase(self, id_clase, nuevo_estado):
-        self._dao.modificar_estado(id_clase, nuevo_estado)
-        
     def lista_de_alumnos_por_clase(self,clase):
         return self._dao.lista_de_alumnos_en_clase(clase)
 
