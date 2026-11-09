@@ -467,8 +467,8 @@ class Ventana_Alumnos():
         notas=Nota_Service().obtener_notas_inscripcion(id_inscripcion)
         ventana_notas = Toplevel(self._contenido)
         ventana_notas.title("Notas del alumno")
-        ventana_notas.geometry("700x350")
-        ventana_notas.maxsize(700,350)
+        ventana_notas.geometry("450x350")
+        ventana_notas.maxsize(450,350)
         ventana_notas.configure(bg=blanco)
 
         Label(
@@ -510,8 +510,8 @@ class Ventana_Alumnos():
         asistencia=Asistencia_Service().asistencia_por_inscripcion(inscripcion)
         ventana_asistencias = Toplevel(self._contenido)
         ventana_asistencias.title("Asistencia en el Curso")
-        ventana_asistencias.geometry("450x350")
-        ventana_asistencias.maxsize(450,350)
+        ventana_asistencias.geometry("400x350")
+        ventana_asistencias.maxsize(400,350)
         ventana_asistencias.configure(bg=blanco)
     
         if asistencia =="Sin Datos":

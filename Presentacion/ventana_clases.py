@@ -390,7 +390,7 @@ class Ventana_Clases():
             ventana = Toplevel(self._contenido)
     
             ventana.title("Registrar clase")
-            ventana.geometry("600x600")
+            ventana.geometry("600x700")
             ventana.configure(bg=blanco)
             form_frame = Frame(ventana, bg=blanco, highlightbackground=azul, highlightthickness=1, padx=40, pady=30)
             form_frame.pack(expand=True, pady=20)
