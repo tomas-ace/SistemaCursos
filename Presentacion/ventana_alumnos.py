@@ -119,8 +119,7 @@ class Ventana_Alumnos():
         Label(
                     form_frame,
                     text="Dia",
-                    font=("Arial", 12, "bold")
-                    
+                    font=("Arial", 12, "bold")   
                 ).grid(column=1, row=6)
         entry_dia = Entry(
                             form_frame,

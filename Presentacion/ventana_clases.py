@@ -175,9 +175,6 @@ class Ventana_Clases():
             datos_curso = tree.item(item_id)['values']
             id_curso = datos_curso[0]
             
-            
-            
-            
             nueva_clase=Clase(None,anio,turno,"Activa",id_curso)
             servicio_clase=Clase_Service()
             resultado = servicio_clase.nueva_clase(nueva_clase)
